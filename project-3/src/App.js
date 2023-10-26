@@ -1,10 +1,11 @@
 import React from 'react';
-import MenuBoard from './screens/MenuBoard.js';
+import CustomerView from './screens/CustomerView';
+import './index.css'
 
 function App() {
   return (
     <div>
-      <MenuBoard />
+      <CustomerView />
     </div>
   );
 }

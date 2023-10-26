@@ -1,0 +1,24 @@
+/*General button styling*/
+.buttonStyle {
+    color: #FFFFFF;
+    background-color: #FFC7C8;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 35px;
+    font-weight: bold;
+    font-size: 20px;
+    box-shadow: 5px 5px 5px #afafaffa;
+}
+
+.buttonStyle:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.buttonStyle:active {
+    opacity: 0.6;
+}
+
+.buttonStyle:focus {
+    outline: none;
+}

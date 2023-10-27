@@ -1,5 +1,5 @@
-/* ManagerView.js
- * React component rendering screen for managers
+/* InventoryView.js
+ * React component rendering screen for the manager-side inventory view
  * Uses the following external custom comopnents:
  * - General Button
  * - Manager Button
@@ -8,14 +8,14 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import ManagerButton from '../components/ManagerButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
+import ManagerButton from '../components/ManagerButton';
 
 
-function ManagerView() {
+function InventoryView() {
     return (
         <div>
             <div className="customer-header">
@@ -27,26 +27,17 @@ function ManagerView() {
                 <GeneralButton content="Order" sidePadding={20} />
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
-            <div className='ManagerUI'>
+            <div className='Inventory'>
                 <Grid container>
-                    <Grid item xs={8} container spacing={8}>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Inventory Management" />
+                    <Grid container xs={8} spacing={4} alignItems="center" justifyContent="center" direction="column">
+                        <Grid item>
+                            <ManagerButton content="View Inventory" />
                         </Grid>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Product Usage" />
+                        <Grid item>
+                            <ManagerButton content="Add Item" />
                         </Grid>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Sales Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Excess Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Restock Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <ManagerButton content="Order Trends" />
+                        <Grid item>
+                            <ManagerButton content="Edit Item" />
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
@@ -58,4 +49,4 @@ function ManagerView() {
     );
 };
 
-export default ManagerView;
+export default InventoryView;

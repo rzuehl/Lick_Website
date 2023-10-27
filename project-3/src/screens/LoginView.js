@@ -26,6 +26,10 @@ function LoginView() {
                 <GeneralButton content="Password" sidePadding={20} />
                 <GeneralButton content="Login" sidePadding={20} />
             </div>
+
+            <div className="login-text">
+                Sign In
+            </div>
         </div>
     );
 };

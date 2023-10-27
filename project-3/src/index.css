@@ -145,3 +145,14 @@ h1,h2,h3{
   border-bottom: 4px solid black;
   padding: 4rem;
 }
+
+.login-text {
+  margin-left: 10rem;
+  font-size: 100px;
+  color: #000000;
+  position: relative;
+  display: flex;
+  justify-content: left;
+  align-items: start;
+  gap: 1rem;
+}

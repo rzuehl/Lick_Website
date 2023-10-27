@@ -12,6 +12,6 @@ function HamburgerButton() {
     return (
         <List className="hamburger-button" />
     );
-};
+}
 
 export default HamburgerButton;

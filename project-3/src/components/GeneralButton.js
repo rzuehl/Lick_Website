@@ -22,6 +22,6 @@ const styles = {
             {props.content}
         </button>
     );
-};
+}
 
 export default GeneralButton;

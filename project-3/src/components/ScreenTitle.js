@@ -2,6 +2,8 @@
  * Renders screen title of screen
 */
 
+import React from 'react';
+
 function ScreenTitle() {
     return (
         <div className="screen-title-container">
@@ -9,6 +11,6 @@ function ScreenTitle() {
             <h1>ICE CREAM</h1>
         </div>
     );
-};
+}
 
 export default ScreenTitle;

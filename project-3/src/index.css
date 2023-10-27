@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+
 /*global css properties*/
 :root {
   --lick-pink: #FFC7C8;
@@ -43,7 +45,7 @@ h1,h2,h3{
   display: block;
   color: var(--lick-blue);
   font-weight: bold;
-  font-family: "koulen";
+  font-family: 'Koulen', sans-serif;
   font-size: 4.5rem;
 }
 
@@ -107,4 +109,15 @@ h1,h2,h3{
   justify-content: space-around;
   align-items: center;
   gap: 3rem;
+}
+
+.carousel {
+  margin: auto;
+  margin-top: 1rem;
+  width: 65%;
+}
+
+.carousel .slide img {
+  max-height: 400px;
+  width: 100%;
 }

@@ -168,3 +168,41 @@ h1,h2,h3{
   height: 400px;
   align-self: center;
 }
+
+/*Manager Button Styling*/
+.managerButton {
+  color: var(--black);
+  background-color: var(--lick-pink);
+  border: none;
+  font-weight: bold;
+  font-size: 30px;
+  width: 300px;
+  height: 180px;
+}
+
+.managerButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.managerButton:active {
+  opacity: 0.6;
+}
+
+.managerButton:focus {
+  outline: none;
+}
+
+/*Manager Text Styling*/
+
+.ManagerText {
+  color: black;
+  background-color: var(--lick-pink);
+  height: 100%;
+}
+
+.ManagerUI {
+  margin: auto;
+  margin-top: 25px;
+  width: 90%;
+}

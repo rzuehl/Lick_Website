@@ -147,9 +147,11 @@ h1,h2,h3{
 }
 
 .login-text {
-  margin-left: 10rem;
-  font-size: 100px;
+  margin-top: -20rem;
+  margin-left: 20rem;
+  font-size: 7rem;
   color: #000000;
+  font-family: 'Brush Script MT', cursive;
   position: relative;
   display: flex;
   justify-content: left;

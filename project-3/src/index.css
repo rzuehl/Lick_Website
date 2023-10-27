@@ -132,3 +132,16 @@ h1,h2,h3{
   align-items: center;
   gap: 3rem;
 }
+
+.login-body {
+  margin-right: 20rem;
+  margin-left: 60rem;
+  margin-top: 8rem;
+  display: flex;
+  flex-direction: column;;
+  justify-content: space-around;
+  gap: 5rem;
+  border-top: 4px solid black;
+  border-bottom: 4px solid black;
+  padding: 3rem;
+}

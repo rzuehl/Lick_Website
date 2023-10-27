@@ -21,10 +21,11 @@ function LoginView() {
                 <GeneralButton content="Color" sidePadding={20} />
             </div>
 
-            {/* <div className="login-body">
+            <div className="login-body">
+                <GeneralButton content="Email Address/Username" sidePadding={20} />
+                <GeneralButton content="Password" sidePadding={20} />
                 <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Options" sidePadding={20} />
-            </div> */}
+            </div>
         </div>
     );
 };

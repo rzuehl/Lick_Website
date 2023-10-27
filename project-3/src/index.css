@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+/*google font import*/
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');
 
 /*global css properties*/
 :root {
@@ -45,7 +46,7 @@ h1,h2,h3{
   display: block;
   color: var(--lick-blue);
   font-weight: bold;
-  font-family: 'Koulen', sans-serif;
+  font-family: 'Kay Pho Du', serif;
   font-size: 4.5rem;
 }
 
@@ -120,4 +121,50 @@ h1,h2,h3{
 .carousel .slide img {
   max-height: 400px;
   width: 100%;
+}
+
+.about-us-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 10rem;
+  margin-bottom: 2rem;
+  gap: 5rem;
+}
+
+.about-us-text {
+  width: 50%;
+  color: var(--black);
+  text-align: center;
+}
+
+.about-us-intro {
+  color: var(--black);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.about-us-intro h2 {
+  font-weight : bold;
+  font-size: 4rem;
+  font-family: 'Just Another Hand', cursive;
+}
+
+.about-us-intro p {
+  font-family: "inter";
+}
+
+.about-us-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.vertical-line {
+  border-left: 6px solid var(--black);
+  height: 400px;
+  align-self: center;
 }

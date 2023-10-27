@@ -3,7 +3,7 @@
 */
 
 import React from 'react';
-import '../styles/index.css';
+
 /**
  * GeneralButton is a custom component rendering basic buttons
  * @param {object} props - Javascript object containing passed in props into GeneralButton component
@@ -22,6 +22,6 @@ const styles = {
             {props.content}
         </button>
     );
-};
+}
 
 export default GeneralButton;

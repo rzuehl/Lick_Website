@@ -15,10 +15,10 @@ function LoginView() {
         <div>
             <div className="customer-header">
                 <HamburgerButton />
-                <GeneralButton content="Translate" sidePadding={35} />
-                <GeneralButton content="Login" sidePadding={20} />
                 <GeneralButton content="Color" sidePadding={20} />
-                <GeneralButton content="Options" sidePadding={20} />
+                {/* <GeneralButton content="Translate" sidePadding={35} /> */}
+                {/* <GeneralButton content="Login" sidePadding={20} /> */}
+                {/* <GeneralButton content="Options" sidePadding={20} /> */}
             </div>
         </div>
     );

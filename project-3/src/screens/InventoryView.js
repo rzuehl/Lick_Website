@@ -16,6 +16,19 @@ import ManagerButton from '../components/ManagerButton';
 
 
 function InventoryView() {
+
+    const handleViewInventory = () => {
+        document.getElementById("ManagerText").innerText = "View Inventory";
+    }
+
+    const handleAddItem = () => {
+        document.getElementById("ManagerText").innerText = "Add Item";
+    }
+
+    const handleEditItem = () => {
+        document.getElementById("ManagerText").innerText = "Edit Item";
+    }
+
     return (
         <div>
             <div className="customer-header">
@@ -31,17 +44,17 @@ function InventoryView() {
                 <Grid container>
                     <Grid container xs={8} spacing={4} alignItems="center" justifyContent="center" direction="column">
                         <Grid item>
-                            <ManagerButton content="View Inventory" />
+                            <ManagerButton onClick={handleViewInventory} content="View Inventory" />
                         </Grid>
                         <Grid item>
-                            <ManagerButton content="Add Item" />
+                            <ManagerButton onClick={handleAddItem} content="Add Item" />
                         </Grid>
                         <Grid item>
-                            <ManagerButton content="Edit Item" />
+                            <ManagerButton onClick={handleEditItem} content="Edit Item" />
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        <p className='ManagerText'>TEST</p>
+                        <p id='ManagerText' className='ManagerText'>TEST</p>
                     </Grid>
                 </Grid>
             </div>

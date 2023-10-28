@@ -16,6 +16,31 @@ import { Grid } from '@mui/material';
 
 
 function ManagerView() {
+
+    const handleInventoryManagement = () => {
+        document.getElementById("ManagerText").innerText = "Inventory Management";
+    }
+
+    const handleProductUsage = () => {
+        document.getElementById("ManagerText").innerText = "Product Usage";
+    }
+
+    const handleSalesReport = () => {
+        document.getElementById("ManagerText").innerText = "Sales Report";
+    }
+
+    const handleExcessReport = () => {
+        document.getElementById("ManagerText").innerText = "Excess Report";
+    }
+
+    const handleRestockReport = () => {
+        document.getElementById("ManagerText").innerText = "Restock Report";
+    }
+
+    const handleOrderTrends = () => {
+        document.getElementById("ManagerText").innerText = "Order Trends";
+    }
+
     return (
         <div>
             <div className="customer-header">
@@ -31,26 +56,26 @@ function ManagerView() {
                 <Grid container>
                     <Grid item xs={8} container spacing={8}>
                         <Grid item xs={6}>
-                            <ManagerButton content="Inventory Management" />
+                            <ManagerButton onClick={handleInventoryManagement} content="Inventory Management" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton content="Product Usage" />
+                            <ManagerButton onClick={handleProductUsage} content="Product Usage" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton content="Sales Report" />
+                            <ManagerButton onClick={handleSalesReport} content="Sales Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton content="Excess Report" />
+                            <ManagerButton onClick={handleExcessReport} content="Excess Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton content="Restock Report" />
+                            <ManagerButton onClick={handleRestockReport} content="Restock Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton content="Order Trends" />
+                            <ManagerButton onClick={handleOrderTrends} content="Order Trends" />
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                        <p className='ManagerText'>TEST</p>
+                        <p id='ManagerText' className='ManagerText'>TEST</p>
                     </Grid>
                 </Grid>
             </div>

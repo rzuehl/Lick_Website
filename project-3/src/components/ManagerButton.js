@@ -16,7 +16,7 @@ const styles = {
 };
 
     return (
-        <button className="managerButton" style={styles}>
+        <button onClick={props.onClick} className="managerButton" style={styles}>
             {props.content}
         </button>
     );

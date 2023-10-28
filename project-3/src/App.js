@@ -7,7 +7,7 @@ import InventoryView from './screens/InventoryView';
 function App() {
   return (
     <div>
-      <InventoryView />
+      <ManagerView />
     </div>
   );
 }

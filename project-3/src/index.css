@@ -168,3 +168,33 @@ h1,h2,h3{
   height: 400px;
   align-self: center;
 }
+
+.menu-header {
+  color: var(--black);
+  text-align: center;
+  /* flex-direction: column;
+  justify-content: center; */
+  margin-top: 15%;
+  /* max-width: fit-content; */
+}
+
+.menu-body {
+  color: var(--black);
+  text-align: center;
+  /* flex-direction: column;
+  justify-content: center;  */
+  /* max-width: fit-content; */
+}
+
+/* .menu.h1 {
+  flex-direction:column;
+  justify-content: center;
+} */
+
+.menu-description {
+  max-width: 500px;
+}
+
+.menu-picture {
+  
+}

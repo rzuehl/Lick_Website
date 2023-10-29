@@ -178,12 +178,12 @@ h1,h2,h3{
   font-size: 30px;
 }
 
-.employeeButton manager{
+.employeeButton.manager{
   width: 300px;
   height: 180px;
 }
 
-.employeeButton cashier{
+.employeeButton.cashier{
   width: 205px;
   height: 173px;
 }

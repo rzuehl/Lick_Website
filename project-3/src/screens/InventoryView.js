@@ -12,10 +12,11 @@ import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
-import ManagerButton from '../components/ManagerButton';
+import EmployeeButton from '../components/EmployeeButton';
 
 
 function InventoryView() {
+    var buttonType = "manager"; 
 
     const handleViewInventory = () => {
         document.getElementById("ManagerText").innerText = "View Inventory";
@@ -44,13 +45,13 @@ function InventoryView() {
                 <Grid container>
                     <Grid container xs={8} spacing={4} alignItems="center" justifyContent="center" direction="column">
                         <Grid item>
-                            <ManagerButton onClick={handleViewInventory} content="View Inventory" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
                         </Grid>
                         <Grid item>
-                            <ManagerButton onClick={handleAddItem} content="Add Item" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleAddItem} content="Add Item" />
                         </Grid>
                         <Grid item>
-                            <ManagerButton onClick={handleEditItem} content="Edit Item" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleEditItem} content="Edit Item" />
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>

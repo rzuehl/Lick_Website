@@ -8,7 +8,7 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import ManagerButton from '../components/ManagerButton';
+import EmployeeButton from '../components/EmployeeButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
@@ -16,6 +16,7 @@ import { Grid } from '@mui/material';
 
 
 function ManagerView() {
+    var buttonType = "manager"; 
 
     const handleInventoryManagement = () => {
         document.getElementById("ManagerText").innerText = "Inventory Management";
@@ -52,30 +53,30 @@ function ManagerView() {
                 <GeneralButton content="Order" sidePadding={20} />
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
-            <div className='ManagerUI'>
+            <div className='employeeUI'>
                 <Grid container>
                     <Grid item xs={8} container spacing={8}>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleInventoryManagement} content="Inventory Management" />
+                            <EmployeeButton employeeType= {buttonType}  onClick={handleInventoryManagement} content="Inventory Management" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleProductUsage} content="Product Usage" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleProductUsage} content="Product Usage" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleSalesReport} content="Sales Report" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleSalesReport} content="Sales Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleExcessReport} content="Excess Report" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleExcessReport} content="Excess Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleRestockReport} content="Restock Report" />
+                            <EmployeeButton employeeType= {buttonType} onClick={handleRestockReport} content="Restock Report" />
                         </Grid>
                         <Grid item xs={6}>
-                            <ManagerButton onClick={handleOrderTrends} content="Order Trends" />
-                        </Grid>
-                    </Grid>
+                            <EmployeeButton employeeType= {buttonType} onClick={handleOrderTrends} content="Order Trends" />
+                        </Grid> 
+                    </Grid> 
                     <Grid item xs={4}>
-                        <p id='ManagerText' className='ManagerText'>TEST</p>
+                        <p id='ManagerText' className='employeeText'>TEST</p>
                     </Grid>
                 </Grid>
             </div>

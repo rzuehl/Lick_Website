@@ -11,15 +11,15 @@ import React from 'react';
  * @property {string} props.reference - string representing content that button references to
  * @property {number} props.sidePadding - number setting side padding of button
  */
-function ManagerButton(props) {
+function EmployeeButton(props) {
 const styles = {
 };
 
     return (
-        <button onClick={props.onClick} className="managerButton" style={styles}>
+        <button onClick={props.onClick} className="employeeButton" style={styles}>
             {props.content}
         </button>
     );
 }
 
-export default ManagerButton;
+export default EmployeeButton;

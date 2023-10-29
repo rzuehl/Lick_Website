@@ -169,39 +169,47 @@ h1,h2,h3{
   align-self: center;
 }
 
-/*Manager Button Styling*/
-.managerButton {
+/*Employee Button Styling*/
+.employeeButton {
   color: var(--black);
   background-color: var(--lick-pink);
   border: none;
   font-weight: bold;
   font-size: 30px;
+}
+
+.employeeButton manager{
   width: 300px;
   height: 180px;
 }
 
-.managerButton:hover {
+.employeeButton cashier{
+  width: 205px;
+  height: 173px;
+}
+
+.employeeButton:hover {
   cursor: pointer;
   opacity: 0.8;
 }
 
-.managerButton:active {
+.employeeButton:active {
   opacity: 0.6;
 }
 
-.managerButton:focus {
+.employeeButton:focus {
   outline: none;
 }
 
-/*Manager Text Styling*/
+/*Employee Text Styling*/
 
-.ManagerText {
+.employeeText {
   color: black;
   background-color: var(--lick-pink);
   height: 100%;
 }
 
-.ManagerUI {
+.employeeUI {
   margin: auto;
   margin-top: 25px;
   width: 90%;

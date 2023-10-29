@@ -8,7 +8,7 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import HamburgerButton from '../components/HamburgerButton';
+// import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 
 function LoginView() {

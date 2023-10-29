@@ -292,7 +292,7 @@ function MenuBoard() {
 
                     <Grid item container spacing={30} justifyContent="center">
                         <Grid item>
-                            <img className="menu-picture" src={veganSunbutter} alt="Vegan Vanilla Pear Cake" />
+                            <img className="menu-picture" src={veganVanillaPear} alt="Vegan Vanilla Pear Cake" />
                         </Grid>
                         <Grid item>
                             <div className='menu-description'>

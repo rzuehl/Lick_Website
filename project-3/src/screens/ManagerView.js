@@ -16,10 +16,28 @@ import { Grid } from '@mui/material';
 
 
 function ManagerView() {
+    // Connect to database here
+    const { Client } = require('pg')
+    const client = new Client({
+    user: 'csce315_907_03user',
+    host: 'csce-315-db.engr.tamu.edu',
+    database: 'csce315_907_03userdb',
+    password: 'GMV36DzB',
+    port: 5432,
+    })
+    client.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+    });
+
     var buttonType = "manager"; 
 
     const handleInventoryManagement = () => {
-        document.getElementById("ManagerText").innerText = "Inventory Management";
+        // document.getElementById("ManagerText").innerText = "Inventory Management";
+        const res =  client.query("SELECT * FROM inventory");
+        console.log(res);
+        
+            
     }
 
     const handleProductUsage = () => {

@@ -8,7 +8,6 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import HamburgerButton from '../components/HamburgerButton';
 import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';

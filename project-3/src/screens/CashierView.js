@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from "react";
 import GeneralButton from '../components/GeneralButton';
 import EmployeeButton from '../components/EmployeeButton.js';
 import HamburgerButton from '../components/HamburgerButton';
@@ -6,15 +7,31 @@ import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 
-
 function CashierView() {
-    let category_items = ["Everyday", "Seasonal", "Dairy Free/Vegan", "Sandwiches", "Toppings", "Beverages"];
+    
+    var categoryItemArray = ["Everyday", "Seasonal", "Dairy Free/Vegan", "Sandwiches", "Toppings", "Beverages"];
+    const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
+
 
     const handleCategoryItems = (event) => {
-        document.getElementById("cashierText").innerText = event.target.textContent;
-    }
-    
-    let num_category_items = category_items.length;
+        let eventString = event.target.textContent;
+        if(eventString === "Everyday"){
+            document.getElementById("cashierText").innerHTML = eventString;
+            categoryItemArray = ["Caramel Salt Lick", 
+            "Coffee with Cream",
+            "Dark Chocolate, Olive Oil & Sea Salt", 
+            "Fresh Mint & Chocolate Chunk", 
+            "Goat Cheese, Thyme & Honey", 
+            "Hill Country Honey & Vanilla Bean", 
+            "Roasted Beets & Fresh Mint",
+            "Milk Chocolate", 
+            "Texas Sheet Cake"];
+        }
+        else{
+            categoryItemArray = ["Everyday", "Seasonal", "Dairy Free/Vegan", "Sandwiches", "Toppings", "Beverages"];
+        }
+    };
+
     var buttonType = "cashier";
 
     return (
@@ -29,9 +46,15 @@ function CashierView() {
             <div className='employeeUI'>
                 <Grid container>
                     <Grid item xs={8} container spacing={8}>
-                        {category_items.map((category_items) => (
-                            <Grid item xs={4} key = {category_items}> 
-                                <EmployeeButton employeeType = {buttonType} onClick ={handleCategoryItems} content={category_items}/>
+                        {categoryItemArrayState.map((categoryItem) => (
+                            <Grid item xs={4} key = {categoryItem}> 
+                                <EmployeeButton 
+                                employeeType = {buttonType} 
+                                onClick ={(event) => {
+                                    handleCategoryItems(event);
+                                    setCategoryItemArrayState(categoryItemArray);
+                                  }} 
+                                content={categoryItem}/>
                             </Grid>
                         ))}
                     </Grid>

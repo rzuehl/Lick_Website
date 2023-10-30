@@ -1,11 +1,11 @@
 import React from 'react';
-import CustomerView from './screens/CustomerView';
+import CashierView from './components/CashierView';
 import './index.css'
 
 function App() {
   return (
     <div>
-      <CustomerView />
+      <CashierView />
     </div>
   );
 }

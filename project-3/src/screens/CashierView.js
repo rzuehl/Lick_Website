@@ -27,7 +27,29 @@ function CashierView() {
             "Milk Chocolate", 
             "Texas Sheet Cake"];
         }
+        else if(eventString === "Seasonal"){
+            categoryItemArray = ["Hazel's Pumpkin Pie", "Caramel Apple Cake", "Date Pudding Cake (v)"];
+        }
+        else if(eventString === "Dairy Free/Vegan"){
+            categoryItemArray = ["Honey Sunbutter", "NEW! Vanilla Pear Cake"];
+        }
+        else if(eventString === "Sandwiches"){
+            categoryItemArray = ["Caramel Salt Lick", "Hill Country Honey & Vanilla Bean", "Vegan Vanilla", "Dark Chocolate, Olive Oil & Sea Salt"];
+        }
+        else if(eventString === "Toppings"){
+            categoryItemArray = ["Chocolate Sauce", 
+            "Caramel Sauce", 
+            "Toasted Texas Pecans", 
+            "Chocolate Cookie Crumble", 
+            "Rainbow Sprinkles", 
+            "Strawberry", 
+            "Whipped Cream"];
+        }
+        else if(eventString === "Beverages"){
+            categoryItemArray = ["Southside Craft Soda", "Cold Brew High Brew Coffee", "Nitro Coffee High Brew Coffee", "Richard’s Rainwater"];
+        }
         else{
+            document.getElementById("cashierText").innerHTML = eventString;
             categoryItemArray = ["Everyday", "Seasonal", "Dairy Free/Vegan", "Sandwiches", "Toppings", "Beverages"];
         }
     };

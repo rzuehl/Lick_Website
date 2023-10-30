@@ -1,5 +1,5 @@
 import React from 'react';
-import CashierView from './components/CashierView';
+import CashierView from './screens/CashierView';
 import './index.css'
 
 function App() {

@@ -13,16 +13,26 @@ import { Link } from 'react-router-dom';
  * @property {number} props.sidePadding - number setting side padding of button
  */
 function GeneralButton(props) {
-const styles = {
-    paddingLeft: props.sidePadding,
-    paddingRight: props.sidePadding,
-};
+    const styles = {
+        paddingLeft: props.sidePadding,
+        paddingRight: props.sidePadding,
+    };
 
-    return (
-        <Link to={props.route} className="buttonStyle" style={styles}>
-            {props.content}
-        </Link>
-    );
+    // uses react routing to route to next screen if route prop is provided
+    if (props.route) {
+        return (
+            <Link to={props.route} className="buttonStyle" style={styles}>
+                {props.content}
+            </Link>
+        );
+    }
+    else {
+        return (
+            <button className="buttonStyle" style={styles}>
+                {props.content}
+            </button>
+        ); 
+    }
 }
 
 export default GeneralButton;

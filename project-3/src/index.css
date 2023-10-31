@@ -180,6 +180,33 @@ a:hover {
   align-items: flex-start;
   gap: 1rem;
 }
+
+.login-main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+  gap: 10rem;
+}
+
+.login-main div h1 {
+  color: var(--black);
+  font-family: 'Brush Script MT', cursive;
+  font-size: 6rem;
+}
+
+.log-body {
+  border-top: 4px solid black;
+  border-bottom: 4px solid black;
+}
+
+.log-body-content {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
   
 /*google font import*/
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');
@@ -232,6 +259,22 @@ h1,h2,h3{
   font-weight: bold;
   font-family: 'Kay Pho Du', serif;
   font-size: 4.5rem;
+}
+
+/*General Input styling*/
+.input-style {
+  color: var(--white);
+  background-color: var(--lick-pink);
+  border: none;
+  padding: 0.65rem;
+  border-radius: 35px;
+  font-weight: bold;
+  font-size: 20px;
+  box-shadow: 5px 5px 5px var(--button-shadow);
+}
+
+::placeholder {
+  color: var(--white);
 }
 
 /*General button styling*/

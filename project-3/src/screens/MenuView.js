@@ -8,10 +8,12 @@
 */
 
 import React, {useState} from 'react';
+import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import weatherLogo from '../assets/weather-icon.png';
+import lickLogo from '../assets/lick-honest-logo.png';
 
 //image imports for ice cream sanwiches
 import caramelSandwich from '../assets/menu-pictures/sandwich_caramel.png';
@@ -61,11 +63,14 @@ const MenuView = () => {
     return (
         <div>
             <div className="customer-header">
+                <Link to="/">
+                    <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
+                </Link>
                 <GeneralButton content="Translate" sidePadding={35} />
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
             <div className="menu-categories">

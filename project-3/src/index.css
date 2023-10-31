@@ -61,6 +61,14 @@ h1,h2,h3{
   box-shadow: 5px 5px 5px var(--button-shadow);
 }
 
+a {
+  color: var(--white);
+}
+
+a:hover {
+  color: var(--white);
+}
+
 .buttonStyle:hover {
   cursor: pointer;
   opacity: 0.8;
@@ -91,6 +99,19 @@ h1,h2,h3{
 }
 
 /*customer view screen styling*/
+.lick-logo {
+  width: 5rem;
+}
+
+.lick-logo:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.lick-logo:active {
+  opacity:0.6;
+}
+
 .weather-logo:hover {
   cursor: pointer;
   opacity: 0.8;
@@ -282,7 +303,7 @@ h1,h2,h3{
 }
 
 .carousel .slide img {
-  max-height: 400px;
+  max-height: 30rem;
   width: 100%;
 }
 

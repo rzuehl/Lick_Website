@@ -7,9 +7,11 @@
 */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
 import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
+import lickLogo from '../assets/lick-honest-logo.png';
 import weatherLogo from '../assets/weather-icon.png';
 import pumpkinImage from '../assets/pumpkin-pic.png';
 import cowImage from '../assets/cow-pic.png';
@@ -25,12 +27,15 @@ function CustomerView() {
     return (
         <div>
             <div className="customer-header">
+                <Link to="/">
+                    <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
+                </Link>
                 <GeneralButton content="Translate" sidePadding={35} />
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
-                <GeneralButton content="Options" sidePadding={20} />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
+                <GeneralButton content="Options" sidePadding={20}/>
             </div>
             <div>
                 <ImageSlider slides={slides} />

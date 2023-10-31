@@ -7,15 +7,18 @@
 */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
-// import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
+import lickLogo from '../assets/lick-honest-logo.png';
 
 function LoginView() {
     return (
         <div>
             <div className="login-header">
-                {/* <HamburgerButton /> */}
+                <Link to="/">
+                    <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
+                </Link>
                 <GeneralButton content="Translate" sidePadding={35} /> 
                 <ScreenTitle />
                 <GeneralButton content="Color" sidePadding={20} />

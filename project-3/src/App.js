@@ -1,13 +1,11 @@
 import React from 'react';
-import LoginView from './screens/LoginView';
 import './index.css'
+import MenuView from './screens/MenuView';
 
 function App() {
   return (
     <div>
-      <LoginView />
+      <MenuView />
     </div>
   );
 }
-
-export default App;

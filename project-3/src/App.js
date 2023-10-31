@@ -1,24 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import './index.css'
+import CustomerView from './screens/CustomerView';
+import MenuView from './screens/MenuView';
+import LoginView from './screens/LoginView';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and testing vercel hosting 2 TEST3 TEST 4 test_5ive Test-6
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <div>
+        <Switch>
+          <Route exact path="/">
+            <CustomerView />
+          </Route>
+          <Route exact path="/menu">
+            <MenuView />
+          </Route>
+          <Route exact path="/login">
+            <LoginView />
+          </Route>
+        </Switch>
+      </div>    
+    </BrowserRouter>
   );
 }
 

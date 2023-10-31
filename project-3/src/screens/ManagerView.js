@@ -82,7 +82,7 @@ function ManagerView() {
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
                 <ScreenTitle />
                 <GeneralButton content="Logout" sidePadding={20} route="/"/>
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Order" sidePadding={20} route="/menu"/>
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
             <div className='employeeUI'>

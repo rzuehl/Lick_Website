@@ -29,7 +29,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "node ./server/index.js",
-    "start-server": "concurrently --kill-others \"npm run server\" \"npm run start\""
+    "start-server-windows": "concurrently --kill-others \"npm run server\" \"npm run start\"",
+    "start-server-mac": "node ./server/index.js & npm run start"
   },
   "eslintConfig": {
     "extends": [

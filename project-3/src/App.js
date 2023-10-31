@@ -1,6 +1,6 @@
 import React from 'react';
-import MenuView from './screens/MenuView';
 import './index.css'
+import MenuView from './screens/MenuView';
 
 function App() {
   return (

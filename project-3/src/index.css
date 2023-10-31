@@ -11,6 +11,7 @@
   --button-shadow: #afafaffa;
   --font-size: 1.3rem;
   --inter: "inter";
+  --tile-color: rgb(79, 75, 75);
 }
 
 /*setting border box model and other global elements*/
@@ -169,53 +170,35 @@ h1,h2,h3{
   align-self: center;
 }
 
-/*Employee Button Styling*/
-.employeeButton {
+/*menu board styling*/
+.menu-header {
   color: var(--black);
-  background-color: var(--lick-pink);
-  border: none;
-  font-weight: bold;
-  font-size: 30px;
+  text-align: center;
+  /* flex-direction: column;
+  justify-content: center; */
+  margin-top: 15%;
+  /* max-width: fit-content; */
 }
 
-.employeeButton.manager{
-  width: 300px;
-  height: 180px;
+.menu-body {
+  color: var(--black);
+  text-align: center;
+  /* flex-direction: column;
+  justify-content: center;  */
+  /* max-width: fit-content; */
 }
 
-.employeeButton.cashier{
-  width: 205px;
-  height: 173px;
+/* .menu.h1 {
+  flex-direction:column;
+  justify-content: center;
+} */
+
+.menu-description {
+  max-width: 500px;
 }
 
-.employeeButton:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
 
-.employeeButton:active {
-  opacity: 0.6;
-}
-
-.employeeButton:focus {
-  outline: none;
-}
-
-/*Employee Text Styling*/
-
-.employeeText {
-  color: black;
-  background-color: var(--lick-pink);
-  height: 100%;
-}
-
-.employeeUI {
-  margin: auto;
-  margin-top: 25px;
-  width: 90%;
-}
-
-/*Menu Board styling*/
+/*menu-view styling*/
 .menu-categories {
   margin-top: 3rem;
   margin-bottom: 2rem;
@@ -232,5 +215,86 @@ h1,h2,h3{
 
 .menu-categories h2:hover {
   cursor: pointer;
-  text-decoration: underline;
+  opacity: 0.6;
+}
+
+.menu-categories h2:active {
+  opacity: 0.4;
+}
+
+/*tile styling*/
+.tile {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.tile img {
+  display: inline;
+  height: 300px;
+  width: 350px;
+  border-radius: 3px;
+  transition: 0.5s;
+}
+
+.tile-intro {
+  height: 70px;
+  width: 350px;
+  padding: 6px;
+  bottom: 0;
+  background: var(--tile-color);
+  color: white;
+  transition: 0.5s;
+  position: absolute;
+  overflow: hidden;
+  transform: translateY(0);
+}
+
+.tile div h1 {
+  margin: 10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
+}
+
+.tile div p {
+  font-size: 85%;
+  visibility: hidden;
+  opacity: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.tile:hover .tile-intro {
+  height: 100%;
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.tile:hover p {
+  opacity: 1;
+  visibility: visible;
+}
+
+.menu-background {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+  background-image: url(./assets/menu-background.png);
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%;
+}
+
+.menu-section {
+  display: flex;
+  justify-content: center;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 1rem; 
+  justify-items: center; 
 }

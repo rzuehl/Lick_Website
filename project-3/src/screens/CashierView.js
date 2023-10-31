@@ -62,7 +62,7 @@ function CashierView() {
                 <GeneralButton content="Translate" sidePadding={35} />
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
                 <ScreenTitle />
-                <GeneralButton content="Logout" sidePadding={20} />
+                <GeneralButton content="Logout" sidePadding={20} route="/"/>
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
             <div className='employeeUI'>

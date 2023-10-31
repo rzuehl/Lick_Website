@@ -38,7 +38,8 @@ function LoginView() {
                     <div className="log-body-content">
                         <GeneralInput content="Email Address/Username" sidePadding={60} type="text" />
                         <GeneralInput content="Password" sidePadding={60} type="password" />
-                        <GeneralButton content="Login" sidePadding={60} />
+                        <GeneralButton content="Login Cashier" sidePadding={60} route="/cashier"/>
+                        <GeneralButton content="Login Manager" sidePadding={60} route="/manager"/>
                     </div>
                 </div>
             </div>

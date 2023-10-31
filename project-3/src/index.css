@@ -170,6 +170,52 @@ h1,h2,h3{
   align-self: center;
 }
 
+
+/*Employee Button Styling*/
+.employeeButton {
+  color: var(--black);
+  background-color: var(--lick-pink);
+  border: none;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.employeeButton.manager{
+  width: 300px;
+  height: 180px;
+}
+
+.employeeButton.cashier{
+  width: 205px;
+  height: 173px;
+}
+
+.employeeButton:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.employeeButton:active {
+  opacity: 0.6;
+}
+
+.employeeButton:focus {
+  outline: none;
+}
+
+/*Employee Text Styling*/
+
+.employeeText {
+  color: black;
+  background-color: var(--lick-pink);
+  height: 100%;
+}
+
+.employeeUI {
+  margin: auto;
+  margin-top: 25px;
+  width: 90%;
+
 /*menu board styling*/
 .menu-header {
   color: var(--black);

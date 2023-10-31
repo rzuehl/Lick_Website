@@ -12,14 +12,14 @@ import React from 'react';
  * @property {number} props.sidePadding - number setting side padding of button
  */
 function EmployeeButton(props) {
-const styles = {
-};
-
-    return (
-        <button onClick={props.onClick} className="employeeButton" style={styles}>
-            {props.content}
-        </button>
-    );
+    const styles = {
+    };
+        let className = "employeeButton " + props.employeeType; 
+        return (
+            <button onClick={props.onClick} className= {className} style={styles}>
+                {props.content}
+            </button>
+        );
 }
 
 export default EmployeeButton;

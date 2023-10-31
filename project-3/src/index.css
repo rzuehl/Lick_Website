@@ -158,6 +158,7 @@ h1,h2,h3{
   justify-content: left;
   align-items: flex-start;
   gap: 1rem;
+}
   
 /*google font import*/
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');

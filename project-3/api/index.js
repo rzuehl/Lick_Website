@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.get('/', (request, response) => {
+app.get('/api/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
@@ -28,7 +28,7 @@ app.listen(port, () => {
 
 const sql = require("./SQL")
 
-app.get('/inventory', sql.getInventory)
+app.get('/api/inventory', sql.getInventory)
 
 //export API to vercel server
 module.exports = app;

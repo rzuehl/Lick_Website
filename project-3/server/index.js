@@ -30,3 +30,5 @@ const sql = require("./SQL")
 
 app.get('/inventory', sql.getInventory)
 
+//export API to vercel server
+module.exports = app;

@@ -11,7 +11,6 @@ import { Carousel } from 'react-responsive-carousel';
  * @property {array} props.slides - array of javascript objects containing slide data 
  */
 function ImageSlider(props) {
-    console.log(`I am the best: ${props.slides}`);
     return (
         <Carousel 
         className="carousel" 

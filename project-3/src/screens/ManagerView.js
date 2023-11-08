@@ -12,8 +12,9 @@ import EmployeeButton from '../components/EmployeeButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
-import { Grid } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import api from '../api/posts';
+import ManagerDialog from '../components/ManagerDialog';
 
 
 function ManagerView() {
@@ -32,7 +33,10 @@ function ManagerView() {
     // });
 
     var buttonType = "manager"; 
-
+    const [open, setOpen] = React.useState(false);
+    const [startDate, setStart] = React.useState('');
+    const [endDate, setEnd] = React.useState('');
+    
     const handleInventoryManagement = () => {
         // document.getElementById("ManagerText").innerText = "Inventory Management";
         // const res =  client.query("SELECT * FROM inventory");
@@ -55,6 +59,7 @@ function ManagerView() {
     }
 
     const handleProductUsage = () => {
+        setOpen(true);
         document.getElementById("ManagerText").innerText = "Product Usage";
     }
 
@@ -74,8 +79,19 @@ function ManagerView() {
         document.getElementById("ManagerText").innerText = "Order Trends";
     }
 
+    const handleDialogClose = (value) => {
+        console.log(value);
+        setOpen(false);
+    }
+
+    const handleTextChange = (value) => {
+        console.log(value);
+        setStart(value);
+    }
+
     return (
         <div>
+            <ManagerDialog onClose={handleDialogClose} open={open} onChange={handleTextChange}></ManagerDialog>
             <div className="customer-header">
                 <HamburgerButton />
                 <GeneralButton content="Translate" sidePadding={35} />

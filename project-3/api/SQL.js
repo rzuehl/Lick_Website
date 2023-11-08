@@ -10,14 +10,14 @@ const pool = new Pool({
 });
 
 const getInventory = (request, response) => {
-    pool.query('SELECT * FROM inventory ORDER BY food_id', (error, results) => {
+  pool.query('SELECT * FROM inventory ORDER BY food_id', (error, results) => {
       if (error) {
         throw error
       }
       response.status(200).json(results.rows)
-    })
-  }
+  })
+}
 
-  module.exports = {
-    getInventory
-  };
+module.exports = {
+  getInventory
+};

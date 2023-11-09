@@ -2,18 +2,18 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@m
 import React from "react";
 
 function ManagerDialog(props) {
-    const { onClose, open } = props;
+    const { onClose, open, onConfirm } = props;
 
     const startInput = React.useRef('');
     const endInput = React.useRef('');
 
-    const handleClose = (value) => {
-        onClose("Close");
+    const handleClose = () => {
+        onClose();
     };
 
     const handleConfirm = (start, end) => {
-        onClose(start);
-        onClose(end);
+        let values = [start, end]
+        onConfirm(values);
     }
 
         return (

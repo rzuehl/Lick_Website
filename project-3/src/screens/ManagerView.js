@@ -18,24 +18,12 @@ import ManagerDialog from '../components/ManagerDialog';
 
 
 function ManagerView() {
-    // Connect to database here
-    // const { Client } = require('pg')
-    // const client = new Client({
-    // user: 'csce315_907_03user',
-    // host: 'csce-315-db.engr.tamu.edu',
-    // database: 'csce315_907_03userdb',
-    // password: 'GMV36DzB',
-    // port: 5432,
-    // })
-    // client.connect(function(err) {
-    // if (err) throw err;
-    // console.log("Connected!");
-    // });
-
     var buttonType = "manager"; 
+    let mode = 0;
     const [open, setOpen] = React.useState(false);
-    const [startDate, setStart] = React.useState('');
-    const [endDate, setEnd] = React.useState('');
+    const [startDate, setStart] = React.useState('NULL');
+    const [endDate, setEnd] = React.useState('NULL');
+    const [managerText, setManagerText] = React.useState('');
     
     const handleInventoryManagement = () => {
         // document.getElementById("ManagerText").innerText = "Inventory Management";
@@ -59,8 +47,7 @@ function ManagerView() {
     }
 
     const handleProductUsage = () => {
-        setOpen(true);
-        document.getElementById("ManagerText").innerText = "Product Usage";
+        document.getElementById("ManagerText").innerText = startDate;
     }
 
     const handleSalesReport = () => {
@@ -79,19 +66,23 @@ function ManagerView() {
         document.getElementById("ManagerText").innerText = "Order Trends";
     }
 
-    const handleDialogClose = (value) => {
-        console.log(value);
+    const handleDialogClose = () => {
         setOpen(false);
     }
 
-    const handleTextChange = (value) => {
-        console.log(value);
-        setStart(value);
+    const handleConfirm = (values) => {
+        setStart(values[0]);
+        setEnd(values[1]);
+        setOpen(false);
+    }
+
+    const openDialog = () => {
+        setOpen(true);
     }
 
     return (
         <div>
-            <ManagerDialog onClose={handleDialogClose} open={open} onChange={handleTextChange}></ManagerDialog>
+            <ManagerDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm}></ManagerDialog>
             <div className="customer-header">
                 <HamburgerButton />
                 <GeneralButton content="Translate" sidePadding={35} />
@@ -100,6 +91,10 @@ function ManagerView() {
                 <GeneralButton content="Logout" sidePadding={20} route="/"/>
                 <GeneralButton content="Order" sidePadding={20} route="/menu"/>
                 <GeneralButton content="Options" sidePadding={20} />
+            </div>
+            <div className='customer-header'>
+                <p className='employeeText'>Current Date: {startDate} to {endDate}</p>
+                <EmployeeButton employeeType= {buttonType} onClick={openDialog} content="Update Date range" />
             </div>
             <div className='employeeUI'>
                 <Grid container>
@@ -124,7 +119,7 @@ function ManagerView() {
                         </Grid> 
                     </Grid> 
                     <Grid item xs={4}>
-                        <p id='ManagerText' className='employeeText'>TEST</p>
+                        <p id='ManagerText' className='employeeText'>{managerText}</p>
                     </Grid>
                 </Grid>
             </div>

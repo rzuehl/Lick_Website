@@ -16,11 +16,9 @@ const getInventory = (request, response) => {
       }
       response.status(200).json(results.rows)
     })
-  }
+}
 
-  module.exports = {
-    getInventory
-  };
+
 
 const getCategories = (request, response) => {
   pool.query("SELECT food_type FROM inventory GROUP BY food_type", (error, results) => {
@@ -30,9 +28,6 @@ const getCategories = (request, response) => {
     response.status(200).json(results.rows)
   })
 
-  module.exports = {
-    getCategories
-  };
 }
 
 const getFoodItems = (request, response, category) => {
@@ -42,8 +37,10 @@ const getFoodItems = (request, response, category) => {
     }
     response.status(200).json(results.rows)
   })
-
-  module.exports = {
-    getFoodItems
-  };
 }
+
+module.exports = {
+  getInventory,
+  getCategories,
+  getFoodItems
+};

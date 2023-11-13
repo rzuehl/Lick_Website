@@ -29,6 +29,8 @@ app.listen(port, () => {
 const sql = require("./SQL")
 
 app.get('/api/inventory', sql.getInventory)
+app.post('/api/getItem', sql.getItem)
+app.post('/api/getEmployee', sql.getEmployee)
 
 //export API to vercel server
 module.exports = app;

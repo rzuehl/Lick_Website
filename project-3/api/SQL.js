@@ -1,3 +1,5 @@
+const { response } = require('.');
+
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
@@ -18,6 +20,19 @@ const getInventory = (request, response) => {
   })
 }
 
+const getItem = (request, response) => {
+  const param1 = Object.keys(request.body);
+
+  pool.query('SELECT * FROM inventory WHERE food_id = $1', param1, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
-  getInventory
+  getInventory,
+  getItem,
+  getEmployee
 };

@@ -47,11 +47,17 @@ function ManagerView() {
     }
 
     const handleProductUsage = () => {
-        document.getElementById("ManagerText").innerText = startDate;
+        api.post('/getItem', 8)
+        .then((response) => {
+            console.log(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     const handleSalesReport = () => {
-        document.getElementById("ManagerText").innerText = "Sales Report";
+        
     }
 
     const handleExcessReport = () => {

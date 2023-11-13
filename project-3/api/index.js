@@ -29,6 +29,11 @@ app.listen(port, () => {
 const sql = require("./SQL")
 
 app.get('/api/inventory', sql.getInventory)
+app.get('/api/category', sql.getCategories)
+app.get('/api/foodItems', (request, response) => {
+  const category = request.query.category.replace(/_/g, ' '); // Retrieve the category from query parameters
+  sql.getFoodItems(request, response, category);
+});
 
 //export API to vercel server
 module.exports = app;

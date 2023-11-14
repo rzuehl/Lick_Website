@@ -566,3 +566,19 @@ h1,h2,h3{
   gap: 1rem; 
   justify-items: center; 
 }
+
+/*Shopping cart styling*/
+
+/*CartItem styling*/
+.cart-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+}
+
+.cart-item img {
+  height: 100px;
+  width: 100px;
+  border-radius: 3px;
+}

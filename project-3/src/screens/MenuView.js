@@ -60,6 +60,18 @@ const MenuView = () => {
         setCategoryIndex(index);
     };
 
+    // handling items added to cart
+    /* array of objects of the form
+        {
+            itemImage,
+            itemPrice, 
+            itemID,
+            itemName,
+        }
+    */
+    const [cartItems, setCart] = useState([]);
+
+
     return (
         <div>
             <div className="customer-header">
@@ -70,7 +82,7 @@ const MenuView = () => {
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
-                <GeneralButton content="Order" sidePadding={20} route="/menu" />
+                <GeneralButton content="Cart" sidePadding={20} route="/cart" />
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
             <div className="menu-categories">

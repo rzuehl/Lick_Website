@@ -8,6 +8,7 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
@@ -83,7 +84,7 @@ function ManagerView() {
                 <ScreenTitle />
                 <GeneralButton content="Logout" sidePadding={20} route="/"/>
                 <GeneralButton content="Order" sidePadding={20} route="/menu"/>
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='employeeUI'>
                 <Grid container>

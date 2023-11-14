@@ -47,8 +47,20 @@ function ManagerView() {
     }
 
     const handleProductUsage = () => {
-        api.post('/getItem', 8)
+        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
+            return;
+        }
+        
+        const parameters = [startDate, endDate];
+        api.post('/productUsage', parameters)
         .then((response) => {
+            let output = "";
+            for (let index = 0; index < Object.keys(response.data).length; index++) {
+                let tempString = response.data[index].date.substring(0,10) + " " + response.data[index].products_sold + "\n";
+                output += tempString;
+            }
+            document.getElementById("ManagerText").innerText = output;
         })
         .catch((error) => {
             console.log(error);
@@ -77,11 +89,22 @@ function ManagerView() {
     }
 
     const handleExcessReport = () => {
-        document.getElementById("ManagerText").innerText = "Excess Report";
+
     }
 
     const handleRestockReport = () => {
-        document.getElementById("ManagerText").innerText = "Restock Report";
+        api.get('/restockReport')
+        .then((response) => {
+            let output = "";
+            for (let index = 0; index < Object.keys(response.data).length; index++) {
+                let tempString = response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + "\n";
+                output += tempString
+            }
+            document.getElementById("ManagerText").innerText = output;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     const handleOrderTrends = () => {

@@ -35,7 +35,38 @@ const getSales = (request, response) => {
   })
 }
 
+const restockReport = (request, response) => {
+  const query = "SELECT food_name, food_type, quantity FROM inventory\n" +
+  "WHERE quantity <= 50\n" +
+  "ORDER BY food_type;";
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const productUsage = (request, response) => {
+  const query = "SELECT DATE(timestamp) AS date, COUNT(i.food_price) AS products_sold\n" + //
+  "FROM order_details od\n" + //
+  "INNER JOIN order_inventory_join oij ON od.order_id=oij.order_id\n" + //
+  "INNER JOIN inventory i ON oij.food_id=i.food_id\n" + //
+  "WHERE DATE(od.timestamp) BETWEEN $1 AND $2\n" + //
+  "GROUP BY DATE(od.timestamp);";
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
   getInventory,
-  getSales
+  getSales,
+  restockReport,
+  productUsage
 };

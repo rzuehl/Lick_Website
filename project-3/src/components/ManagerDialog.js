@@ -23,14 +23,12 @@ function ManagerDialog(props) {
                     <TextField
                     id="Start-Date"
                     margin="dense"
-                    type="date"
                     inputRef={startInput}
                     />
                     <br/>
                     <TextField
                     id="End-Date"
                     margin="dense"
-                    type="date"
                     inputRef={endInput}
                     />
                 </DialogContent>

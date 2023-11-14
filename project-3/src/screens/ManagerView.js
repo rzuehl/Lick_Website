@@ -49,7 +49,6 @@ function ManagerView() {
     const handleProductUsage = () => {
         api.post('/getItem', 8)
         .then((response) => {
-            console.log(response.data);
         })
         .catch((error) => {
             console.log(error);
@@ -57,7 +56,24 @@ function ManagerView() {
     }
 
     const handleSalesReport = () => {
+        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
+            return;
+        }
         
+        const parameters = [startDate, endDate];
+        api.post('/getSales', parameters)
+        .then((response) => {
+            let output = "";
+            for (let index = 0; index < Object.keys(response.data).length; index++) {
+                let tempString = response.data[index].food_name + " " + response.data[index].food_type + " Was sold " + response.data[index].num_sales + " times.\n";
+                output += tempString;
+            }
+            document.getElementById("ManagerText").innerText = output;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     const handleExcessReport = () => {

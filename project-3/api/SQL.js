@@ -1,5 +1,3 @@
-const { response } = require('.');
-
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
@@ -20,10 +18,16 @@ const getInventory = (request, response) => {
   })
 }
 
-const getItem = (request, response) => {
-  const param1 = Object.keys(request.body);
+const getSales = (request, response) => {
+  const query = "SELECT i.food_name, i.food_type, COUNT(oi.order_id) AS num_sales\n" + //
+  "FROM order_inventory_join oi\n" + //
+  "JOIN inventory i ON oi.food_id = i.food_id\n" + //
+  "JOIN order_details od ON oi.order_id = od.order_id\n" + //
+  "WHERE od.timestamp BETWEEN $1 AND DATE($2) + interval '1 day'\n" + //
+  "GROUP BY oi.food_id, i.food_name, i.food_type\n" + //
+  "ORDER BY oi.food_id;";
 
-  pool.query('SELECT * FROM inventory WHERE food_id = $1', param1, (error, results) => {
+  pool.query(query, request.body, (error, results) => {
     if (error) {
       throw error
     }
@@ -33,6 +37,5 @@ const getItem = (request, response) => {
 
 module.exports = {
   getInventory,
-  getItem,
-  getEmployee
+  getSales
 };

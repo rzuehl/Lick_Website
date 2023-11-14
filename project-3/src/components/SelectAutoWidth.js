@@ -21,11 +21,11 @@ export default function SelectAutoWidth(props) {
   return (
     <div>
       <FormControl sx={{ m: 1, minWidth: 80 }}>
-        <InputLabel id="demo-simple-select-autowidth-label">Quantity</InputLabel>
+        <InputLabel id="demo-simple-select-autowidth-label">Amount</InputLabel>
         <Select
           labelId="demo-simple-select-autowidth-label"
           id="demo-simple-select-autowidth"
-          value={'Quantity'}
+          value={quantity}
           onChange={handleChange}
           autoWidth
           label="Quantity"

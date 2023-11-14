@@ -575,10 +575,40 @@ h1,h2,h3{
   flex-direction: row;
   align-items: center;
   gap: 2rem;
+  padding: 2rem;
+  margin: 2rem;
+  border-bottom-style: solid;
+  border-bottom-color: var(--button-shadow);
+  border-bottom-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--button-shadow);
+  border-top-width: 1px;
+  width: 50%;
 }
 
 .cart-item img {
   height: 100px;
   width: 100px;
   border-radius: 3px;
+}
+
+.cart-item h1 {
+  color: var(--black);
+  font-family: "inter";
+}
+
+.item-individual-price h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  font-family: "inter";
+}
+
+.item-total h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--black);
+  font-family: "inter";
 }

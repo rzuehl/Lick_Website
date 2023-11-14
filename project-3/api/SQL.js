@@ -29,7 +29,7 @@ const getCategories = (request, response) => {
 }
 
 const getFoodItems = (request, response, category) => {
-  pool.query("SELECT food_name FROM inventory WHERE food_type = $1", [category], (error, results) => {
+  pool.query("SELECT food_name FROM inventory WHERE food_type = '" + "$1" +  "'", [category], (error, results) => {
     if(error){
       throw error
     }

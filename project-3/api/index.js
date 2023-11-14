@@ -25,11 +25,7 @@ app.get('/api/', (request, response) => {
 const sql = require("./SQL")
 app.get('/api/inventory', sql.getInventory)
 app.post('/api/category', sql.getCategories)
-app.post('/api/foodItems', (request, response) => {
-  const category = request.query.category; // Retrieve the category from query parameters
-  console.log(category);
-  sql.getFoodItems(request, response, category);
-});
+app.post('/api/foodItems', sql.getFoodItems)
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

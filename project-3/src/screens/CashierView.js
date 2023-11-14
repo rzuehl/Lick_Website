@@ -2,7 +2,6 @@ import React from 'react';
 import { useState } from "react";
 import GeneralButton from '../components/GeneralButton';
 import EmployeeButton from '../components/EmployeeButton.js';
-import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
@@ -15,42 +14,44 @@ function CashierView() {
 
     const handleCategoryItems = (event) => {
         let eventString = event.target.textContent;
-        const fetchCategory = async () => {
-            try{
+        const fetchCategory = () => {
                 let tempCategortItemArray = [];
-                const response = await api.get('/category');
-                for (let index = 0; index < Object.keys(response.data).length; index++) {
-                    tempCategortItemArray[index] = response.data[index].food_type;
-                }
-                categoryItemArray = tempCategortItemArray;
-            }
-            catch (err) {
-                console.log("FAIL");
-            }
+                api.post('/category')
+                .then((response) => {
+                        for (let index = 0; index < Object.keys(response.data).length; index++) {
+                            tempCategortItemArray[index] = response.data[index].food_type;
+                        }
+                        categoryItemArray = tempCategortItemArray;
+                    })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
-        const fetchItems = async () => {
-            try{
+        const fetchItems = () => {
                 let tempCategortItemArray = [];
-                const response = await api.get('/foodItems', { params: { category: eventString} });
-                for (let index = 0; index < Object.keys(response.data).length; index++) {
-                    tempCategortItemArray[index] = response.data[index].food_name;
-                }
-                categoryItemArray = tempCategortItemArray;
-
-            }
-            catch (err) {
-                console.log(err);
-            }
+                api.post('/foodItems', [eventString])
+                .then((response) => {
+                        for (let index = 0; index < Object.keys(response.data).length; index++) {
+                            tempCategortItemArray[index] = response.data[index].food_name;
+                        }
+                        categoryItemArray = tempCategortItemArray;
+                    })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         if(category){
             fetchItems();
             category = false;
-            alert("this");
+            console.log("fetchItems()")
         }
         else{
             fetchCategory();
             category = true;
-            alert("that");
+            console.log("fetchCategory()")
+        }
+        for(let i = 0; i<categoryItemArray.length; i++){
+            console.log(categoryItemArray[i]);
         }
     };
 

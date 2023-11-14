@@ -28,8 +28,8 @@ const getCategories = (request, response) => {
 
 }
 
-const getFoodItems = (request, response, category) => {
-  pool.query("SELECT food_name FROM inventory WHERE food_type = '" + "$1" +  "'", [category], (error, results) => {
+const getFoodItems = (request, response) => {
+  pool.query("SELECT food_name FROM inventory WHERE food_type = '$1'", (error, results) => {
     if(error){
       throw error
     }

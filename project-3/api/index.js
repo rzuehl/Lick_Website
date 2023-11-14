@@ -22,13 +22,17 @@ app.get('/api/', (request, response) => {
     response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
+const sql = require("./SQL")
+app.get('/api/inventory', sql.getInventory)
+app.get('/api/category', sql.getCategories)
+app.get('/api/foodItems', (request, response) => {
+  const category = request.query.category.replace(/_/g, ' '); // Retrieve the category from query parameters
+  sql.getFoodItems(request, response, category);
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
-
-const sql = require("./SQL")
-
-app.get('/api/inventory', sql.getInventory)
 
 //export API to vercel server
 module.exports = app;

@@ -7,6 +7,7 @@
 
 import React, { Component } from 'react';
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import HamburgerButton from '../components/HamburgerButton';
 import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
@@ -54,7 +55,7 @@ function MenuBoard() {
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} />
                 <GeneralButton content="Order" sidePadding={20} />
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
 
             

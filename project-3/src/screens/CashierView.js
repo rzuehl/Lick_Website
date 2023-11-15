@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
@@ -79,7 +80,7 @@ function CashierView() {
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
                 <ScreenTitle />
                 <GeneralButton content="Logout" sidePadding={20} route="/"/>
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='employeeUI'>
                 <Grid container>

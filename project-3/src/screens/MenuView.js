@@ -10,6 +10,7 @@
 import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import weatherLogo from '../assets/weather-icon.png';
@@ -71,7 +72,7 @@ const MenuView = () => {
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
             <div className="menu-categories">
                 <h2 id="sandwich-category" style={categoryIndex === 0 ? {textDecoration: 'underline'} : null} onClick={() => categoryClick(0)}>Sandwiches</h2>

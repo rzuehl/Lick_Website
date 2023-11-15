@@ -32,6 +32,7 @@ app.get('/api/inventory', sql.getInventory)
 app.post('/api/getSales', sql.getSales)
 app.get('/api/restockReport', sql.restockReport)
 app.post('/api/productUsage', sql.productUsage)
+app.post('/api/orderTrends', sql.orderTrends)
 
 //export API to vercel server
 module.exports = app;

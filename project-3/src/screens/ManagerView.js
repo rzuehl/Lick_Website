@@ -108,7 +108,24 @@ function ManagerView() {
     }
 
     const handleOrderTrends = () => {
-        document.getElementById("ManagerText").innerText = "Order Trends";
+        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
+            return;
+        }
+        
+        const parameters = [startDate, endDate];
+        api.post('/orderTrends', parameters)
+        .then((response) => {
+            let output = "";
+            for (let index = 0; index < 10; index++) {
+                let tempString = response.data[index].item1_name + " and " + response.data[index].item2_name + " were sold together " + response.data[index].times_sold_together + " times.\n";
+                output += tempString
+            }
+            document.getElementById("ManagerText").innerText = output;
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     }
 
     const handleDialogClose = () => {

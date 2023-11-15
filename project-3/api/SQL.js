@@ -64,9 +64,41 @@ const productUsage = (request, response) => {
   })
 }
 
+const orderTrends = (request, response) => {
+  const query = "SELECT\n" +
+  "i1.food_id AS item1_id,\n" +
+  "i1.food_name AS item1_name,\n" +
+  "i1.food_type AS item1_type,\n" +
+  "i2.food_id AS item2_id,\n" +
+  "i2.food_name AS item2_name,\n" +
+  "i2.food_type AS item2_type,\n" +
+  "COUNT(*) AS times_sold_together\n" +
+  "FROM order_inventory_join o1\n" +
+  "JOIN inventory i1 ON o1.food_id = i1.food_id\n" +
+  "JOIN order_details od1 ON o1.order_id = od1.order_id\n" +
+  "JOIN order_inventory_join o2 ON o1.order_id = o2.order_id AND o1.food_id < o2.food_id\n" +
+  "JOIN inventory i2 ON o2.food_id = i2.food_id\n" +
+  "JOIN order_details od2 ON o2.order_id = od2.order_id\n" +
+  "WHERE\n" +
+  "DATE(od1.timestamp) >= $1 AND\n" +
+  "DATE(od1.timestamp) <= $2 AND\n" +
+  "DATE(od2.timestamp) >= $1 AND\n" +
+  "DATE(od2.timestamp) <= $2\n" +
+  "GROUP BY item1_id, item1_name, item2_id\n" +
+  "ORDER BY times_sold_together DESC, item1_id, item2_id;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
   getInventory,
   getSales,
   restockReport,
-  productUsage
+  productUsage,
+  orderTrends
 };

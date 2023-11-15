@@ -25,32 +25,29 @@ function ManagerView() {
     const [endDate, setEnd] = React.useState('NULL');
     const [managerText, setManagerText] = React.useState('');
     
-    const handleInventoryManagement = () => {
-        const fetchInventory = async () => {
-            try {
-                //response returns a JSON format which can be accessed by response.data
-                const response = await api.get('/inventory');
-                let output = "";
-                for (let index = 0; index < Object.keys(response.data).length; index++) {
-                    let tempString = response.data[index].food_id + " " + response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + " " + response.data[index].food_price + "\n";
-                    output += tempString;
-                }
-                document.getElementById("ManagerText").innerText = output;
-            } catch (err) {
-                console.log("FAIL");
-            }
+    const handleInventoryManagement = async () => {
+        try {
+            //response returns a JSON format which can be accessed by response.data
+            const response = await api.get('/inventory');
+            let output = "";
+            for (let index = 0; index < Object.keys(response.data).length; index++) {
+            let tempString = response.data[index].food_id + " " + response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + " " + response.data[index].food_price + "\n";
+            output += tempString;
         }
-        fetchInventory();
+            document.getElementById("ManagerText").innerText = output;
+        } catch (err) {
+            console.log("FAIL");
+        }
     }
 
-    const handleProductUsage = () => {
-        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+    const handleProductUsage = async () => {
+        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
-        
+
         const parameters = [startDate, endDate];
-        api.post('/productUsage', parameters)
+        await api.post('/productUsage', parameters)
         .then((response) => {
             let output = "";
             for (let index = 0; index < Object.keys(response.data).length; index++) {
@@ -64,14 +61,14 @@ function ManagerView() {
         });
     }
 
-    const handleSalesReport = () => {
-        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+    const handleSalesReport = async () => {
+        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
         
         const parameters = [startDate, endDate];
-        api.post('/getSales', parameters)
+        await api.post('/getSales', parameters)
         .then((response) => {
             let output = "";
             for (let index = 0; index < Object.keys(response.data).length; index++) {
@@ -85,42 +82,40 @@ function ManagerView() {
         });
     }
 
-    const handleExcessReport = () => {
-        if (startDate == null|| startDate == ''){
+    const handleExcessReport = async () => {
+        if (startDate == "NULL"|| startDate == ''){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
-        const fetchExcessReport = async () => {
-            try {
-                //response returns a JSON format which can be accessed by response.data
-                const response1 = await api.post('/excessReport', [startDate]);
-                const response2 = await api.get('/inventory');
+        
+        try {
+            //response returns a JSON format which can be accessed by response.data
+            const response1 = await api.post('/excessReport', [startDate]);
+            const response2 = await api.get('/inventory');
 
-                let output = "";
-                const inventory = new Map();
-                //populate inventory map with food_id, quantity
-                for (let index = 0; index < Object.keys(response2.data).length; index++) {
-                    inventory.set(response2.data[index].food_id, response2.data[index].quantity);
+            let output = "";
+            const inventory = new Map();
+            //populate inventory map with food_id, quantity
+            for (let index = 0; index < Object.keys(response2.data).length; index++) {
+                inventory.set(response2.data[index].food_id, response2.data[index].quantity);
+            }
+            
+            for (let index = 0; index < Object.keys(response1.data).length; index++) {
+                //if num_sales / numsales + currQuantity < .10
+                if (parseInt(response1.data[index].num_sales) / (parseInt(response1.data[index].num_sales) + parseInt(inventory.get(response1.data[index].food_id))) < .10) {
+                    output += response1.data[index].food_name + "\n";
                 }
-                
-                for (let index = 0; index < Object.keys(response1.data).length; index++) {
-                    //if num_sales / numsales + currQuantity < .10
-                    if (parseInt(response1.data[index].num_sales) / (parseInt(response1.data[index].num_sales) + parseInt(inventory.get(response1.data[index].food_id))) < .10) {
-                        output += response1.data[index].food_name + "\n";
-                    }
-                }
+            }
 
                 document.getElementById("ManagerText").innerText = output;
 
             } catch (err) {
                 console.log("FAIL");
             }
-        }
-        fetchExcessReport();
     }
 
-    const handleRestockReport = () => {
-        api.get('/restockReport')
+    const handleRestockReport = async () => {
+        await api.get('/restockReport')
         .then((response) => {
             let output = "";
             for (let index = 0; index < Object.keys(response.data).length; index++) {
@@ -134,14 +129,14 @@ function ManagerView() {
         });
     }
 
-    const handleOrderTrends = () => {
-        if ((startDate == null || endDate == null) || (startDate == '' || endDate == '')){
+    const handleOrderTrends = async () => {
+        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
         
         const parameters = [startDate, endDate];
-        api.post('/orderTrends', parameters)
+        await api.post('/orderTrends', parameters)
         .then((response) => {
             let output = "";
             for (let index = 0; index < 10; index++) {

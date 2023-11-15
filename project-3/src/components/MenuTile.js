@@ -3,7 +3,6 @@
 */
 
 import React from 'react';
-import SelectAutoWidth from '../components/SelectAutoWidth';
 import GeneralButton from '../components/GeneralButton';
 
 /**
@@ -20,15 +19,18 @@ const MenuTile = (props) => {
             <div className="tile">
                 <img src={props.src} alt={props.alt} />
                 <div class="tile-intro">
-                    <h1>{props.header}</h1>
+                    <div class='tile-header'>
+                        <h1>{props.header}</h1>
+                        <h1>{'$5.44'}</h1>
+                    </div>
                     <p>{props.description}</p>
-                    <div className='tile-add-item'>
+                    <section className='tile-add-item'>
                         <GeneralButton 
                             content='Add Item'
                             sidePadding={20}
                             removeShadow={true}
                         />
-                    </div>
+                    </section>
                 </div>
             </div>
     );

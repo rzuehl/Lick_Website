@@ -7,8 +7,9 @@
  * - MenuTile
 */
 
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../api/posts';
 import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
@@ -52,6 +53,153 @@ import rainbowSprinkle from '../assets/menu-pictures/topping_rainbow_sprinkle.pn
 import strawberry from '../assets/menu-pictures/topping_strawberry.png';
 import whippedCream from '../assets/menu-pictures/topping_whipped_cream.png';
 
+// image import for new product
+import newProduct from '../assets/menu-pictures/newProduct.jpg';
+
+// creating object containing descriptions for standard items
+const regularItemContent = {
+    "Ice Cream": {
+        "Caramel Salt Lick": {
+            "description": "Salty and sweet make it official! House made caramel is elevated by just a hint of sea salt.",
+            "image": caramelSaltLick,
+        },
+        "Coffe with Cream": {
+            "description": "Milk & cream steeped in locally roasted Third Coast Coffee, lightly sweetened with pure cane syrup and subtly accented with a touch of Mexican vanilla.",
+            "image": coffeeCream,
+        },
+        "Dark Chocolate, Olive Oil & Sea Salt": {
+            "description": "Buttery notes from SRSLY Chocolate and Texas Olive Ranch olive oil shine through this dark chocolate and sea salt flavor.",
+            "image": darkChocolate,
+        },
+        "Fresh Mint & Chocolate Chunk": {
+            "description": "Fresh local mint is joined by chunks of house made SRSLY Chocolate ganache to perfect this crips & refreshing classic!",
+            "image": mintChocolate,
+        },
+        "Goat Cheese, Thyme & Honey": {
+            "description": "Fresh, local thyme and Good Flow honey pair perfectly with Austin's own creamy Pure Luck goat cheese.",
+            "image": goatCheese,
+        },
+        "Hill Country Honey & Vanilla Bean": {
+            "description": "Madagascar bourbon vanilla beans are enhanced by the sweet, complex notes of local Good Flow Honey.",
+            "image": honeyVanillaBean,
+        },
+        "Roasted Beets & Fresh Mint": {
+            "description": "Clean, crisp garden mint flawlessly complements the slightly sweet, earthy flavor of roasted Johnson's Backyard Garden beets.",
+            "image": beetMint,
+        },
+        "Milk Chocolate": {
+            "description": "Flecks of local SRSLY Chocolate and the finest milk and cream are churned to classic perfection!",
+            "image": darkChocolate,
+        },
+        "Texas Sheet Cake": {
+            "description": "Our interpretation of this classic cake combines a swirl of decadent chocolate-pecan icing with delicate chocolate ice cream.",
+            "image": sheetCake,
+        },
+    },
+    "Dairy Free/Vegan": {
+        "Honey Sunbutter": {
+            "description": "This late summer flavor is the perfect blend of sunflower seed SunButter and local Good Flow Honey.",
+            "image": veganSunbutter,
+        },
+        "Vanilla Pear Cake": {
+            "description": "Smooth & creamy oat milk base is accented with vanilla, a silky swirl of our house made pear butter and bites of our luscious gluten free pear coffee cake.",
+            "image": veganVanillaPear,
+        },
+    },
+    "Sandwich": {
+        "Caramel Salt Lick": {
+            "description": "Salty and sweet make it official! House made caramel ice cream is elevated by just a hint of sea salt then slathered between two soft chocolate cake cookies.",
+            "image": caramelSandwich,
+        },
+        "Hill Country Honey & Vanilla Bean": {
+            "description": "Madagascar bourbon vanilla beans are enhanced by the sweet, complex notes of local Good Flow Honey in this classic ice cream sandwich.",
+            "image": vanillaSandwich,
+        },
+        "Vegan Vanilla": {
+            "description": "Our creamy coconut milk ice cream is accented with vanilla and sandwiched between two vegan & gluten free soft chocolate cake cookies.",
+            "image": vanillaSandwich,
+        },
+        "Dark Chocolate, Olive Oil & Sea Salt": {
+            "description": "Buttery notes from SRSLY Chocolate and Texas Olive Ranch olive oil shine through our chocolate and sea salt ice cream which pair perfectly with decadent chocolate cake cookies",
+            "image": chocolateSandwich,
+        },
+    },
+    "Topping": {
+        "Chocolate Sauce": {
+            "description": "Our dark chocolate sauce is made from scratch in our kitchen with only four ingredients! It's a great addition to any of our flavors. (vegan, dairy free, wheat free)",
+            "image": chocolateSauce,
+        },
+        "Caramel Sauce": {
+            "description": "Our rich caramel sauce is made from scratch in our kitchen with only four ingredients! It makes a great, sweet and salty addition to any flavor. (wheat free)",
+            "image": caramelSauce,
+        },
+        "Toasted Texas Pecans": {
+            "description": "Texas pecans are the best pecans! We toast and chop local San Saba, TX pecans in our Northwest Austin kitchen. (vegan, wheat free)",
+            "image": toastedPecans,
+        },
+        "Chocolate Cookie Crumble": {
+            "description": "Our take on our favorite crunchy chocolate cookies! This chocolatey, buttery crumble in made from scratch by our team. (non GMO)",
+            "image": cookieCrumble,
+        },
+        "Rainbow Sprinkles": {
+            "description": "Classic sprinkles made with vibrant, plant-based colors by Color Kitchen! (non-GMO, wheat free)",
+            "image": rainbowSprinkle,
+        },
+    },
+    "Seasonal Topping": {
+        "Strawberry": {
+            "description": "Our fresh strawberry sauce is made from scratch in our kitchen only three ingredients including sweet local Texas strawberries!",
+            "image": strawberry,
+        },
+        "Whipped Cream": {
+            "description": "Take your favorite ice cream to the next level with our sweet, whipped cream!",
+            "image": whippedCream,
+        },
+    },
+    "Beverage": {
+        "Root Bexar": {
+            "description": "Enjoy our refreshing take on Root Beer, Root Bexar!",
+            "image": beverages,
+        },
+        "Texa-Cola": {
+            "description": "Enjoy our refreshing Texa-Cola!",
+            "image": beverages,
+        },
+        "Lemoncito": {
+            "description": "Enjoy our refreshing Lemoncito!",
+            "image": beverages,
+        },
+        "Cold Brew Coffee": {
+            "description": "Enjoy our refreshing Cold Brew Coffee!",
+            "image": beverages,
+        },
+        "Nitro Coffee": {
+            "description": "Enjoy our refreshing Nitro Coffee!",
+            "image": beverages,
+        },
+        "Richard's Rainwater": {
+            "description": "Enjoy our refreshing Richard's Rainwater!",
+            "image": beverages,
+        },
+        "RyanWater": {
+            "description": "Enjoy our refreshing RyanWater!",
+            "image": beverages,
+        },
+        "Chocolate Milk": {
+            "description": "Enjoy our refreshing Chocolate Milk!",
+            "image": beverages,
+        },
+        "Coke": {
+            "description": "Enjoy our refreshing Coke!",
+            "image": beverages,
+        },
+    },
+    "Not Found": {
+        "description": "Enjoy our newly added item!",
+        "image": newProduct,
+    },
+};
+
 
 const MenuView = () => {
     //handling button state
@@ -60,17 +208,71 @@ const MenuView = () => {
         setCategoryIndex(index);
     };
 
-    // handling items added to cart
-    /* array of objects of the form
-        {
-            itemImage,
-            itemPrice, 
-            itemID,
-            itemName,
-        }
-    */
-    const [cartItems, setCart] = useState([]);
+    const [sandwichItems, setSandwichItems] = useState([]);
+    const [everydayItems, setEverydayItems] = useState([]);
+    const [seasonalItems, setSeasonalItems] = useState([]);
+    const [dairyFreeVeganItems, setDairyFreeVeganItems] = useState([]);
+    const [beverageItems, setBeverageItems] = useState([]);
+    const [toppingItems, setToppingItems] = useState([]);
 
+    const fetchInventoryData = async () => {
+        try {
+            //response returns a JSON format which can be accessed by response.data
+            const response = await api.get('/inventory');
+            for(let entry of response.data) {
+                if (entry.food_type === "Ice Cream") {
+                    const everydayData = [
+                        ...everydayItems,
+                        entry
+                    ];
+                    setEverydayItems(everydayData);
+                }
+                else if (entry.food_type === "Dairy Free/Vegan") {
+                    const dairyFreeVeganData = [
+                        ...dairyFreeVeganItems,
+                        entry
+                    ];
+                    setDairyFreeVeganItems(dairyFreeVeganData);
+                }
+                else if (entry.food_type === "Seasonal Ice Cream") {
+                    const seasonalData = [
+                        ...seasonalItems,
+                        entry
+                    ];
+                    setSeasonalItems(seasonalData);
+                }
+                else if (entry.food_type === "Sandwich") {
+                    const sandwichData = [
+                        ...sandwichItems,
+                        entry
+                    ];
+                    setSandwichItems(sandwichData);
+                }
+                else if (entry.food_type === "Topping" || entry.food_type === "Seasonal Topping") {
+                    const toppingData = [
+                        ...toppingItems,
+                        entry
+                    ];
+                    setToppingItems(toppingData);
+                }
+                else if (entry.food_type === "Beverage") {
+                    const beverageData = [
+                        ...beverageItems,
+                        entry
+                    ];
+                    setBeverageItems(beverageData);
+                }
+                else {
+                    throw new Error("Error: inventory item does not belong to defined food type");
+                }
+            }
+        } 
+        catch (err) {
+            console.log("Error: Failed to query database to populate menu board", err);
+        }
+    };
+
+    fetchInventoryData();
 
     return (
         <div>

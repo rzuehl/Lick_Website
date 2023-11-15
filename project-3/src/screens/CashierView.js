@@ -21,7 +21,8 @@ function CashierView() {
     const handleCategoryItems = (event) => {
         let eventString = "";
         if(event != null){
-            eventString = event.target.textContent.replace(/'/g, "\\'");
+            eventString = event.target.textContent.replace(/'/g, "''");
+            console.log(eventString);
         }
         const fetchCategories = async () => {
             try{

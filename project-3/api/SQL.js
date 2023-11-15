@@ -157,6 +157,7 @@ module.exports = {
   getCategories,
   getFoodItems,
   getSales,
+  getCost,
   restockReport,
   productUsage,
   orderTrends,

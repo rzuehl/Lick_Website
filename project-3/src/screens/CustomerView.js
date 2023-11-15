@@ -9,6 +9,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
 import lickLogo from '../assets/lick-honest-logo.png';
@@ -17,7 +18,7 @@ import pumpkinImage from '../assets/pumpkin-pic.png';
 import cowImage from '../assets/cow-pic.png';
 import storeImage from '../assets/store-pic.png';
 
-function CustomerView() {
+function CustomerView(props) {
     const slides = [
         { image: pumpkinImage, textContent: "Fall Specials", altText: "Image of several pumpkins with icecream." },
         { image: cowImage, textContent: "KNOW WHAT YOUR LICKING", altText: "Image of various cows" },
@@ -25,7 +26,7 @@ function CustomerView() {
     ]
 
     return (
-        <div>
+        <div className={props.className}>
             <div className="customer-header">
                 <Link to="/">
                     <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
@@ -35,7 +36,8 @@ function CustomerView() {
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
-                <GeneralButton content="Options" sidePadding={20}/>
+                {/* <GeneralButton content="Options" sidePadding={20}/> */}
+                <OptionsDropdown sidePadding={20}/>
             </div>
             <div>
                 <ImageSlider slides={slides} />

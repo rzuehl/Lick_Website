@@ -9,50 +9,49 @@ import api from '../api/posts';
 var category = false;
 function CashierView() {
     
-    var categoryItemArray = ["Test"];
+    var categoryItemArray = [];
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
 
     const handleCategoryItems = (event) => {
-        let eventString = event.target.textContent;
-        const fetchCategory = () => {
-                let tempCategortItemArray = [];
-                api.post('/category')
-                .then((response) => {
-                        for (let index = 0; index < Object.keys(response.data).length; index++) {
-                            tempCategortItemArray[index] = response.data[index].food_type;
-                        }
-                        categoryItemArray = tempCategortItemArray;
-                    })
-                .catch((error) => {
-                    console.log(error);
-                });
+        let eventString = "";
+        if(event != null){
+            eventString = event.target.textContent;
         }
-        const fetchItems = () => {
-                let tempCategortItemArray = [];
-                api.post('/foodItems', [eventString])
-                .then((response) => {
-                        for (let index = 0; index < Object.keys(response.data).length; index++) {
-                            tempCategortItemArray[index] = response.data[index].food_name;
-                        }
-                        categoryItemArray = tempCategortItemArray;
-                    })
-                .catch((error) => {
-                    console.log(error);
-                });
+        const fetchCategories = async () => {
+            try{
+                document.getElementById('cashierText').innerText = eventString;
+                const responseCategories = await api.get('/category');
+                categoryItemArray = responseCategories.data.map(item => item.food_type);
+                setCategoryItemArrayState(categoryItemArray);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        const fetchItems = async () => {
+            try{
+                const responseItems = await api.get('/foodItems', {params: {category: eventString}});
+                categoryItemArray = responseItems.data.map(item => item.food_name);
+                setCategoryItemArrayState(categoryItemArray);
+ 
+            }
+            catch (err) {
+                console.log(err);
+            }
         }
         if(category){
             fetchItems();
             category = false;
-            console.log("fetchItems()")
         }
         else{
-            fetchCategory();
+            fetchCategories();
             category = true;
-            console.log("fetchCategory()")
         }
-        for(let i = 0; i<categoryItemArray.length; i++){
-            console.log(categoryItemArray[i]);
-        }
+    };
+
+    window.onload = function() {
+        handleCategoryItems(null);
+        window.onload = null;
     };
 
     var buttonType = "cashier";

@@ -24,8 +24,29 @@ app.get('/api/', (request, response) => {
 
 const sql = require("./SQL")
 app.get('/api/inventory', sql.getInventory)
-app.post('/api/category', sql.getCategories)
-app.post('/api/foodItems', sql.getFoodItems)
+app.get('/api/category', async(request, response) => {
+  try{
+    const results = await sql.getCategories(request,response);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  } 
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+app.get('/api/foodItems', async(request, response) => {
+  try{
+    const category = request.query.category;
+    const results = await sql.getFoodItems(request, response, category)
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)

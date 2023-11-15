@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import GeneralButton from '../components/GeneralButton';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
@@ -7,7 +7,12 @@ import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
 var category = false;
+var subtotal = 0;
+var tax = 0;
+var total = 0;
 function CashierView() {
+    
+    
     
     var categoryItemArray = [];
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
@@ -15,11 +20,20 @@ function CashierView() {
     const handleCategoryItems = (event) => {
         let eventString = "";
         if(event != null){
-            eventString = event.target.textContent;
+            eventString = event.target.textContent.replace(/'/g, "\\'");
         }
         const fetchCategories = async () => {
             try{
-                document.getElementById('cashierText').innerText = eventString;
+                if(event != null){
+                    const responseCost = await api.get('/cost', {params: {foodName: eventString}});
+                    subtotal += responseCost.data[0].food_price;
+                    tax = subtotal * .05;
+                    total = subtotal + tax;
+                    document.getElementById('cashierText').innerText += eventString + " | " + responseCost.data[0].food_price + "\n";
+                    document.getElementById('subtotal').innerText = "Subtotal: " + subtotal.toFixed(2);
+                    document.getElementById('tax').innerText = "Tax: " + tax.toFixed(2);
+                    document.getElementById('total').innerText = "Total: " + total.toFixed(2);
+                }
                 const responseCategories = await api.get('/category');
                 categoryItemArray = responseCategories.data.map(item => item.food_type);
                 setCategoryItemArrayState(categoryItemArray);
@@ -49,10 +63,12 @@ function CashierView() {
         }
     };
 
-    window.onload = function() {
+    useEffect(() => {
+        if(category){
+           category = false; 
+        }
         handleCategoryItems(null);
-        window.onload = null;
-    };
+    }, []);
 
     var buttonType = "cashier";
 
@@ -81,7 +97,10 @@ function CashierView() {
                         ))}
                     </Grid>
                     <Grid item xs={4}>
-                        <p id='cashierText' className='employeeText'>TEST</p>
+                        <p id='cashierText' className='employeeText'>Order: <br></br></p>
+                        <p id='subtotal' style={{textAlign: 'center', color: 'black'}}>Subtotal: </p>
+                        <p id='tax' style={{textAlign: 'center', color: 'black'}}>Tax: </p>
+                        <p id='total' style={{textAlign: 'center', color: 'black'}}>Total: </p>
                     </Grid>
                 </Grid>
             </div>

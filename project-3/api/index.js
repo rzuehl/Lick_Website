@@ -48,6 +48,19 @@ app.get('/api/foodItems', async(request, response) => {
   }
 });
 
+app.get('/api/cost', async(request, response) => {
+  try{
+    const foodName = request.query.foodName;
+    const results = await sql.getCost(request, response, foodName)
+    console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

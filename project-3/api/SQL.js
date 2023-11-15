@@ -64,17 +64,6 @@ const productUsage = (request, response) => {
     })
 }
 
-
-
-const getCategories = (request, response) => {
-  pool.query("SELECT food_type FROM inventory GROUP BY food_type", (error, results) => {
-    if(error){
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
-}
-
 const orderTrends = (request, response) => {
   const query = "SELECT\n" +
   "i1.food_id AS item1_id,\n" +
@@ -121,13 +110,46 @@ const excessReport = (request, response) => {
   })
 }
 
+
+const getCategories = (request, response) => {
+  return new Promise((resolve, reject) => {
+    pool.query("SELECT food_type FROM inventory GROUP BY food_type", (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
 const getFoodItems = (request, response, category) => {
-  pool.query("SELECT food_name FROM inventory WHERE food_type = 'Ice Cream'", (error, results) => {
-    if(error){
-      throw error
-    }
-    response.status(200).json(results.rows)
-  })
+  const query = "SELECT food_name FROM inventory WHERE food_type = '" + category + "'";
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
+const getCost = (request, response, foodName) => {
+  const query = "SELECT * FROM inventory WHERE food_name = '" + foodName + "'";
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
 }
 
 module.exports = {

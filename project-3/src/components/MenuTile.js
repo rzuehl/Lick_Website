@@ -3,6 +3,8 @@
 */
 
 import React from 'react';
+import SelectAutoWidth from '../components/SelectAutoWidth';
+import GeneralButton from '../components/GeneralButton';
 
 /**
  * The MenuTile component is responsible for rendering an interactive tile
@@ -11,6 +13,7 @@ import React from 'react';
  * @property {string} props.src - String containing source image to use for tile
  * @property {string} props.header - String uses as the header of the tile
  * @property {string} props.description - String used to present additional information when hovered on tile
+ * @property {number} props.itemPrice - number representing price of item
  */
 const MenuTile = (props) => {
     return (
@@ -19,6 +22,13 @@ const MenuTile = (props) => {
                 <div class="tile-intro">
                     <h1>{props.header}</h1>
                     <p>{props.description}</p>
+                    <div className='tile-add-item'>
+                        <GeneralButton 
+                            content='Add Item'
+                            sidePadding={20}
+                            removeShadow={true}
+                        />
+                    </div>
                 </div>
             </div>
     );

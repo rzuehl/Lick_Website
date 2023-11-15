@@ -43,16 +43,31 @@ const ShoppingCart = () => {
                 <GeneralButton content="Menu" sidePadding={20} route="/menu" />
                 <GeneralButton content="Options" sidePadding={20} />
             </div>
-
-            <div>
-                <div>
-                    <CartItem 
-                        src={applePie} 
-                        alt={'A yummy applie pie'} 
-                        name={'apple pie'} 
-                        price={15.99}
-                        quantity={4}
-                    />
+            <div className='cart-info'>
+                <div className='cart-items'>
+                    <div>
+                        <CartItem 
+                            src={applePie} 
+                            alt={'A yummy applie pie'} 
+                            name={'apple pie'} 
+                            price={15.99}
+                            quantity={4}
+                        />
+                    </div>
+                </div>
+                <div className='checkout-container'>
+                    <div className='checkout-info'>
+                        <h2>Subtotal: </h2>
+                        <h1>$40</h1>
+                    </div>
+                    <div className='checkout-info'>
+                        <h2>Tax: </h2>
+                        <h1>$10</h1>
+                    </div>
+                    <div className='checkout-info'>
+                        <h2 className='order-total'>Total: </h2>
+                        <h1 className='order-total'>$50</h1>
+                    </div>
                 </div>
             </div>
         </div>

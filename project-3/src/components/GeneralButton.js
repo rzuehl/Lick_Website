@@ -11,12 +11,17 @@ import { Link } from 'react-router-dom';
  * @property {string} props.content - string representing text content of button
  * @property {string} props.route - string representing content that routes to screen
  * @property {number} props.sidePadding - number setting side padding of button
+ * @property {boolean} props.removeShadow - boolean being true to remove boxShadow styling of button
  */
 function GeneralButton(props) {
     const styles = {
         paddingLeft: props.sidePadding,
         paddingRight: props.sidePadding,
     };
+
+    if (props.removeShadow){
+        styles['boxShadow'] = 'none'
+    }
 
     // uses react routing to route to next screen if route prop is provided
     if (props.route) {

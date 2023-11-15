@@ -22,14 +22,14 @@ const CartItem = (props) => {
             <h1>{props.name}</h1>
             <div className='item-individual-price'>
                 <h2>Each</h2>
-                <h2>{`$${props.price}`}</h2>
+                <h1>{`$${props.price}`}</h1>
             </div>
             <div className='item-quantity'>
                 <SelectAutoWidth />
             </div>
             <div className="item-total">
                 <h2>Total</h2>
-                <h2>{`$${total}`}</h2>
+                <h1>{`$${total}`}</h1>
             </div>
         </div>
     );

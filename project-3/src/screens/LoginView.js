@@ -11,6 +11,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
 import GeneralInput from '../components/GeneralInput';
+import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import lickLogo from '../assets/lick-honest-logo.png';
 import weatherLogo from '../assets/weather-icon.png';
@@ -27,7 +28,7 @@ function LoginView() {
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
 
             <div className="login-main">

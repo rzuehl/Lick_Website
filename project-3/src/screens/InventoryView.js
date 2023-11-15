@@ -39,7 +39,7 @@ function InventoryView() {
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} />
                 <GeneralButton content="Order" sidePadding={20} />
-                <GeneralButton content="Options" sidePadding={20} />
+                <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='Inventory'>
                 <Grid container>

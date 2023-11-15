@@ -11,6 +11,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/posts';
 import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import weatherLogo from '../assets/weather-icon.png';
@@ -284,8 +285,13 @@ const MenuView = () => {
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
                 <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
+<<<<<<< HEAD
                 <GeneralButton content="Cart" sidePadding={20} route="/cart" />
                 <GeneralButton content="Options" sidePadding={20} />
+=======
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
+                <OptionsDropdown sidePadding={20}/>
+>>>>>>> 7733d4afd4d828a7e283128561e4a2bb745b0f6d
             </div>
             <div className="menu-categories">
                 <h2 id="sandwich-category" style={categoryIndex === 0 ? {textDecoration: 'underline'} : null} onClick={() => categoryClick(0)}>Sandwiches</h2>

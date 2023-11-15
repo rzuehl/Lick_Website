@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
 
 /*global css properties*/
-:root {
+/* .default {
   --lick-pink: #FFC7C8;
   --lick-blue: #7EEAFF;
   --cream: #FFFDD0;
@@ -10,7 +10,7 @@
   --button-shadow: #afafaffa;
   --font-size: 1.3rem;
   --inter: "inter";
-}
+} */
 
 /*setting border box model and other global elements*/
 html{
@@ -213,6 +213,10 @@ a:hover {
 @import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');
 
 /*global css properties*/
+/* :root {
+  --cream: #FFFDD0;
+} */
+
 :root {
   --lick-pink: #FFC7C8;
   --lick-blue: #7EEAFF;
@@ -226,7 +230,7 @@ a:hover {
 }
 
 /*setting border box model and other global elements*/
-html{
+/* html{
   box-sizing: border-box;
 }
 *,
@@ -301,6 +305,20 @@ h1,h2,h3{
 
 .buttonStyle:focus {
   outline: none;
+}
+
+/* General Dropdown Styling */
+.dropdown {
+  position: relative;
+}
+
+.dropdown .menu {
+  background-color: var(--lick-pink);
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  list-style-type: none;
+  text-align: center;
 }
 
 /*HamburgerButton styling*/

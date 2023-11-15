@@ -178,7 +178,7 @@ function ManagerView() {
             </div>
             <div className='customer-header'>
                 <p className='employeeText'>Current Date: {startDate} to {endDate}</p>
-                <EmployeeButton employeeType= {buttonType} onClick={openDialog} content="Update Date range" />
+                <EmployeeButton employeeType= {buttonType} onClick={openDialog} content="Update Date Range" />
             </div>
             <div className='employeeUI'>
                 <Grid container>

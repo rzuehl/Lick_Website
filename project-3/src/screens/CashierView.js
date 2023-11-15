@@ -21,13 +21,12 @@ function CashierView() {
     const handleCategoryItems = (event) => {
         let eventString = "";
         if(event != null){
-            eventString = event.target.textContent.replace(/'/g, "''");
-            console.log(eventString);
+            eventString = event.target.textContent;
         }
         const fetchCategories = async () => {
             try{
                 if(event != null){
-                    const responseCost = await api.get('/cost', {params: {foodName: eventString}});
+                    const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''")}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
                     total = subtotal + tax;

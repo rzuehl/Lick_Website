@@ -26,9 +26,6 @@ function ManagerView() {
     const [managerText, setManagerText] = React.useState('');
     
     const handleInventoryManagement = () => {
-        // document.getElementById("ManagerText").innerText = "Inventory Management";
-        // const res =  client.query("SELECT * FROM inventory");
-        // console.log(res);
         const fetchInventory = async () => {
             try {
                 //response returns a JSON format which can be accessed by response.data
@@ -89,7 +86,37 @@ function ManagerView() {
     }
 
     const handleExcessReport = () => {
+        if (startDate == null|| startDate == ''){
+            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
+            return;
+        }
+        const fetchExcessReport = async () => {
+            try {
+                //response returns a JSON format which can be accessed by response.data
+                const response1 = await api.post('/excessReport', [startDate]);
+                const response2 = await api.get('/inventory');
 
+                let output = "";
+                const inventory = new Map();
+                //populate inventory map with food_id, quantity
+                for (let index = 0; index < Object.keys(response2.data).length; index++) {
+                    inventory.set(response2.data[index].food_id, response2.data[index].quantity);
+                }
+                
+                for (let index = 0; index < Object.keys(response1.data).length; index++) {
+                    //if num_sales / numsales + currQuantity < .10
+                    if (parseInt(response1.data[index].num_sales) / (parseInt(response1.data[index].num_sales) + parseInt(inventory.get(response1.data[index].food_id))) < .10) {
+                        output += response1.data[index].food_name + "\n";
+                    }
+                }
+
+                document.getElementById("ManagerText").innerText = output;
+
+            } catch (err) {
+                console.log("FAIL");
+            }
+        }
+        fetchExcessReport();
     }
 
     const handleRestockReport = () => {

@@ -80,12 +80,27 @@ const orderTrends = (request, response) => {
   "JOIN inventory i2 ON o2.food_id = i2.food_id\n" +
   "JOIN order_details od2 ON o2.order_id = od2.order_id\n" +
   "WHERE\n" +
-  "DATE(od1.timestamp) >= $1 AND\n" +
-  "DATE(od1.timestamp) <= $2 AND\n" +
-  "DATE(od2.timestamp) >= $1 AND\n" +
-  "DATE(od2.timestamp) <= $2\n" +
+  "DATE(od1.timestamp) BETWEEN $1 AND $2 AND\n" +
+  "DATE(od2.timestamp) BETWEEN $1 AND $2\n" +
   "GROUP BY item1_id, item1_name, item2_id\n" +
   "ORDER BY times_sold_together DESC, item1_id, item2_id;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const excessReport = (request, response) => {
+  const query = "SELECT i.food_id, i.food_name, COUNT(oi.order_id) AS num_sales\n" +
+  "FROM order_inventory_join oi\n" +
+  "JOIN inventory i ON oi.food_id = i.food_id\n" +
+  "JOIN order_details od ON oi.order_id = od.order_id\n" +
+  "WHERE DATE(od.timestamp) >= $1\n" +
+  "GROUP BY i.food_id, i.food_name\n" +
+  "ORDER BY i.food_id;"
 
   pool.query(query, request.body, (error, results) => {
     if (error) {
@@ -100,5 +115,6 @@ module.exports = {
   getSales,
   restockReport,
   productUsage,
-  orderTrends
+  orderTrends,
+  excessReport
 };

@@ -21,14 +21,15 @@ var subtotal = 0;
 var tax = 0;
 var total = 0;
 var orderItemList = [];
+var clicked = false;
 
 function createOrderItem(index, foodName, cost) {
     return {index, foodName, cost };
 }
 
 const columns = [
-    { width: '50%', label: 'Item', dataKey: 'foodName' },
-    { width: '50%', label: 'Price', dataKey: 'cost' },
+    { width: '45%', label: 'Item', dataKey: 'foodName' },
+    { width: '45%', label: 'Price', dataKey: 'cost', numeric: true },
 ];
 
 const VirtuosoTableComponents = {
@@ -43,49 +44,84 @@ const VirtuosoTableComponents = {
   TableBody: React.forwardRef((props, ref) => <TableBody {...props} ref={ref} />),
 };
 
-function fixedHeaderContent() {
-  return (
-    <TableRow>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          variant="head"
-          align={column.numeric || false ? 'right' : 'left'}
-          style={{ width: column.width }}
-          sx={{
-            backgroundColor: 'background.paper',
-          }}
-        >
-          {column.label}
-        </TableCell>
-      ))}
-     </TableRow>
-  );
-}
-
-function rowContent(index, row) {
-  return (
-    <React.Fragment key={index}>
-      {columns.map((column) => (
-        <TableCell
-          key={column.dataKey}
-          align={column.numeric || false ? 'right' : 'left'}
-        >
-          {row[column.dataKey]}
-        </TableCell>
-      ))}
-    </React.Fragment>
-  );
-}
-
 function CashierView() {
-    
+
     var categoryItemArray = [];
     
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
     const [orderItemListState, setOrderItemListState] = useState(orderItemList);
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const handleRowClick = (id) => {
+      setSelectedRows((prevSelectedRows) => {
+        console.log('Previous selected rows:', prevSelectedRows);
+        if (id === -1) {
+          return (prevSelectedRows.includes(-1) && prevSelectedRows.length-1 === orderItemList.length) ? [] : [...orderItemList.map((_, index) => index), -1];
+        } else {
+          if (prevSelectedRows.includes(id)) {
+            return prevSelectedRows.filter((rowId) => rowId !== id);
+          } else {
+            return [...prevSelectedRows, id];
+          }
+        }
+      });
+    };
+    
+    const fixedHeaderContent = () => {
+
+      const isSelected = selectedRows.includes(-1);
+
+      return (
+        <TableRow key={-1}>
+          <TableCell
+          variant="head"
+          sx={{
+            backgroundColor: 'background.paper',
+          }}
+          onClick={() => handleRowClick(-1)}
+          >
+            <input type="checkbox" checked={isSelected}/>
+          </TableCell>
+          {columns.map((column) => (
+            <TableCell
+              key={column.dataKey}
+              variant="head"
+              align={column.numeric || false ? 'right' : 'left'}
+              style={{ width: column.width }}
+              sx={{
+                backgroundColor: 'background.paper',
+              }}
+            >
+              {column.label}
+            </TableCell>
+          ))}
+         </TableRow>
+      );
+    };
+    
+    const rowContent = (index, row) => {
+
+      const isSelected = selectedRows.includes(row['index']);
+
+      return (
+        <React.Fragment key={row['index']}>
+          <TableCell onClick={() => handleRowClick(row['index'])}>
+            <input type="checkbox" checked={isSelected}/>
+          </TableCell>
+          {columns.map((column) => (
+            <TableCell
+              key={column.dataKey}
+              align={column.numeric || false ? 'right' : 'left'}
+            >
+              {row[column.dataKey]}
+            </TableCell>
+          ))}
+        </React.Fragment>
+      );
+    };
 
     const handleCategoryItems = (event) => {
+        
         let eventString = "";
         if(event != null){
             eventString = event.target.textContent;
@@ -100,9 +136,9 @@ function CashierView() {
                     //document.getElementById('cashierText').innerText += eventString + " | " + responseCost.data[0].food_price + "\n";
                     orderItemList.push(createOrderItem(orderItemList.length, eventString, responseCost.data[0].food_price));
                     setOrderItemListState(orderItemList);
-                    document.getElementById('subtotal').innerText = "Subtotal: " + subtotal.toFixed(2);
-                    document.getElementById('tax').innerText = "Tax: " + tax.toFixed(2);
-                    document.getElementById('total').innerText = "Total: " + total.toFixed(2);
+                    document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+                    document.getElementById('tax').innerText = tax.toFixed(2);
+                    document.getElementById('total').innerText = total.toFixed(2);
                 }
                 const responseCategories = await api.get('/category');
                 categoryItemArray = responseCategories.data.map(item => item.food_type);
@@ -132,6 +168,7 @@ function CashierView() {
             fetchCategories();
             isCategory = true;
         }
+        clicked = false;
     };
 
     useEffect(() => {
@@ -160,14 +197,17 @@ function CashierView() {
                                 <EmployeeButton 
                                 employeeType = {buttonType} 
                                 onClick ={(event) => {
-                                    handleCategoryItems(event);
+                                    if(!clicked){
+                                      clicked = true;
+                                      handleCategoryItems(event);
+                                    }
                                   }} 
                                 content={categoryItem}/>
                             </Grid>
                         ))}
                     </Grid>
                     <Grid item xs={4}>
-                    <Paper style={{ height: 400, width: '100%' }}>
+                    <Paper style={{ height: 400, width: '100%', marginBottom: '2%'}}>
                         <TableVirtuoso
                         data={orderItemListState}
                         components={VirtuosoTableComponents}
@@ -175,9 +215,20 @@ function CashierView() {
                         itemContent={rowContent}
                         />
                     </Paper>
-                        <p id='subtotal' style={{textAlign: 'center', color: 'black'}}>Subtotal: </p>
-                        <p id='tax' style={{textAlign: 'center', color: 'black'}}>Tax: </p>
-                        <p id='total' style={{textAlign: 'center', color: 'black'}}>Total: </p>
+                        <div className='checkout-container'>
+                          <div className='checkout-info'>
+                            <h2>Subtotal: </h2>
+                            <h1 id="subtotal"></h1>
+                          </div>
+                          <div className='checkout-info'>
+                              <h2>Tax: </h2>
+                              <h1 id="tax"></h1>
+                          </div>
+                          <div className='checkout-info'>
+                              <h2 className='order-total'>Total: </h2>
+                              <h1 className='order-total' id = "total"></h1>
+                          </div>
+                        </div>
                     </Grid>
                 </Grid>
             </div>

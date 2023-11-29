@@ -13,14 +13,13 @@ import EmployeeButton from '../components/EmployeeButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
 
 
 function ManagerView() {
     var buttonType = "manager"; 
-    let mode = 0;
     const [open, setOpen] = React.useState(false);
     const [startDate, setStart] = React.useState('NULL');
     const [endDate, setEnd] = React.useState('NULL');
@@ -42,7 +41,7 @@ function ManagerView() {
     }
 
     const handleProductUsage = async () => {
-        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
+        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
@@ -63,7 +62,7 @@ function ManagerView() {
     }
 
     const handleSalesReport = async () => {
-        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
+        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
@@ -84,7 +83,7 @@ function ManagerView() {
     }
 
     const handleExcessReport = async () => {
-        if (startDate == "NULL"|| startDate == ''){
+        if (startDate === "NULL"|| startDate ===''){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
@@ -131,7 +130,7 @@ function ManagerView() {
     }
 
     const handleOrderTrends = async () => {
-        if ((startDate == "NULL" || endDate == "NULL") || (startDate == '' || endDate == '')){
+        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
             document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }

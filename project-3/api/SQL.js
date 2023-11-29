@@ -152,6 +152,30 @@ const getCost = (request, response, foodName) => {
   });
 }
 
+const addInventoryItem = (request, response) => {
+  const query = "INSERT INTO inventory \n" +
+  "OVERRIDING SYSTEM VALUE \n" +
+  "VALUES ($1 , $2 , $3 , $4 , $5)"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const maxFoodId = (request, response) => {
+  const query = "SELECT MAX(food_id) FROM inventory;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows[0].max)
+  })
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -161,5 +185,7 @@ module.exports = {
   restockReport,
   productUsage,
   orderTrends,
-  excessReport
+  excessReport,
+  addInventoryItem,
+  maxFoodId
 };

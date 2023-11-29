@@ -72,6 +72,8 @@ app.get('/api/restockReport', sql.restockReport)
 app.post('/api/productUsage', sql.productUsage)
 app.post('/api/orderTrends', sql.orderTrends)
 app.post('/api/excessReport', sql.excessReport)
+app.post('/api/addInventoryItem', sql.addInventoryItem)
+app.get('/api/maxFoodId', sql.maxFoodId)
 
 //export API to vercel server
 module.exports = app;

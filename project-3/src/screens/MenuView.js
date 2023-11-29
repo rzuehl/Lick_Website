@@ -7,7 +7,7 @@
  * - MenuTile
 */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/posts';
 import GeneralButton from '../components/GeneralButton';
@@ -43,7 +43,15 @@ import veganSunbutter from '../assets/menu-pictures/vegan_sunbutter.png';
 import veganVanillaPear from '../assets/menu-pictures/vegan_vanilla_pear.png';
 
 //image imports from beverages
-import beverages from '../assets/menu-pictures/beverages.png';
+import rootBexarImage from '../assets/menu-pictures/rootBexar.png';
+import texaColaImage from '../assets/menu-pictures/texaCola.png';
+import lemoncitoImage from '../assets/menu-pictures/lemoncitoImage.png';
+import coldBrewCoffeeImage from '../assets/menu-pictures/coldBrewImage.png';
+import nitroCoffeeImage from '../assets/menu-pictures/nitroColdBrew.png';
+import richardWaterImage from '../assets/menu-pictures/richardsRainWater.jpg';
+import ryanWaterImage from '../assets/menu-pictures/ryanWater.jpg';
+import chocolateMilk from '../assets/menu-pictures/chocolateMilk.jpg';
+import cokeImage from '../assets/menu-pictures/cokeImage.jpg';
 
 //image imports from toppings
 import chocolateSauce from '../assets/menu-pictures/topping_chocolate.png';
@@ -64,7 +72,7 @@ const regularItemContent = {
             "description": "Salty and sweet make it official! House made caramel is elevated by just a hint of sea salt.",
             "image": caramelSaltLick,
         },
-        "Coffe with Cream": {
+        "Coffee with Cream": {
             "description": "Milk & cream steeped in locally roasted Third Coast Coffee, lightly sweetened with pure cane syrup and subtly accented with a touch of Mexican vanilla.",
             "image": coffeeCream,
         },
@@ -90,7 +98,7 @@ const regularItemContent = {
         },
         "Milk Chocolate": {
             "description": "Flecks of local SRSLY Chocolate and the finest milk and cream are churned to classic perfection!",
-            "image": darkChocolate,
+            "image": milkChocolate,
         },
         "Texas Sheet Cake": {
             "description": "Our interpretation of this classic cake combines a swirl of decadent chocolate-pecan icing with delicate chocolate ice cream.",
@@ -157,42 +165,56 @@ const regularItemContent = {
             "image": whippedCream,
         },
     },
+    "Seasonal Ice Cream": {
+        "Hazel's Pumpkin Pie": {
+            "description": "Roasted Texas pie pumpkins are enhanced by clove, a bit of cinnamon, and freshly ground nutmeg. Just like a slice of Granny Hazel's pie!",
+            "image": pumpkinPie,
+        },
+        "Caramel Apple Cake": {
+            "description": "Bites of our spice cake, studded with candied Texas apples, are folded into our Good Flow Honey caramel ice cream. (contains gluten & egg)",
+            "image": applePie,
+        },
+        "Date Pudding Cake": {
+            "description": "Caramelized Texas date cake and velvety vanilla oat milk ice cream star in this vegan love story. Get two scoops, and it's a date! (vegan, contains gluten)",
+            "image": puddingCake,
+        }
+    },
     "Beverage": {
         "Root Bexar": {
             "description": "Enjoy our refreshing take on Root Beer, Root Bexar!",
-            "image": beverages,
+            "image": rootBexarImage,
         },
         "Texa-Cola": {
             "description": "Enjoy our refreshing Texa-Cola!",
-            "image": beverages,
+            "image": texaColaImage,
         },
         "Lemoncito": {
             "description": "Enjoy our refreshing Lemoncito!",
-            "image": beverages,
+            "image": lemoncitoImage,
         },
         "Cold Brew Coffee": {
             "description": "Enjoy our refreshing Cold Brew Coffee!",
-            "image": beverages,
+            "image": coldBrewCoffeeImage,
         },
         "Nitro Coffee": {
             "description": "Enjoy our refreshing Nitro Coffee!",
-            "image": beverages,
+            "image": nitroCoffeeImage,
         },
         "Richard's Rainwater": {
             "description": "Enjoy our refreshing Richard's Rainwater!",
-            "image": beverages,
+            "image": richardWaterImage,
         },
         "RyanWater": {
             "description": "Enjoy our refreshing RyanWater!",
-            "image": beverages,
+            "image": ryanWaterImage,
         },
         "Chocolate Milk": {
             "description": "Enjoy our refreshing Chocolate Milk!",
-            "image": beverages,
+            "image": chocolateMilk,
         },
         "Coke": {
             "description": "Enjoy our refreshing Coke!",
-            "image": beverages,
+            "image": cokeImage,
         },
     },
     "Not Found": {
@@ -263,7 +285,10 @@ const MenuView = () => {
         }
     };
 
-    fetchInventoryData();
+    // upon mounting component, calling fetchInventory data using useEffect
+    useEffect(() => {
+        fetchInventoryData();
+    }, []);
 
     return (
         <div>
@@ -357,9 +382,32 @@ const MenuView = () => {
                 {categoryIndex === 2 && (
                     <div className="menu-section">
                         <div className="menu-grid">
-                            <MenuTile src={pumpkinPie} alt="Image depicting seasonal item Pumpkin Pie" header="Hazel's Pumpkin Pie" description="Roasted Texas pie pumpkins are enhanced by clove, a bit of cinnamon, and freshly ground nutmeg. Just like a slice of Granny Hazel's pie!" />
-                            <MenuTile src={applePie} alt="Image depicting seasonal item Caramel Apple Cake" header="Caramel Apple Cake" description="Bites of our spice cake, studded with candied Texas apples, are folded into our Good Flow Honey caramel ice cream. (contains gluten & egg)" />
-                            <MenuTile src={puddingCake} alt="Image depicting seasonal item Data Pudding Cake" header="Date Pudding Cake" description="Caramelized Texas date cake and velvety vanilla oat milk ice cream star in this vegan love story. Get two scoops, and it's a date! (vegan, contains gluten)" />
+                            {
+                                    seasonalItems.map((item) => {
+                                        if (item.food_name in regularItemContent[item.food_type]) {
+                                            return (
+                                                <MenuTile 
+                                                src={regularItemContent[item.food_type][item.food_name]["image"]} 
+                                                alt={regularItemContent[item.food_type][item.food_name]["description"]}
+                                                header={item.food_name}
+                                                description={regularItemContent[item.food_type][item.food_name]["description"]}
+                                                itemPrice={item.food_price}
+                                                />
+                                            )
+                                        }
+                                        else {
+                                            return(
+                                                <MenuTile 
+                                                src={regularItemContent["Not Found"]["image"]} 
+                                                alt={regularItemContent["Not Found"]["description"]}
+                                                header={item.food_name}
+                                                description={regularItemContent["Not Found"]["description"]}
+                                                itemPrice={item.food_price}
+                                                />
+                                            )
+                                        }
+                                    })
+                            }
                         </div>
                     </div>                    
                 )}
@@ -400,8 +448,32 @@ const MenuView = () => {
                 {categoryIndex === 4 && (
                     <div className="menu-section">
                         <div className="menu-grid">
-                            <MenuTile src={beverages} alt="Image depicting all available beverage options" header="Beverages" description="Southside Craft Soda, Cold Brew High Brew Coffee, Nitro Coffee High Brew Coffee, Richard’s Rainwater" />
-                        </div>
+                            {
+                                beverageItems.map((item) => {
+                                    if (item.food_name in regularItemContent[item.food_type]) {
+                                        return (
+                                            <MenuTile 
+                                            src={regularItemContent[item.food_type][item.food_name]["image"]} 
+                                            alt={regularItemContent[item.food_type][item.food_name]["description"]}
+                                            header={item.food_name}
+                                            description={regularItemContent[item.food_type][item.food_name]["description"]}
+                                            itemPrice={item.food_price}
+                                            />
+                                        )
+                                    }
+                                    else {
+                                        return(
+                                            <MenuTile 
+                                            src={regularItemContent["Not Found"]["image"]} 
+                                            alt={regularItemContent["Not Found"]["description"]}
+                                            header={item.food_name}
+                                            description={regularItemContent["Not Found"]["description"]}
+                                            itemPrice={item.food_price}
+                                            />
+                                        )
+                                    }
+                                })
+                            }                        </div>
                     </div>  
                 )}
                 {/*Section rendering toppings*/}

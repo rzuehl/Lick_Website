@@ -18,10 +18,10 @@ const MenuTile = (props) => {
     return (
             <div className="tile">
                 <img src={props.src} alt={props.alt} />
-                <div class="tile-intro">
-                    <div class='tile-header'>
+                <div className="tile-intro">
+                    <div className='tile-header'>
                         <h1>{props.header}</h1>
-                        <h1>{'$5.44'}</h1>
+                        <h1>{props.itemPrice}</h1>
                     </div>
                     <p>{props.description}</p>
                     <section className='tile-add-item'>

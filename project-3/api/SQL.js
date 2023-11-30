@@ -152,12 +152,30 @@ const getCost = (request, response, foodName, foodType) => {
   });
 }
 
+const getPastOrder = (request, response, orderID) => {
+  const query = "SELECT i.food_name, i.food_type " + 
+  "FROM order_inventory_join oi " + 
+  "JOIN inventory i ON oi.food_id = i.food_id " +
+  "WHERE oi.order_id = " + orderID;
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
 module.exports = {
   getInventory,
   getCategories,
   getFoodItems,
   getSales,
   getCost,
+  getPastOrder,
   restockReport,
   productUsage,
   orderTrends,

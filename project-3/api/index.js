@@ -53,7 +53,20 @@ app.get('/api/cost', async(request, response) => {
     const foodName = request.query.foodName;
     const foodType = request.query.foodType;
     const results = await sql.getCost(request, response, foodName, foodType);
-    console.log('Results:', results);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/pastOrder', async(request, response) => {
+  try{
+    const orderID = request.query.id;
+    const results = await sql.getPastOrder(request, response, orderID);
+    //console.log('Results:', results);
     response.status(200).json(results);
   }
   catch (error) {

@@ -25,6 +25,7 @@ function InventoryView() {
     const [openAdd, setOpenAdd] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
     const [items, setItems] = React.useState([]);
+    const [foodData, setFoodData] = React.useState([]);
 
     const openDialogAdd = () => {
         setOpenAdd(true);
@@ -120,12 +121,11 @@ function InventoryView() {
         try {
             //response returns a JSON format which can be accessed by response.data
             const response = await api.get('/inventory');
-            let output = "";
+            let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
-            let tempString = response.data[index].food_id + " " + response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + " " + response.data[index].food_price + "\n";
-            output += tempString;
-        }
-            document.getElementById("ManagerText").innerText = output;
+                tempData.push(response.data[index]);
+            }
+            setFoodData(tempData);
         } catch (err) {
             console.log("FAIL");
         }
@@ -144,23 +144,18 @@ function InventoryView() {
                 <GeneralButton content="Order" sidePadding={20} />
                 <OptionsDropdown sidePadding={20}/>
             </div>
+            <body style={{margin: 0, display: 'flex', height: "100vh"}}>
+                <div style={{display: 'flex', flexDirection: 'column', margin:10}}>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
+                    <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
+                    <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
+                </div>
+                <div style={{flex: 1}}>
+                    <InventoryTable foodData={foodData}></InventoryTable>
+                </div>
+            </body>
             <div className='Inventory'>
-                <Grid container>
-                    <Grid container xs={8} spacing={4} alignItems="center" justifyContent="center" direction="column">
-                        <Grid item>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
-                        </Grid>
-                        <Grid item>
-                        <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
-                        </Grid>
-                        <Grid item>
-                            <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <InventoryTable></InventoryTable>
-                    </Grid>
-                </Grid>
+                
             </div>
         </div>
     );

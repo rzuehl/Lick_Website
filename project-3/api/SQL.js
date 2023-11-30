@@ -198,6 +198,17 @@ const setPrice = (request, response) => {
    })
 }
 
+const deleteItem = (request, response) => {
+  const query = "DELETE FROM inventory WHERE food_id = $1;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -211,5 +222,6 @@ module.exports = {
   addInventoryItem,
   maxFoodId,
   setQuantity,
-  setPrice
+  setPrice,
+  deleteItem
 };

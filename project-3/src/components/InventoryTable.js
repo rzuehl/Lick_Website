@@ -22,7 +22,7 @@ function InventoryTable(props) {
                 <TableHead>
                     <TableRow>
                         {header.map((column) => (
-                                <TableCell key={column}>
+                                <TableCell key={column} style={{backgroundColor: 'black', color: 'white'}}>
                                     {column}
                                 </TableCell>
                             ))}
@@ -32,7 +32,7 @@ function InventoryTable(props) {
                     {data.map((row, index) => (
                         <TableRow key={index}>
                             {properties.map((property, propIndex) => (
-                                <TableCell key={propIndex}>{row[property]}</TableCell>
+                                <TableCell key={propIndex} style={{backgroundColor: index % 2 === 0 ? 'white' : 'whitesmoke'}}>{row[property]}</TableCell>
                             ))}
                         </TableRow>
                     ))}

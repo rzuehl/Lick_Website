@@ -18,12 +18,15 @@ import api from '../api/posts';
 import AddItem from '../components/AddItem';
 import EditItem from '../components/EditItem';
 import InventoryTable from '../components/InventoryTable';
+import DeleteItem from '../components/DeleteItem';
 
 
 function InventoryView() {
     var buttonType = "manager";
+    const [firstOpen, setFirstOpen] = React.useState(true);
     const [openAdd, setOpenAdd] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);
     const [items, setItems] = React.useState([]);
     const [foodData, setFoodData] = React.useState([]);
 
@@ -45,9 +48,27 @@ function InventoryView() {
             
             setOpenEdit(true);
         } catch(err) {
-            document.getElementById("ManagerText").innerText = "ERROR";
             console.log("FAIL");
             setOpenEdit(false);
+        }
+    }
+
+    const openDialogDelete = async () => {
+        try {
+            const itemList = await api.get('/inventory');
+
+            let itemMap = [];
+    
+            for (let i = 0; i < Object.keys(itemList.data).length; i++) {
+                itemMap.push({label: itemList.data[i].food_name + " (" + itemList.data[i].food_type + ")", id: itemList.data[i].food_id});
+            }
+    
+            setItems(itemMap);
+            
+            setOpenDelete(true);
+        } catch(err) {
+            console.log("FAIL");
+            setOpenDelete(false);
         }
     }
 
@@ -57,6 +78,10 @@ function InventoryView() {
 
     const closeDialogEdit = () => {
         setOpenEdit(false);
+    }
+
+    const closeDialogDelete = () => {
+        setOpenDelete(false);
     }
 
     function invalidDetails () {
@@ -79,15 +104,13 @@ function InventoryView() {
     
             let parameters = [maxValue.data + 1, foodType, foodName, quantity, foodPrice];
     
-            api.post('/addInventoryItem', parameters);
-            
-            setOpenAdd(false);
-
+            await api.post('/addInventoryItem', parameters);
+            handleViewInventory();
         } catch (err) {
-            document.getElementById("ManagerText").innerText = "Invalid Details";
             console.log("FAIL");
             setOpenAdd(false);
         }
+        setOpenAdd(false);
     }
 
     const confirmDialogEdit = async (values) => {
@@ -105,16 +128,23 @@ function InventoryView() {
                 let parameters = [foodPrice, foodId];
                 await api.post('/setPrice', parameters);
             }
+            handleViewInventory();
         } catch(err) {
-            document.getElementById("ManagerText").innerText = "Invalid Details";
             console.log("FAIL");
-            setOpenAdd(false);
+            setOpenEdit(false);
         }
-
-        
-
-
         setOpenEdit(false);
+    }
+
+    const confirmDialogDelete = async (values) =>{
+        try {
+            await api.post('/deleteItem', values);
+            handleViewInventory();
+        } catch(err) {
+            console.log("FAIL");
+            setOpenDelete(false);
+        }
+        setOpenDelete(false);
     }
 
     const handleViewInventory = async () => {
@@ -131,10 +161,16 @@ function InventoryView() {
         }
     }
 
+    if (firstOpen) {
+        handleViewInventory();
+        setFirstOpen(false);
+    }
+
     return (
         <div>
             <AddItem onClose={closeDialogAdd} open={openAdd} onConfirm={confirmDialogAdd}></AddItem>
             <EditItem onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} foods={items}></EditItem>
+            <DeleteItem onClose={closeDialogDelete} open={openDelete} onConfirm={confirmDialogDelete} foods={items}></DeleteItem>
             <div className="customer-header">
                 <HamburgerButton />
                 <GeneralButton content="Translate" sidePadding={35} />
@@ -149,6 +185,7 @@ function InventoryView() {
                     <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
+                    <EmployeeButton employeeType= {buttonType} onClick={openDialogDelete} content="Delete Item" />
                 </div>
                 <div style={{flex: 1}}>
                     <InventoryTable foodData={foodData}></InventoryTable>

@@ -5,6 +5,7 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
 import TableDropdown from '../components/TableDropdown.js';
+import ManageOrderDialog from '../components/ManageOrderDialog.js';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 
@@ -16,6 +17,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableFooter from '@mui/material/TableFooter';
 import Paper from '@mui/material/Paper';
+
+import Button from '@mui/material/Button';
 
 import { TableVirtuoso } from 'react-virtuoso';
 
@@ -29,6 +32,8 @@ var total = 0;
 var orderItemList = [];
 var selectedRows = [];
 var clicked = false;
+var orderID = -1;
+var open = false;
 
 function createOrderItem(index, foodName, cost) {
     return {index, foodName, cost };
@@ -65,6 +70,25 @@ function CashierView() {
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
     const [orderItemListState, setOrderItemListState] = useState(orderItemList);
     const [selectedRowsState, setSelectedRows] = useState(selectedRows);
+    const [openState, setOpenState] = useState(open);
+    const [orderIDState, setOrderIDState] = useState(orderID);
+
+    const handleDialogClose = () => {
+        open = false;
+        setOpenState(open);
+    }
+
+    const handleConfirm = (values) => {
+        orderID = values[0];
+        setOrderIDState(values[0]);
+        open = false;
+        setOpenState(open);
+    }
+
+    const openDialog = () => {
+        open = true;
+        setOpenState(open);
+    }
 
     const removeItems = () =>{
       const removedItemCosts = orderItemList.filter((item) => selectedRows.includes(item.index)).map((selectedItem) => selectedItem.cost);
@@ -78,14 +102,48 @@ function CashierView() {
       document.getElementById('total').innerText = total.toFixed(2);
       orderItemList = orderItemList.filter((item) => !selectedRows.includes(item.index));
       
-      setOrderItemListState(orderItemList );
+      setOrderItemListState(orderItemList);
+      selectedRows = [];
       setSelectedRows([]);
     };
 
-    
+    const pay = () =>{
+      //todo
+      return 0;
+    }
+
+    const getPastOrder = async() =>{
+      
+      await openDialog();
+
+      const waitForDialogClose = () => {
+        return new Promise(resolve => {
+          const checkCondition = () => {
+                if (!open) {
+                    resolve();
+                }
+                else {
+                  setTimeout(checkCondition, 100);
+              }
+          }
+          checkCondition();
+        }
+        )
+      }
+
+      await waitForDialogClose();
+      const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
+      orderItemList = [];
+      for(let i = 0; i < responseOrder.data.length; i++){
+        const responseCost = await api.get('/cost', {params: {foodName: responseOrder.data[i].food_name.replace(/'/g, "''"), foodType: responseOrder.data[i].food_type}});
+        orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price));
+      }
+      setOrderItemListState(orderItemList);
+    };
 
     var dropdownOptionsArray = [];
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems));
+    dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder));
 
     const handleRowClick = (id) => {
       setSelectedRows((prevSelectedRows) => {
@@ -168,13 +226,18 @@ function CashierView() {
           <TableCell
           sx={{
             backgroundColor: 'background.paper',
-          }}/>
+          }}
+          align="right">
+            Order ID: {orderIDState}
+          </TableCell>
           <TableCell
             sx={{
               backgroundColor: 'background.paper',
+              display: 'flex'
             }}
             align="right"
             >
+            <Button id="basic-button" onClick={pay}>Pay</Button>
             <TableDropdown name="Options" options={dropdownOptionsArray}/>
             </TableCell>
         </TableRow>
@@ -189,7 +252,7 @@ function CashierView() {
         }
         const fetchCategories = async () => {
             try{
-                if(event != null){
+                if(event != null && !(eventString === "Back")){
                     const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''"), foodType: category}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
@@ -212,8 +275,10 @@ function CashierView() {
         const fetchItems = async () => {
             category = eventString;
             try{
+
                 const responseItems = await api.get('/foodItems', {params: {category: eventString}});
                 categoryItemArray = responseItems.data.map(item => item.food_name);
+                categoryItemArray.unshift("Back");
                 setCategoryItemArrayState(categoryItemArray);
  
             }
@@ -243,6 +308,7 @@ function CashierView() {
 
     return (
         <>
+            <ManageOrderDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm}></ManageOrderDialog>
             <div className="customer-header">
                 <GeneralButton content="Translate" sidePadding={35} />
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
@@ -263,7 +329,8 @@ function CashierView() {
                                       handleCategoryItems(event);
                                     }
                                   }} 
-                                content={categoryItem}/>
+                                content={categoryItem}
+                                style={{ backgroundColor: categoryItem === "Back" ? "white" : "#FFC7C8" }}/>
                             </Grid>
                         ))}
                     </Grid> 

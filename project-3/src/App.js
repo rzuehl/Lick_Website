@@ -59,7 +59,7 @@ function App() {
           <Route exact path ="/manager">
             <ManagerView />
           </Route>
-          <Route exact path="/cart">
+          <Route exact path="/cart/:userSelectedItems">
             <ShoppingCart />
           </Route>
         </Switch>

@@ -13,8 +13,21 @@ import GeneralButton from '../components/GeneralButton';
  * @property {string} props.header - String uses as the header of the tile
  * @property {string} props.description - String used to present additional information when hovered on tile
  * @property {number} props.itemPrice - number representing price of item
+ * @property {function} props.buttonFunction - function to be executed when add item button is pressed
+ * 
  */
 const MenuTile = (props) => {
+    const handlePress = () => {
+        const itemObject = {
+            image: props.src,
+            description: props.description,
+            name: props.header,
+            price: props.itemPrice,
+            quantity: 1,
+        };
+        props.buttonFunction(itemObject);
+    };
+
     return (
             <div className="tile">
                 <img src={props.src} alt={props.alt} />
@@ -29,6 +42,7 @@ const MenuTile = (props) => {
                             content='Add Item'
                             sidePadding={20}
                             removeShadow={true}
+                            onClick={handlePress}
                         />
                     </section>
                 </div>

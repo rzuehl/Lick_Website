@@ -8,27 +8,35 @@
  * - CartItem
 */
 
-import React, {useState, useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import CartItem from '../components/CartItem';
 import lickLogo from '../assets/lick-honest-logo.png';
 
-import applePie from '../assets/menu-pictures/seasonal_apple_pie.png';
-
 
 const ShoppingCart = () => {
-    // cartItems is an array of objects of the form
-    /* {
-        itemImage,
-        itemPrice, 
-        itemID,
-        itemName,
-        }
-    */
-    const [cartItems, setCartItems] = useState([]); 
+    // getting passed in params passed in from menuView to shopping cart component
+    const { userSelectedItems } = useParams();
+
+    const [ cartItems, setCartItems ] = useState([]); 
+    const [ cartSubtotal, setCartSubtotal ] = useState(0);
+    const [ cartTax, setCartTax ] = useState(0);
+    const [ cartTotal, setCartTotal ] = useState(0);
+
+    // // function handling render of cartItems content upon component mount
+    // const renderCartItems = () => {
+        
+    // }
+
+    // utilizing useEffect to render cartItems upon component mount
+    useEffect(() => {
+         for(let i of userSelectedItems) {
+            console.log(i);
+         }
+    }, []);
 
     return (
         <div>
@@ -46,13 +54,26 @@ const ShoppingCart = () => {
             <div className='cart-info'>
                 <div className='cart-items'>
                     <div>
-                        <CartItem 
-                            src={applePie} 
-                            alt={'A yummy applie pie'} 
-                            name={'apple pie'} 
-                            price={15.99}
-                            quantity={4}
-                        />
+                        {cartItems.length > 0 && (
+                            cartItems.map((item, index) => {
+                                return (
+                                    <CartItem 
+                                        key={index}
+                                        src={item.image}
+                                        alt={item.description}
+                                        name={item.name}
+                                        price={item.price}
+                                        quantity={item.quantity}
+                                    />
+                                )
+                            })
+                        )}
+                        {cartItems.length === 0 && (
+                            <h1>
+                                Cart is empty
+                            </h1>
+                        )}
+
                     </div>
                 </div>
                 <div className='checkout-container'>

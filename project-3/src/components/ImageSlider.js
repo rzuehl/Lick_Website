@@ -21,7 +21,7 @@ function ImageSlider(props) {
         showArrows={true} 
         >
             {
-                props.slides.map((slide) => <img src={slide.image} alt={slide.altText} />)
+                props.slides.map((slide, index) => <img key={index} src={slide.image} alt={slide.altText} />)
             }
         </Carousel>
     );

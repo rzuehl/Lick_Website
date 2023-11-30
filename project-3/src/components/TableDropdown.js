@@ -12,7 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 
 function TableDropdown(props) {
 
-    let options = props.options;
+    let options = [];
+    if(!(props.options === undefined)){
+      options = props.options;
+    }
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {

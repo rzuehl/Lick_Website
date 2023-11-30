@@ -176,6 +176,28 @@ const maxFoodId = (request, response) => {
   })
 }
 
+const setQuantity = (request, response) => {
+  const query = "UPDATE inventory SET quantity = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const setPrice = (request, response) => {
+  const query = "UPDATE inventory SET food_price = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -187,5 +209,7 @@ module.exports = {
   orderTrends,
   excessReport,
   addInventoryItem,
-  maxFoodId
+  maxFoodId,
+  setQuantity,
+  setPrice
 };

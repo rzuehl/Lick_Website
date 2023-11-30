@@ -11,7 +11,7 @@ import GeneralButton from '../components/GeneralButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
-import { Grid } from '@mui/material';
+import { Grid, private_createTypography } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
@@ -36,7 +36,6 @@ function InventoryView() {
             let itemMap = [];
     
             for (let i = 0; i < Object.keys(itemList.data).length; i++) {
-                //itemMap.set(itemList.data[i].food_id, itemList.data[i].food_name);
                 itemMap.push({label: itemList.data[i].food_name + " (" + itemList.data[i].food_type + ")", id: itemList.data[i].food_id});
             }
     
@@ -89,8 +88,30 @@ function InventoryView() {
         }
     }
 
-    const confirmDialogEdit = (values) => {
-        console.log(values);
+    const confirmDialogEdit = async (values) => {
+        //food id, quantity, price
+        try {
+            let foodId = values[0];
+            let quantity = parseInt(values[1]);
+            let foodPrice = parseFloat(values[2]).toFixed(2);
+
+            if (!isNaN(quantity)) {
+                let parameters = [quantity, foodId];
+                await api.post('/setQuantity', parameters);
+            }
+            if (!isNaN(foodPrice)) {
+                let parameters = [foodPrice, foodId];
+                await api.post('/setPrice', parameters);
+            }
+        } catch(err) {
+            document.getElementById("ManagerText").innerText = "Invalid Details";
+            console.log("FAIL");
+            setOpenAdd(false);
+        }
+
+        
+
+
         setOpenEdit(false);
     }
 

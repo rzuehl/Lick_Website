@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button } from "@mui/material";
 import React from "react";
 
 function AddItem(props) {
@@ -21,8 +21,8 @@ function AddItem(props) {
     }
 
         return (
-            <Dialog onClose={handleClose} open={open}>
-                <DialogTitle> Date Range </DialogTitle>
+            <Dialog onClose={handleClose} open={open} fullWidth maxWidth="sm">
+                <DialogTitle> Add Item </DialogTitle>
                 <DialogContent>
                     <p>Food Type:</p>
                     <TextField
@@ -41,6 +41,7 @@ function AddItem(props) {
                     <br/>
                     <p>Food Name:</p>
                     <TextField
+                    fullWidth
                     autoComplete="off"
                     margin="dense"
                     inputRef={foodName}
@@ -48,6 +49,7 @@ function AddItem(props) {
                     <br/>
                     <p>Quantity:</p>
                     <TextField
+                    fullWidth
                     autoComplete="off"
                     margin="dense"
                     inputRef={quantity}
@@ -56,6 +58,7 @@ function AddItem(props) {
                     <br/>
                     <p>Food Price:</p>
                     <TextField
+                    fullWidth
                     autoComplete="off"
                     margin="dense"
                     inputRef={foodPrice}
@@ -63,8 +66,8 @@ function AddItem(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <button onClick={handleClose}>Cancel</button>
-                    <button onClick={() => handleConfirm(foodType, foodName, quantity, foodPrice)}>Confirm</button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => handleConfirm(foodType, foodName, quantity, foodPrice)}>Confirm</Button>
                 </DialogActions>
             </Dialog>
         );

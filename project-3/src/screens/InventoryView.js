@@ -16,19 +16,51 @@ import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
 import AddItem from '../components/AddItem';
+import EditItem from '../components/EditItem';
 
 
 function InventoryView() {
     var buttonType = "manager";
     const [openAdd, setOpenAdd] = React.useState(false);
     const [openEdit, setOpenEdit] = React.useState(false);
+    const [items, setItems] = React.useState([]);
 
     const openDialogAdd = () => {
         setOpenAdd(true);
     }
 
+    const openDialogEdit = async () => {
+        try {
+            const itemList = await api.get('/inventory');
+
+            let itemMap = [];
+    
+            for (let i = 0; i < Object.keys(itemList.data).length; i++) {
+                //itemMap.set(itemList.data[i].food_id, itemList.data[i].food_name);
+                itemMap.push({label: itemList.data[i].food_name + " (" + itemList.data[i].food_type + ")", id: itemList.data[i].food_id});
+            }
+    
+            setItems(itemMap);
+            
+            setOpenEdit(true);
+        } catch(err) {
+            document.getElementById("ManagerText").innerText = "ERROR";
+            console.log("FAIL");
+            setOpenEdit(false);
+        }
+    }
+
     const closeDialogAdd = () => {
         setOpenAdd(false);
+    }
+
+    const closeDialogEdit = () => {
+        setOpenEdit(false);
+    }
+
+    function invalidDetails () {
+        setOpenAdd(false);
+        document.getElementById("ManagerText").innerText = "Invalid Details";
     }
 
     const confirmDialogAdd = async (values) => {
@@ -40,9 +72,9 @@ function InventoryView() {
             const maxValue = await api.get('/maxFoodId');
     
             //Error Handling
-            if (foodName === "") {setOpenAdd(false); return}
-            if (isNaN(quantity)) {setOpenAdd(false); return}
-            if (isNaN(foodPrice)) {setOpenAdd(false); return}
+            if (foodName === "") {invalidDetails(); return}
+            if (isNaN(quantity)) {invalidDetails(); return}
+            if (isNaN(foodPrice)) {invalidDetails(); return}
     
             let parameters = [maxValue.data + 1, foodType, foodName, quantity, foodPrice];
     
@@ -51,9 +83,15 @@ function InventoryView() {
             setOpenAdd(false);
 
         } catch (err) {
-        console.log("FAIL");
-        setOpenAdd(false);
+            document.getElementById("ManagerText").innerText = "Invalid Details";
+            console.log("FAIL");
+            setOpenAdd(false);
         }
+    }
+
+    const confirmDialogEdit = (values) => {
+        console.log(values);
+        setOpenEdit(false);
     }
 
     const handleViewInventory = async () => {
@@ -71,17 +109,10 @@ function InventoryView() {
         }
     }
 
-    const handleAddItem = () => {
-        document.getElementById("ManagerText").innerText = "Add Item";
-    }
-
-    const handleEditItem = () => {
-        document.getElementById("ManagerText").innerText = "Edit Item";
-    }
-
     return (
         <div>
             <AddItem onClose={closeDialogAdd} open={openAdd} onConfirm={confirmDialogAdd}></AddItem>
+            <EditItem onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} foods={items}></EditItem>
             <div className="customer-header">
                 <HamburgerButton />
                 <GeneralButton content="Translate" sidePadding={35} />
@@ -101,7 +132,7 @@ function InventoryView() {
                         <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
                         </Grid>
                         <Grid item>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleEditItem} content="Edit Item" />
+                            <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>

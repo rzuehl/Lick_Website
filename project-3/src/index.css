@@ -309,15 +309,35 @@ h1,h2,h3{
 /* General Dropdown Styling */
 .dropdown {
   position: relative;
+  display: inline-block;
 }
 
-.dropdown .menu {
+.dropdown-content {
+  color: var(--white);
   background-color: var(--lick-pink);
+  border: none;
   position: absolute;
-  right: 10px;
+  top: 60px;
+  right: 0;
+  min-width: 160px;
   z-index: 1;
   list-style-type: none;
   text-align: center;
+  border-radius: 15px;
+}
+
+.dropdown-content a {
+  cursor: pointer;
+  text-wrap: nowrap;
+  padding: 12px 16px;
+  display: block;
+  text-decoration: none;
+}
+
+.dropdown a:hover {
+  /* background-color: var(--lick-blue); */
+  text-decoration: underline;
+  text-size-adjust: 30;
 }
 
 /*HamburgerButton styling*/

@@ -17,6 +17,7 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
 import AddItem from '../components/AddItem';
 import EditItem from '../components/EditItem';
+import InventoryTable from '../components/InventoryTable';
 
 
 function InventoryView() {
@@ -157,7 +158,7 @@ function InventoryView() {
                         </Grid>
                     </Grid>
                     <Grid item xs={4}>
-                    <p id='ManagerText' className='employeeText'></p>
+                        <InventoryTable></InventoryTable>
                     </Grid>
                 </Grid>
             </div>

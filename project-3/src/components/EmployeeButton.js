@@ -5,7 +5,7 @@
 import React from 'react';
 
 /**
- * ManagerButton is a custom component rendering buttons for the manager page
+ * EmployeeButton is a custom component rendering buttons for the manager and cashier page
  * @param {object} props - Javascript object containing passed in props into GeneralButton component
  * @property {string} props.content - string representing text content of button
  * @property {string} props.reference - string representing content that button references to

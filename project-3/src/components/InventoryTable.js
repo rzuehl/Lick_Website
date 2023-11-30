@@ -3,16 +3,11 @@ import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow
 
 function InventoryTable(props) {
 
-    const { foodData } = props;
+    const { foodData, columns, columnHeader } = props;
 
-    const header = ["Food Id", "Food Name", "Food Type", "Quantity", "Food Price"];
+    const header = columnHeader;
 
-    const properties = ["food_id", "food_name", "food_type", "quantity", "food_price"];
-
-    // const data = [
-    //     {food_id: 1, food_name: "Chocolate", food_type: "Ice Cream", quantity: 100, food_price: 3.99},
-    //     {food_id: 2, food_name: "Chocolate", food_type: "Ice Cream", quantity: 100, food_price: 3.99}
-    // ]
+    const properties = columns;
 
     const data = foodData;
 

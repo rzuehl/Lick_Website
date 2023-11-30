@@ -3,6 +3,7 @@
 */
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 /**
  * ManagerButton is a custom component rendering buttons for the manager page
@@ -14,12 +15,21 @@ import React from 'react';
 function EmployeeButton(props) {
     const styles = {
     };
-        let className = "employeeButton " + props.employeeType; 
+
+    if (props.route) {
         return (
-            <button onClick={props.onClick} className= {className} style={styles}>
+            <Link to={props.route} className="employeeButton">
                 {props.content}
-            </button>
+            </Link>
         );
+    }
+        
+    let className = "employeeButton " + props.employeeType; 
+    return (
+    <button onClick={props.onClick} className= {className} style={styles}>
+        {props.content}
+        </button>
+    );
 }
 
 export default EmployeeButton;

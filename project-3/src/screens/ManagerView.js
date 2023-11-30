@@ -16,6 +16,7 @@ import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
+import InventoryTable from '../components/InventoryTable';
 
 
 function ManagerView() {
@@ -23,38 +24,26 @@ function ManagerView() {
     const [open, setOpen] = React.useState(false);
     const [startDate, setStart] = React.useState('NULL');
     const [endDate, setEnd] = React.useState('NULL');
-    const [managerText, setManagerText] = React.useState('');
-    
-    const handleInventoryManagement = async () => {
-        try {
-            //response returns a JSON format which can be accessed by response.data
-            const response = await api.get('/inventory');
-            let output = "";
-            for (let index = 0; index < Object.keys(response.data).length; index++) {
-            let tempString = response.data[index].food_id + " " + response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + " " + response.data[index].food_price + "\n";
-            output += tempString;
-        }
-            document.getElementById("ManagerText").innerText = output;
-        } catch (err) {
-            console.log("FAIL");
-        }
-    }
+    const [tableData, setTableData] = React.useState([])
+    const [tableColumns, setTableColumns] = React.useState([null]);
+    const [tableHeader, setTableHeader] = React.useState([null]);
 
     const handleProductUsage = async () => {
         if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
-            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
 
         const parameters = [startDate, endDate];
         await api.post('/productUsage', parameters)
         .then((response) => {
-            let output = "";
+            setTableHeader(["Date", "Items Sold"])
+            setTableColumns(["date", "products_sold"]);
+            let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
-                let tempString = response.data[index].date.substring(0,10) + " " + response.data[index].products_sold + "\n";
-                output += tempString;
+                console.log(response.data[index]);
+                tempData.push({date: response.data[index].date.substring(0,10), products_sold: response.data[index].products_sold});
             }
-            document.getElementById("ManagerText").innerText = output;
+            setTableData(tempData);
         })
         .catch((error) => {
             console.log(error);
@@ -63,19 +52,19 @@ function ManagerView() {
 
     const handleSalesReport = async () => {
         if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
-            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
         
         const parameters = [startDate, endDate];
         await api.post('/getSales', parameters)
         .then((response) => {
-            let output = "";
+            setTableHeader(["Food Name", "Food Type", "Sales"])
+            setTableColumns(["food_name", "food_type", "num_sales"]);
+            let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
-                let tempString = response.data[index].food_name + " " + response.data[index].food_type + " Was sold " + response.data[index].num_sales + " times.\n";
-                output += tempString;
+                tempData.push(response.data[index]);
             }
-            document.getElementById("ManagerText").innerText = output;
+            setTableData(tempData);
         })
         .catch((error) => {
             console.log(error);
@@ -84,7 +73,6 @@ function ManagerView() {
 
     const handleExcessReport = async () => {
         if (startDate === "NULL"|| startDate ===''){
-            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
         
@@ -93,7 +81,9 @@ function ManagerView() {
             const response1 = await api.post('/excessReport', [startDate]);
             const response2 = await api.get('/inventory');
 
-            let output = "";
+            setTableHeader(["Items in Excess"])
+            setTableColumns(["food_name"]);
+            let tempData = [];
             const inventory = new Map();
             //populate inventory map with food_id, quantity
             for (let index = 0; index < Object.keys(response2.data).length; index++) {
@@ -103,12 +93,10 @@ function ManagerView() {
             for (let index = 0; index < Object.keys(response1.data).length; index++) {
                 //if num_sales / numsales + currQuantity < .10
                 if (parseInt(response1.data[index].num_sales) / (parseInt(response1.data[index].num_sales) + parseInt(inventory.get(response1.data[index].food_id))) < .10) {
-                    output += response1.data[index].food_name + "\n";
+                    tempData.push(response1.data[index]);
                 }
             }
-
-                document.getElementById("ManagerText").innerText = output;
-
+            setTableData(tempData);
             } catch (err) {
                 console.log("FAIL");
             }
@@ -117,12 +105,13 @@ function ManagerView() {
     const handleRestockReport = async () => {
         await api.get('/restockReport')
         .then((response) => {
-            let output = "";
+            setTableHeader(["Food Type", "Item to be Restocked", "Current Quantity"])
+            setTableColumns(["food_type", "food_name", "quantity"]);
+            let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
-                let tempString = response.data[index].food_type + " " + response.data[index].food_name + " " + response.data[index].quantity + "\n";
-                output += tempString
+                tempData.push(response.data[index]);
             }
-            document.getElementById("ManagerText").innerText = output;
+            setTableData(tempData);
         })
         .catch((error) => {
             console.log(error);
@@ -131,19 +120,19 @@ function ManagerView() {
 
     const handleOrderTrends = async () => {
         if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
-            document.getElementById("ManagerText").innerText = "Please Enter a Valid Date Range";
             return;
         }
         
         const parameters = [startDate, endDate];
         await api.post('/orderTrends', parameters)
         .then((response) => {
-            let output = "";
+            setTableHeader(["Item 1 Name", "Item 2 Name", "Times Sold Together"])
+            setTableColumns(["item1_name", "item2_name", "times_sold_together"]);
+            let tempData = [];
             for (let index = 0; index < 10; index++) {
-                let tempString = response.data[index].item1_name + " and " + response.data[index].item2_name + " were sold together " + response.data[index].times_sold_together + " times.\n";
-                output += tempString
+                tempData.push(response.data[index]);
             }
-            document.getElementById("ManagerText").innerText = output;
+            setTableData(tempData);
         })
         .catch((error) => {
             console.log(error);
@@ -180,33 +169,24 @@ function ManagerView() {
                 <p className='employeeText'>Current Date: {startDate} to {endDate}</p>
                 <EmployeeButton employeeType= {buttonType} onClick={openDialog} content="Update Date Range" />
             </div>
-            <div className='employeeUI'>
-                <Grid container>
-                    <Grid item xs={8} container spacing={8}>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType}  onClick={handleInventoryManagement} content="Inventory Management" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleProductUsage} content="Product Usage" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleSalesReport} content="Sales Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleExcessReport} content="Excess Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleRestockReport} content="Restock Report" />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <EmployeeButton employeeType= {buttonType} onClick={handleOrderTrends} content="Order Trends" />
-                        </Grid> 
-                    </Grid> 
-                    <Grid item xs={4}>
-                        <p id='ManagerText' className='employeeText'>{managerText}</p>
-                    </Grid>
-                </Grid>
-            </div>
+            <body style={{margin: 0, display: 'flex', height: "90vh"}}>
+                <div style={{display: 'flex', flexDirection: 'column', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>
+                    <EmployeeButton employeeType= {buttonType}  route="/inventory" content="Inventory Management" />    
+                    <br/>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleProductUsage} content="Product Usage" />
+                    <br/>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleSalesReport} content="Sales Report" />
+                    <br/>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleExcessReport} content="Excess Report" />
+                    <br/>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleRestockReport} content="Restock Report" />
+                    <br/>
+                    <EmployeeButton employeeType= {buttonType} onClick={handleOrderTrends} content="Order Trends" />
+                </div>
+                <div style={{flex: 1, marginRight: 50}}>
+                    <InventoryTable foodData={tableData} columns={tableColumns} columnHeader={tableHeader}></InventoryTable>
+                </div>
+            </body>
         </div>
     );
 };

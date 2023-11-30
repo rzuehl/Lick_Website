@@ -29,6 +29,8 @@ function InventoryView() {
     const [openDelete, setOpenDelete] = React.useState(false);
     const [items, setItems] = React.useState([]);
     const [foodData, setFoodData] = React.useState([]);
+    const columns = ["food_id", "food_name", "food_type", "quantity", "food_price"];
+    const columnHeader = ["Food Id", "Food Name", "Food Type", "Quantity", "Food Price"];
 
     const openDialogAdd = () => {
         setOpenAdd(true);
@@ -183,17 +185,17 @@ function InventoryView() {
             <body style={{margin: 0, display: 'flex', height: "100vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', margin:10}}>
                     <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
+                    <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
+                    <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
+                    <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogDelete} content="Delete Item" />
                 </div>
                 <div style={{flex: 1}}>
-                    <InventoryTable foodData={foodData}></InventoryTable>
+                    <InventoryTable foodData={foodData} columns={columns} columnHeader={columnHeader}></InventoryTable>
                 </div>
             </body>
-            <div className='Inventory'>
-                
-            </div>
         </div>
     );
 };

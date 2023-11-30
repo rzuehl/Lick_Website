@@ -39,7 +39,7 @@ const Dropdown = ({open, trigger, menu}) => {
         <div className="dropdown" >
             {trigger}
             {open ? 
-            <ul className="menu">
+            <ul className="dropdown-content">
                 {menu.map((menuItem, index) => (
                     <li key={index} className="menu-item">{menuItem}</li>
                 ))}

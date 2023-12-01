@@ -133,17 +133,37 @@ function CashierView() {
 
       await waitForDialogClose();
       const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
+      const responseOrderStatus = await api.get('orderStatus', {params: {id: orderID}});
       orderItemList = [];
+      subtotal = 0;
       for(let i = 0; i < responseOrder.data.length; i++){
         const responseCost = await api.get('/cost', {params: {foodName: responseOrder.data[i].food_name.replace(/'/g, "''"), foodType: responseOrder.data[i].food_type}});
         orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price));
+        subtotal += responseCost.data[0].food_price;
       }
+      tax = subtotal * .05;
+      total = subtotal + tax;
+      document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+      document.getElementById('tax').innerText = tax.toFixed(2);
+      document.getElementById('total').innerText = total.toFixed(2);
       setOrderItemListState(orderItemList);
+    };
+
+    const changeOrderStatus = async() => {
+      //todo
+      return 0;
+    };
+
+    const submitCurrentOrder = async() => {
+      //todo
+      return 0;
     };
 
     var dropdownOptionsArray = [];
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems));
     dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder));
+    dropdownOptionsArray.push(createDropdownOptions(2, "Change Order Status", changeOrderStatus));
+    dropdownOptionsArray.push(createDropdownOptions(3, "Submit Current Order", submitCurrentOrder));
 
     const handleRowClick = (id) => {
       setSelectedRows((prevSelectedRows) => {

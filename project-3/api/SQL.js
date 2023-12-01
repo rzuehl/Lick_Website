@@ -169,6 +169,20 @@ const getPastOrder = (request, response, orderID) => {
   });
 }
 
+const getOrderStatus = (request, response, orderID) => {
+  const query = "SELECT order_status FROM order_details WHERE order_id = " + orderID;
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
 module.exports = {
   getInventory,
   getCategories,

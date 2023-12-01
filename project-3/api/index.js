@@ -75,6 +75,19 @@ app.get('/api/pastOrder', async(request, response) => {
   }
 });
 
+app.get('/api/orderStatus', async(request, response) => {
+  try{
+    const orderID = request.query.id;
+    const results = await sql.getOrderStatus(request, response, orderID);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

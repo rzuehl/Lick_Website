@@ -9,7 +9,7 @@ import axios from 'axios';
 function WeatherIcon() {
 
     const getWeatherReport = () => {
-        const API_URL = 'http://api.openweathermap.org/data/2.5/weather';
+        const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
         const API_KEY = '8d306f4359a995eeee32b2583f7ec5d2';
         const API_LAT = 30.625857233021996;
         const API_LON = -96.33859892069388;

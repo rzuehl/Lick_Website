@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from "@mui/material";
 import React from "react";
 
 function ManageOrderDialog(props) {
@@ -31,8 +31,8 @@ function ManageOrderDialog(props) {
                     />
                 </DialogContent>
                 <DialogActions>
-                    <button onClick={handleClose}>Cancel</button>
-                    <button onClick={() => handleConfirm(orderID.current.value)}>Confirm</button>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => handleConfirm(orderID.current.value)}>Confirm</Button>
                 </DialogActions>
             </Dialog>
         );

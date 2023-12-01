@@ -22,14 +22,26 @@ import InventoryTable from '../components/InventoryTable';
 function ManagerView() {
     var buttonType = "manager"; 
     const [open, setOpen] = React.useState(false);
-    const [startDate, setStart] = React.useState('NULL');
-    const [endDate, setEnd] = React.useState('NULL');
-    const [tableData, setTableData] = React.useState([])
-    const [tableColumns, setTableColumns] = React.useState([null]);
-    const [tableHeader, setTableHeader] = React.useState([null]);
+    const [date, setDate] = React.useState('Start');
+    const [startDate, setStart] = React.useState('Enter Start Date');
+    const [endDate, setEnd] = React.useState('Enter End Date');
+    const [tableData, setTableData] = React.useState([
+        {key: "Please Enter a Valid Date Range for Analysis"}
+    ])
+    const [tableColumns, setTableColumns] = React.useState(["key"]);
+    const [tableHeader, setTableHeader] = React.useState([]);
+
+    const invalidRange = () => {
+        setTableData([
+            {key: "Please Enter a Valid Date Range for Analysis"}
+        ]);
+        setTableColumns(["key"]);
+        setTableHeader([]);
+    }
 
     const handleProductUsage = async () => {
-        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
+        if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
+            invalidRange();
             return;
         }
 
@@ -40,7 +52,6 @@ function ManagerView() {
             setTableColumns(["date", "products_sold"]);
             let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
-                console.log(response.data[index]);
                 tempData.push({date: response.data[index].date.substring(0,10), products_sold: response.data[index].products_sold});
             }
             setTableData(tempData);
@@ -51,7 +62,8 @@ function ManagerView() {
     }
 
     const handleSalesReport = async () => {
-        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
+        if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
+            invalidRange();
             return;
         }
         
@@ -72,7 +84,8 @@ function ManagerView() {
     }
 
     const handleExcessReport = async () => {
-        if (startDate === "NULL"|| startDate ===''){
+        if (startDate === "Enter Start Date"|| startDate ===''){
+            invalidRange();
             return;
         }
         
@@ -119,14 +132,15 @@ function ManagerView() {
     }
 
     const handleOrderTrends = async () => {
-        if ((startDate === "NULL" || endDate === "NULL") || (startDate === '' || endDate === '')){
+        if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
+            invalidRange();
             return;
         }
         
         const parameters = [startDate, endDate];
         await api.post('/orderTrends', parameters)
         .then((response) => {
-            setTableHeader(["Item 1 Name", "Item 2 Name", "Times Sold Together"])
+            setTableHeader(["Item 1", "Item 2", "Times Sold Together"])
             setTableColumns(["item1_name", "item2_name", "times_sold_together"]);
             let tempData = [];
             for (let index = 0; index < 10; index++) {
@@ -143,19 +157,32 @@ function ManagerView() {
         setOpen(false);
     }
 
-    const handleConfirm = (values) => {
-        setStart(values[0]);
-        setEnd(values[1]);
+    const handleConfirm = (value) => {
+        if (value === '') {
+            return;
+        }
+        if (date === 'Start') {
+            setStart(value);
+        }
+        else {
+            setEnd(value);
+        }
         setOpen(false);
     }
 
-    const openDialog = () => {
+    const openDialogStart = () => {
+        setDate('Start');
+        setOpen(true);
+    }
+
+    const openDialogEnd = () => {
+        setDate('End');
         setOpen(true);
     }
 
     return (
         <div>
-            <ManagerDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm}></ManagerDialog>
+            <ManagerDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm} date={date}></ManagerDialog>
             <div className="customer-header">
                 <HamburgerButton />
                 <GeneralButton content="Translate" sidePadding={35} />
@@ -165,9 +192,12 @@ function ManagerView() {
                 <GeneralButton content="Order" sidePadding={20} route="/menu"/>
                 <OptionsDropdown sidePadding={20}/>
             </div>
-            <div className='customer-header'>
-                <p className='employeeText'>Current Date: {startDate} to {endDate}</p>
-                <EmployeeButton employeeType= {buttonType} onClick={openDialog} content="Update Date Range" />
+            <div className='customer-header' style={{backgroundColor: '#FFC7C8', color: 'black', fontSize: 30, fontWeight: 'bold', height: 200}}>
+                <p>Current Date: 
+                    <EmployeeButton employeeType= {buttonType} onClick={openDialogStart} content={startDate} textDecoration={'underline'}/>
+                    To
+                    <EmployeeButton employeeType= {buttonType} onClick={openDialogEnd} content={endDate} textDecoration={'underline'}/>
+                </p>
             </div>
             <body style={{margin: 0, display: 'flex', height: "90vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>

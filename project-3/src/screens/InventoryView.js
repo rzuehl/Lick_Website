@@ -19,6 +19,7 @@ import AddItem from '../components/AddItem';
 import EditItem from '../components/EditItem';
 import InventoryTable from '../components/InventoryTable';
 import DeleteItem from '../components/DeleteItem';
+import { Link } from 'react-router-dom';
 
 
 function InventoryView() {
@@ -182,9 +183,9 @@ function InventoryView() {
                 <GeneralButton content="Order" sidePadding={20} />
                 <OptionsDropdown sidePadding={20}/>
             </div>
-            <body style={{margin: 0, display: 'flex', height: "100vh"}}>
+            <body style={{margin: 0, display: 'flex', height: "90vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', margin:10}}>
-                    <EmployeeButton employeeType= {buttonType} onClick={handleViewInventory} content="View Inventory" />
+                    <EmployeeButton employeeType= {buttonType} route='/manager' content='Manager'/>
                     <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
                     <br/>
@@ -192,7 +193,7 @@ function InventoryView() {
                     <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogDelete} content="Delete Item" />
                 </div>
-                <div style={{flex: 1}}>
+                <div style={{flex: 1, marginRight: 50, marginBottom: 20}}>
                     <InventoryTable foodData={foodData} columns={columns} columnHeader={columnHeader}></InventoryTable>
                 </div>
             </body>

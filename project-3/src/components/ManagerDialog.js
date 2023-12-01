@@ -2,50 +2,58 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } 
 import React from "react";
 
 function ManagerDialog(props) {
-    const { onClose, open, onConfirm } = props;
+    const { onClose, open, onConfirm, date } = props;
 
-    const startInput = React.useRef('');
-    const endInput = React.useRef('');
+    const input = React.useRef('');
 
     const handleClose = () => {
         onClose();
     };
 
-    const handleConfirm = (start, end) => {
-        let values = [start, end]
-        onConfirm(values);
+    const handleConfirm = (input) => {
+        onConfirm(input);
     }
 
+    if (date === 'Start') {
         return (
             <Dialog onClose={handleClose} open={open}>
-                <DialogTitle> Date Range </DialogTitle>
                 <DialogContent>
                     <p>Start Date:</p>
                     <TextField
                         autoComplete="off"
                         id="Start-Date"
                         margin="dense"
-                        inputRef={startInput}
+                        inputRef={input}
                         type="date"
-                        placeholder="YYYY-MM-DD"
                     />
-                    <br/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button onClick={() => handleConfirm(input.current.value)}>Confirm</Button>
+                </DialogActions>
+            </Dialog>
+        );
+    }
+    else {
+        return (
+            <Dialog onClose={handleClose} open={open}>
+                <DialogContent>
                     <p>End Date:</p>
                     <TextField
                         autoComplete="off"
                         id="End-Date"
                         margin="dense"
-                        inputRef={endInput}
+                        inputRef={input}
                         type="date"
-                        placeholder="YYYY-MM-DD"
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => handleConfirm(startInput.current.value, endInput.current.value)}>Confirm</Button>
+                    <Button onClick={() => handleConfirm(input.current.value)}>Confirm</Button>
                 </DialogActions>
             </Dialog>
         );
+    }
 }
 
 export default ManagerDialog;

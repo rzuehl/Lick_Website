@@ -17,7 +17,7 @@ function InventoryTable(props) {
                 <TableHead>
                     <TableRow>
                         {header.map((column) => (
-                                <TableCell key={column} style={{backgroundColor: 'black', color: 'white'}}>
+                                <TableCell key={column} style={{backgroundColor: 'black', color: 'white', fontSize: 20, fontWeight: "bold"}}>
                                     {column}
                                 </TableCell>
                             ))}
@@ -27,7 +27,7 @@ function InventoryTable(props) {
                     {data.map((row, index) => (
                         <TableRow key={index}>
                             {properties.map((property, propIndex) => (
-                                <TableCell key={propIndex} style={{backgroundColor: index % 2 === 0 ? 'white' : 'whitesmoke'}}>{row[property]}</TableCell>
+                                <TableCell key={propIndex} style={{backgroundColor: index % 2 === 0 ? 'white' : 'whitesmoke', fontSize: 15}}>{row[property]}</TableCell>
                             ))}
                         </TableRow>
                     ))}

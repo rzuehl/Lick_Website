@@ -17,11 +17,15 @@ import { Grid } from '@mui/material';
 import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
 import InventoryTable from '../components/InventoryTable';
+import ManagerChart from '../components/ManagerChart';
 
 
 function ManagerView() {
     var buttonType = "manager"; 
     const [open, setOpen] = React.useState(false);
+    const [chartOpen, setChartOpen] = React.useState(false);
+    const [chartCategories, setChartCategories] = React.useState([])
+    const [chartData, setChartData] = React.useState([])
     const [date, setDate] = React.useState('Start');
     const [startDate, setStart] = React.useState('Enter Start Date');
     const [endDate, setEnd] = React.useState('Enter End Date');
@@ -50,15 +54,22 @@ function ManagerView() {
         .then((response) => {
             setTableHeader(["Date", "Items Sold"])
             setTableColumns(["date", "products_sold"]);
+            let tempChartCategories = [];
+            let tempChartData = [];
             let tempData = [];
             for (let index = 0; index < Object.keys(response.data).length; index++) {
+                tempChartCategories.push(response.data[index].date.substring(0,10));
+                tempChartData.push(response.data[index].products_sold);
                 tempData.push({date: response.data[index].date.substring(0,10), products_sold: response.data[index].products_sold});
             }
+            setChartCategories(tempChartCategories);
+            setChartData(tempChartData);
             setTableData(tempData);
         })
         .catch((error) => {
             console.log(error);
         });
+        setChartOpen(true);
     }
 
     const handleSalesReport = async () => {
@@ -157,6 +168,10 @@ function ManagerView() {
         setOpen(false);
     }
 
+    const handleChartClose = () => {
+        setChartOpen(false);
+    }
+
     const handleConfirm = (value) => {
         if (value === '') {
             return;
@@ -182,6 +197,7 @@ function ManagerView() {
 
     return (
         <div>
+            <ManagerChart onClose={handleChartClose} open={chartOpen} chartCategories={chartCategories} chartData={chartData}></ManagerChart>
             <ManagerDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm} date={date}></ManagerDialog>
             <div className="customer-header">
                 <HamburgerButton />

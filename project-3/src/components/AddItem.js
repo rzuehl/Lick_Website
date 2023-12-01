@@ -16,8 +16,10 @@ function AddItem(props) {
     };
 
     const handleConfirm = (foodType, foodName, quantity, foodPrice) => {
-        let values = [foodType.current.value, foodName.current.value, quantity.current.value, foodPrice.current.value]
-        onConfirm(values);
+        if (foodType && foodName.current.value && quantity.current.value && foodPrice.current.value) {
+            let values = [foodType.current.value, foodName.current.value, quantity.current.value, foodPrice.current.value]
+            onConfirm(values);
+        }
     }
 
         return (

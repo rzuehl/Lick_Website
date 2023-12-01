@@ -2,23 +2,26 @@ import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem,
 import React from "react";
 
 function EditItem(props) {
-    const { onClose, open, onConfirm, foods } = props;
+    const { onClose, open, onConfirm, foods, categories } = props;
 
     const foodTypes = foods;
 
     const [foodName, setFoodName] = React.useState(null);
     const quantity = React.useRef('');
     const foodPrice = React.useRef('');
+    const newName = React.useRef('');
+    const [newType, setFoodType] = React.useState('');
 
     const handleClose = () => {
         onClose();
     };
 
-    const handleConfirm = (foodName, quantity, foodPrice) => {
-        if (foodName && (quantity.current.value || foodPrice.current.value)) {
-            let values = [foodName, quantity.current.value, foodPrice.current.value]
+    const handleConfirm = (foodName, newName, newType, quantity, foodPrice) => {
+        if (foodName && (newName.current.value || newType || quantity.current.value || foodPrice.current.value)) {
+            let values = [foodName, newName.current.value, newType, quantity.current.value, foodPrice.current.value]
             onConfirm(values);
             setFoodName(null);
+            setFoodType('');
         }
     }
 
@@ -27,6 +30,12 @@ function EditItem(props) {
             setFoodName(value.id);
         }
     };
+
+    const handleChangeType = (event, value) => {
+        if (value !== null) {
+            setFoodType(value.id);
+        }
+    } 
 
         return (
             <Dialog onClose={handleClose} open={open} fullWidth maxWidth="sm">
@@ -41,6 +50,21 @@ function EditItem(props) {
                         renderInput={(params) => <TextField {...params} label="Food Name" />}
                     />
                     <br/>
+                    <p>Update Name:</p>
+                    <TextField
+                        fullWidth
+                        autoComplete="off"
+                        margin="dense"
+                        inputRef={newName}
+                    />
+                    <p>Update Food Type:</p>
+                    <Autocomplete
+                        disablePortal
+                        onChange={handleChangeType}
+                        id="Food-Type"
+                        options={categories}
+                        renderInput={(params) => <TextField {...params} label="Food Type" />}
+                    />
                     <p>Quantity:</p>
                     <TextField
                         fullWidth
@@ -61,7 +85,7 @@ function EditItem(props) {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => handleConfirm(foodName, quantity, foodPrice)}>Confirm</Button>
+                    <Button onClick={() => handleConfirm(foodName, newName, newType, quantity, foodPrice)}>Confirm</Button>
                 </DialogActions>
             </Dialog>
         );

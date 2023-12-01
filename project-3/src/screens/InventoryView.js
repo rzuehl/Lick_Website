@@ -29,6 +29,7 @@ function InventoryView() {
     const [openEdit, setOpenEdit] = React.useState(false);
     const [openDelete, setOpenDelete] = React.useState(false);
     const [items, setItems] = React.useState([]);
+    const [categories, setCategories] = React.useState([]);
     const [foodData, setFoodData] = React.useState([]);
     const columns = ["food_id", "food_name", "food_type", "quantity", "food_price"];
     const columnHeader = ["Food Id", "Food Name", "Food Type", "Quantity", "Food Price"];
@@ -42,12 +43,17 @@ function InventoryView() {
             const itemList = await api.get('/inventory');
 
             let itemMap = [];
+            let categoryMap = [];
     
             for (let i = 0; i < Object.keys(itemList.data).length; i++) {
                 itemMap.push({label: itemList.data[i].food_name + " (" + itemList.data[i].food_type + ")", id: itemList.data[i].food_id});
+                if (!categoryMap.some(item => item.label === itemList.data[i].food_type && item.id === itemList.data[i].food_type)) {
+                    categoryMap.push({ label: itemList.data[i].food_type, id: itemList.data[i].food_type });
+                  }
             }
     
             setItems(itemMap);
+            setCategories(categoryMap);
             
             setOpenEdit(true);
         } catch(err) {
@@ -120,9 +126,19 @@ function InventoryView() {
         //food id, quantity, price
         try {
             let foodId = values[0];
-            let quantity = parseInt(values[1]);
-            let foodPrice = parseFloat(values[2]).toFixed(2);
+            let newName = values[1];
+            let newType = values[2]
+            let quantity = parseInt(values[3]);
+            let foodPrice = parseFloat(values[4]).toFixed(2);
 
+            if (newName !== '') {
+                let parameters = [newName, foodId];
+                await api.post('/setName', parameters);
+            }
+            if (newType !== '') {
+                let parameters = [newType, foodId];
+                await api.post('/setType', parameters);
+            }
             if (!isNaN(quantity)) {
                 let parameters = [quantity, foodId];
                 await api.post('/setQuantity', parameters);
@@ -172,7 +188,7 @@ function InventoryView() {
     return (
         <div>
             <AddItem onClose={closeDialogAdd} open={openAdd} onConfirm={confirmDialogAdd}></AddItem>
-            <EditItem onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} foods={items}></EditItem>
+            <EditItem onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} foods={items} categories={categories}></EditItem>
             <DeleteItem onClose={closeDialogDelete} open={openDelete} onConfirm={confirmDialogDelete} foods={items}></DeleteItem>
             <div className="customer-header">
                 <HamburgerButton />

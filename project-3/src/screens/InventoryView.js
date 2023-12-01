@@ -184,7 +184,7 @@ function InventoryView() {
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <body style={{margin: 0, display: 'flex', height: "90vh"}}>
-                <div style={{display: 'flex', flexDirection: 'column', margin:10}}>
+                <div style={{display: 'flex', flexDirection: 'column', margin:10, marginTop:87}}>
                     <EmployeeButton employeeType= {buttonType} route='/manager' content='Manager'/>
                     <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />

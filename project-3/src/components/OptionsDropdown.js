@@ -5,7 +5,6 @@
 import React from 'react';
 import GeneralDropdown from '../components/GeneralDropdown';
 import { toggleStyle } from "../App"
-import { useState } from 'react';
 
 /**
  * OptionsDropdown is a custom component implementing GeneralDropdown with options specific to the Options menu
@@ -24,7 +23,6 @@ function OptionsDropdown(props) {
     //     }
     // };
 
-    const google = window.google;
 
     return (
         <GeneralDropdown content="Options" sidePadding={props.sidePadding} 
@@ -41,7 +39,7 @@ function OptionsDropdown(props) {
 
 const OptionButton = ({onclick, content}) => {
     return (
-        <a onClick={onclick}>{content}</a>
+        <p onClick={onclick}>{content}</p>
     )
 }
 

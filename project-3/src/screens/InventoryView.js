@@ -33,12 +33,10 @@ function InventoryView() {
     return (
         <div>
             <div className="customer-header">
-                <HamburgerButton />
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='Inventory'>

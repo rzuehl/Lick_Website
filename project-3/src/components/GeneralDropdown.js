@@ -13,10 +13,6 @@ import GeneralButton from "../components/GeneralButton";
  * @property {number} props.sidePadding - number setting side padding of button
  */
 function GeneralDropdown(props) {
-    const styles = {
-        paddingLeft: props.sidePadding,
-        paddingRight: props.sidePadding,
-    };
 
     var [optionsOpen, setOptionsOpen] = React.useState(false);
 

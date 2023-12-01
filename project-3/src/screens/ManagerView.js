@@ -10,9 +10,10 @@ import React from 'react';
 import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton';
-import HamburgerButton from '../components/HamburgerButton';
+// import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
+import WeatherIcon from '../components/WeatherIcon';
+// import weatherLogo from '../assets/weather-icon.png';
 import { Grid, TextField } from '@mui/material';
 import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
@@ -169,12 +170,10 @@ function ManagerView() {
         <div>
             <ManagerDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm}></ManagerDialog>
             <div className="customer-header">
-                <HamburgerButton />
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Logout" sidePadding={20} route="/" />
                 <ScreenTitle />
-                <GeneralButton content="Logout" sidePadding={20} route="/"/>
-                <GeneralButton content="Order" sidePadding={20} route="/menu"/>
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='customer-header'>

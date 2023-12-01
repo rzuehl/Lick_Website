@@ -4,7 +4,8 @@ import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
+// import weatherLogo from '../assets/weather-icon.png';
+import WeatherIcon from '../components/WeatherIcon.js';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
 var isCategory = false;
@@ -78,10 +79,10 @@ function CashierView() {
     return (
         <>
             <div className="customer-header">
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Logout" sidePadding={20} route="/" />
                 <ScreenTitle />
-                <GeneralButton content="Logout" sidePadding={20} route="/"/>
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='employeeUI'>

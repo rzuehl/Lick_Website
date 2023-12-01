@@ -13,20 +13,17 @@ import GeneralButton from '../components/GeneralButton';
 import GeneralInput from '../components/GeneralInput';
 import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
-import lickLogo from '../assets/lick-honest-logo.png';
-import weatherLogo from '../assets/weather-icon.png';
+import WeatherIcon from '../components/WeatherIcon';
+// import lickLogo from '../assets/lick-honest-logo.png';
+// import weatherLogo from '../assets/weather-icon.png';
 
 function LoginView() {
     return (
         <div>
             <div className="login-header">
-                <Link to="/">
-                    <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
-                </Link>
-                <GeneralButton content="Translate" sidePadding={35} /> 
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
-                <ScreenTitle />
+            <WeatherIcon />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
+                <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>

@@ -11,7 +11,7 @@ import { Carousel } from 'react-responsive-carousel';
  * @property {array} props.slides - array of javascript objects containing slide data 
  */
 function ImageSlider(props) {
-    console.log(`I am the best: ${props.slides}`);
+    // console.log(`I am the best: ${props.slides}`);
     return (
         <Carousel 
         className="carousel" 
@@ -22,7 +22,7 @@ function ImageSlider(props) {
         showArrows={true} 
         >
             {
-                props.slides.map((slide) => <img src={slide.image} alt={slide.altText} />)
+                props.slides.map((slide, index) => <img key={index} src={slide.image} alt={slide.altText} />)
             }
         </Carousel>
     );

@@ -13,8 +13,8 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ImageSlider from '../components/ImageSlider';
 import WeatherIcon from '../components/WeatherIcon';
 import ScreenTitle from '../components/ScreenTitle';
-import lickLogo from '../assets/lick-honest-logo.png';
-import weatherLogo from '../assets/weather-icon.png';
+// import lickLogo from '../assets/lick-honest-logo.png';
+// import weatherLogo from '../assets/weather-icon.png';
 import pumpkinImage from '../assets/pumpkin-pic.png';
 import cowImage from '../assets/cow-pic.png';
 import storeImage from '../assets/store-pic.png';
@@ -29,16 +29,10 @@ function CustomerView(props) {
     return (
         <div className={props.className}>
             <div className="customer-header">
-                <Link to="/">
-                    <img className="lick-logo" src={lickLogo} alt="Representing Lick Honest Icecream Customer Logo" />                
-                </Link>
-                <GeneralButton content="Translate" sidePadding={35} />
-                {/* <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" /> */}
                 <WeatherIcon />
-                <ScreenTitle />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
+                <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
-                {/* <GeneralButton content="Options" sidePadding={20}/> */}
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div>

@@ -3,7 +3,7 @@ import { InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, Tab
 
 function InventoryTable(props) {
 
-    const { foodData, columns, columnHeader } = props;
+    const { tableData, columns, columnHeader } = props;
 
     const [searchTerm, setSearchTerm] = React.useState('');
 
@@ -11,7 +11,7 @@ function InventoryTable(props) {
 
     const properties = columns;
 
-    const data = foodData;
+    const data = tableData;
 
     const filteredData = data.filter((row) =>
         properties.some((property) => String(row[property]).toLowerCase().includes(searchTerm.toLowerCase()))

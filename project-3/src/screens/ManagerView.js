@@ -18,6 +18,7 @@ import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
 import InventoryTable from '../components/InventoryTable';
 import ManagerChart from '../components/ManagerChart';
+import ManagerDashboard from '../components/ManagerDashboard';
 
 
 function ManagerView() {
@@ -208,17 +209,16 @@ function ManagerView() {
                 <GeneralButton content="Order" sidePadding={20} route="/menu"/>
                 <OptionsDropdown sidePadding={20}/>
             </div>
-            <div className='customer-header' style={{backgroundColor: '#FFC7C8', color: 'black', fontSize: 30, fontWeight: 'bold', height: 200}}>
-                <p>Current Date: 
+            <ManagerDashboard />
+            <body className='customer-header' style={{margin: 0, backgroundColor: '#FFC7C8', color: 'black', fontSize: 30, fontWeight: 'bold', display: 'flex', height:"10vh"}}>
+                <div style={{display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>Date Selected: 
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogStart} content={startDate} textDecoration={'underline'}/>
                     To
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEnd} content={endDate} textDecoration={'underline'}/>
-                </p>
-            </div>
+                </div>
+            </body>
             <body style={{margin: 0, display: 'flex', height: "90vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>
-                    <EmployeeButton employeeType= {buttonType}  route="/inventory" content="Inventory Management" />    
-                    <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={handleProductUsage} content="Product Usage" />
                     <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={handleSalesReport} content="Sales Report" />
@@ -230,7 +230,7 @@ function ManagerView() {
                     <EmployeeButton employeeType= {buttonType} onClick={handleOrderTrends} content="Order Trends" />
                 </div>
                 <div style={{flex: 1, marginRight: 50}}>
-                    <InventoryTable foodData={tableData} columns={tableColumns} columnHeader={tableHeader}></InventoryTable>
+                    <InventoryTable tableData={tableData} columns={tableColumns} columnHeader={tableHeader}></InventoryTable>
                 </div>
             </body>
         </div>

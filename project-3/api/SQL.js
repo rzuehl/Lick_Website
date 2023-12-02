@@ -231,6 +231,17 @@ const deleteItem = (request, response) => {
   })
 }
 
+const getEmployee = (request, response) => {
+  const query = "SELECT * FROM employee ORDER BY employee_id;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -247,5 +258,6 @@ module.exports = {
   setType,
   setQuantity,
   setPrice,
-  deleteItem
+  deleteItem,
+  getEmployee
 };

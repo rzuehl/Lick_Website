@@ -7,6 +7,7 @@ import LoginView from './screens/LoginView';
 import CashierView from './screens/CashierView';
 import ManagerView from './screens/ManagerView';
 import InventoryView from './screens/InventoryView';
+import UserManagement from './screens/UserManagement';
 
 var stylename = "default";
 export function toggleStyle() {
@@ -61,6 +62,9 @@ function App() {
           </Route>
           <Route exact path = "/inventory">
             <InventoryView />
+          </Route>
+          <Route exact path = "/users">
+            <UserManagement />
           </Route>
         </Switch>
       </div>    

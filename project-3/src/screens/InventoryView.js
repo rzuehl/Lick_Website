@@ -11,7 +11,6 @@ import GeneralButton from '../components/GeneralButton';
 import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
-import { Grid, private_createTypography } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
@@ -19,7 +18,7 @@ import AddItem from '../components/AddItem';
 import EditItem from '../components/EditItem';
 import InventoryTable from '../components/InventoryTable';
 import DeleteItem from '../components/DeleteItem';
-import { Link } from 'react-router-dom';
+import ManagerDashboard from '../components/ManagerDashboard';
 
 
 function InventoryView() {
@@ -199,10 +198,9 @@ function InventoryView() {
                 <GeneralButton content="Order" sidePadding={20} />
                 <OptionsDropdown sidePadding={20}/>
             </div>
-            <body style={{margin: 0, display: 'flex', height: "90vh"}}>
+            <ManagerDashboard />
+            <body style={{margin: 0, display: 'flex', height: "80vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', margin:10, marginTop:87}}>
-                    <EmployeeButton employeeType= {buttonType} route='/manager' content='Manager'/>
-                    <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add Item" />
                     <br/>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEdit} content="Edit Item" />
@@ -210,7 +208,7 @@ function InventoryView() {
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogDelete} content="Delete Item" />
                 </div>
                 <div style={{flex: 1, marginRight: 50, marginBottom: 20}}>
-                    <InventoryTable foodData={foodData} columns={columns} columnHeader={columnHeader}></InventoryTable>
+                    <InventoryTable tableData={foodData} columns={columns} columnHeader={columnHeader}></InventoryTable>
                 </div>
             </body>
         </div>

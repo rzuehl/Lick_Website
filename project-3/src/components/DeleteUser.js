@@ -7,6 +7,7 @@ function DeleteUser(props) {
     const [userName, setUserName] = React.useState(null);
 
     const handleClose = () => {
+        setUserName(null);
         onClose();
     };
 

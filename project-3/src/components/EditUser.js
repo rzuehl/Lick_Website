@@ -28,6 +28,9 @@ function EditUser(props) {
         if (value !== null) {
             setUserName(value.id);
         }
+        else {
+            setUserName(value);
+        }
     };
 
     const handleChangePosition = (event, value) => {

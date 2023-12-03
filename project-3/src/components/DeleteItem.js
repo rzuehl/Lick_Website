@@ -9,6 +9,7 @@ function DeleteItem(props) {
     const [foodName, setFoodName] = React.useState(null);
 
     const handleClose = () => {
+        setFoodName(null);
         onClose();
     };
 
@@ -23,6 +24,9 @@ function DeleteItem(props) {
     const handleChange = (event, value) => {
         if (value !== null) {
             setFoodName(value.id);
+        }
+        else {
+            setFoodName(value);
         }
     };
 

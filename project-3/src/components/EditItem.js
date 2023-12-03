@@ -31,11 +31,17 @@ function EditItem(props) {
         if (value !== null) {
             setFoodName(value.id);
         }
+        else {
+            setFoodName(value);
+        }
     };
 
     const handleChangeType = (event, value) => {
         if (value !== null) {
             setFoodType(value.id);
+        }
+        else {
+            setFoodType(value);
         }
     } 
 

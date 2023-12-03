@@ -80,6 +80,10 @@ app.post('/api/setQuantity', sql.setQuantity)
 app.post('/api/setPrice', sql.setPrice)
 app.post('/api/deleteItem', sql.deleteItem)
 app.get('/api/getEmployee', sql.getEmployee)
+app.post('/api/addEmployee', sql.addEmployee)
+app.post('/api/editEmployee', sql.editEmployee)
+app.post('/api/deleteEmployee', sql.deleteEmployee)
+app.get('/api/maxEmployee', sql.maxEmployee)
 
 //export API to vercel server
 module.exports = app;

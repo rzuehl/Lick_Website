@@ -12,7 +12,7 @@ function DeleteItem(props) {
         onClose();
     };
 
-    const handleConfirm = (foodName, quantity, foodPrice) => {
+    const handleConfirm = (foodName) => {
         if (foodName) {
             let values = [foodName]
             onConfirm(values);

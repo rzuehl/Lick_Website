@@ -242,6 +242,82 @@ const getEmployee = (request, response) => {
   })
 }
 
+const addEmployee = (request, response) => {
+  const query = "INSERT INTO employee OVERRIDING SYSTEM VALUE VALUES ($1 , $2 , $3 , $4 , $5);"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const editEmployee = (request, response) => {
+  if (request.body[0] === 'name') {
+    const query = "UPDATE employee SET name = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'address') {
+    const query = "UPDATE employee SET address = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'phoneNumber') {
+    const query = "UPDATE employee SET phone_number = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'position') {
+    const query = "UPDATE employee SET position = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+}
+
+const deleteEmployee = (request, response) => {
+  const query = "DELETE FROM employee WHERE employee_id = $1;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const maxEmployee = (request, response) => {
+  const query = "SELECT MAX(employee_id) FROM employee;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows[0].max)
+  })
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -259,5 +335,9 @@ module.exports = {
   setQuantity,
   setPrice,
   deleteItem,
-  getEmployee
+  getEmployee,
+  addEmployee,
+  editEmployee,
+  deleteEmployee,
+  maxEmployee
 };

@@ -13,6 +13,8 @@ function EditItem(props) {
     const [newType, setFoodType] = React.useState('');
 
     const handleClose = () => {
+        setFoodName(null);
+        setFoodType('');
         onClose();
     };
 

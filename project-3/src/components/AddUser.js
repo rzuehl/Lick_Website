@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button, InputAdornment } from "@mui/material";
 import React from "react";
 
 function AddUser(props) {
@@ -51,10 +51,14 @@ function AddUser(props) {
                     <p>Position:</p>
                     <TextField
                     fullWidth
-                    autoComplete="off"
+                    select
                     margin="dense"
+                    defaultValue={'e'}
                     inputRef={userPosition}
-                    />
+                    >
+                        <MenuItem key={'e'} value={'e'}>{'Employee'}</MenuItem>
+                        <MenuItem key={'m'} value={'m'}>{'Manager'}</MenuItem>
+                    </TextField>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>

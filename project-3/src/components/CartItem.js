@@ -44,7 +44,7 @@ const CartItem = (props) => {
                 <h2>Each</h2>
                 <h1>{`$${(props.price).toFixed(2)}`}</h1>
             </div>
-            <div className="flex justify-content-center">
+            <div className="flex justify-content-center plus-minus-input">
             <InputNumber min={0} value={quantity} onValueChange={(e) => handleInputChange(e)} showButtons buttonLayout="horizontal" inputStyle={{width: '3rem', textAlign: 'center'}}
                     decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
             </div>

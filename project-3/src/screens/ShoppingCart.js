@@ -15,7 +15,7 @@ import ScreenTitle from "../components/ScreenTitle";
 import weatherLogo from "../assets/weather-icon.png";
 import CartItem from "../components/CartItem";
 import lickLogo from "../assets/lick-honest-logo.png";
-        
+import { BsCartXFill } from "react-icons/bs";
 
 
 const ShoppingCart = (props) => {
@@ -83,7 +83,7 @@ const ShoppingCart = (props) => {
         <GeneralButton content="Options" sidePadding={20} />
       </div>
       <div className="cart-info">
-        <div className="cart-items">
+        <div>
           <div>
             {cartItems.length > 0 &&
               cartItems.map((item, index) => {
@@ -99,7 +99,14 @@ const ShoppingCart = (props) => {
                   />
                 );
               })}
-            {cartItems.length === 0 && <h1>Cart is empty</h1>}
+            {cartItems.length === 0 && (
+              <div className='cart-item empty-cart-container'>
+                  <div className='empty-cart-message'>
+                    <BsCartXFill style={{color: 'black', fontSize: '3rem'}} />
+                    <h1>Your Cart is Currently Empty!</h1>
+                  </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="checkout-right-container">

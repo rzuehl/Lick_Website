@@ -600,9 +600,11 @@ h1,h2,h3{
 .cart-info {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   margin: auto;
   margin-top: 2rem;
-  gap: 3rem;
+  gap: 8rem;
+  align-items: center;
 }
 
 .checkout-container {
@@ -700,9 +702,27 @@ h1,h2,h3{
   font-size: 1.5rem;
 }
 
+.plus-minus-input {
+  padding-right: 1rem;
+  padding-left: 1rem;
+}
+
 .item-information {
   display: flex;
   gap: 2rem;
   align-items: center;
   width: 60%;
+}
+
+.empty-cart-container {
+  padding: 2rem;
+  text-align: center;
+}
+
+.empty-cart-message {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
 }

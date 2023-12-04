@@ -13,6 +13,7 @@ import EmployeeButton from '../components/EmployeeButton';
 // import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
+import TranslateWindow from '../components/TranslateWindow';
 // import weatherLogo from '../assets/weather-icon.png';
 import { Grid, TextField } from '@mui/material';
 import api from '../api/posts';
@@ -175,6 +176,7 @@ function ManagerView() {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
+                <TranslateWindow />
             </div>
             <div className='customer-header'>
                 <p className='employeeText'>Current Date: {startDate} to {endDate}</p>

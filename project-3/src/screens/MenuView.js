@@ -14,6 +14,7 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import WeatherIcon from '../components/WeatherIcon';
+import TranslateWindow from '../components/TranslateWindow';
 // import weatherLogo from '../assets/weather-icon.png';
 // import lickLogo from '../assets/lick-honest-logo.png';
 
@@ -70,6 +71,7 @@ const MenuView = () => {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
+                <TranslateWindow />
             </div>
             <div className="menu-categories">
                 <h2 id="sandwich-category" style={categoryIndex === 0 ? {textDecoration: 'underline'} : null} onClick={() => categoryClick(0)}>Sandwiches</h2>

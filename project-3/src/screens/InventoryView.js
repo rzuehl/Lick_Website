@@ -8,9 +8,8 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
+import TranslateWindow from '../components/TranslateWindow';
 import { Grid } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 
@@ -38,6 +37,7 @@ function InventoryView() {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
+                <TranslateWindow />
             </div>
             <div className='Inventory'>
                 <Grid container>

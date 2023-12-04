@@ -2,9 +2,10 @@
  * React component implementing GeneralDropdown with options specific to the Options menu
 */
 
-import React from 'react';
+import React, { useState } from 'react';
 import GeneralDropdown from '../components/GeneralDropdown';
-import { toggleStyle } from "../App"
+import { toggleStyle } from '../App';
+import translateText from '../api/translate';
 
 /**
  * OptionsDropdown is a custom component implementing GeneralDropdown with options specific to the Options menu
@@ -23,12 +24,23 @@ function OptionsDropdown(props) {
     //     }
     // };
 
+    const [translateOpen, setTranslateOpen] = useState(true);
+    const toggleTranslateOpen = () => {
+        setTranslateOpen(!translateOpen);
+        console.log("translate window should be open: " + translateOpen);
+        if (translateOpen) {
+            document.getElementsByClassName("translate-window")[0].style.display = "block";
+        } else {
+            document.getElementsByClassName("translate-window")[0].style.display = "none";
+        }
+    }
+
 
     return (
         <GeneralDropdown content="Options" sidePadding={props.sidePadding} 
             menu={[
                 <OptionButton onclick={toggleStyle} content="High Contrast Mode" />,
-                
+                <OptionButton onclick={toggleTranslateOpen} content="Translator" />
             ]}
         />
     );

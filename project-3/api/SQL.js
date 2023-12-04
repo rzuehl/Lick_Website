@@ -190,6 +190,7 @@ module.exports = {
   getSales,
   getCost,
   getPastOrder,
+  getOrderStatus,
   restockReport,
   productUsage,
   orderTrends,

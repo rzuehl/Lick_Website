@@ -22,7 +22,7 @@ function TableDropdown(props) {
       setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
-      setAnchorEl(null);
+      setAnchorEl(null); 
     };
     const handleFunctionClick = (func) => {
         func();

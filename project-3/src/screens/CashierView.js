@@ -4,9 +4,9 @@ import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
+import WeatherIcon from '../components/WeatherIcon.js';
 import TableDropdown from '../components/TableDropdown.js';
 import ManageOrderDialog from '../components/ManageOrderDialog.js';
-import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 
 import Table from '@mui/material/Table';
@@ -421,10 +421,10 @@ function CashierView() {
         <>
             <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={orderStatusState} orderID={orderIDState}></ManageOrderDialog>
             <div className="customer-header">
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Logout" sidePadding={20} route="/" />
                 <ScreenTitle />
-                <GeneralButton content="Logout" sidePadding={20} route="/"/>
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='employeeUI'>

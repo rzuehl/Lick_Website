@@ -192,7 +192,7 @@ const addOrderItems = (request, response, orderID, items) => {
   const query = `
 
     WITH row_count AS (
-      SELECT COUNT(*)+1 AS count FROM order_inventory_join
+      SELECT COALESCE(MAX(id), 0) + 1 AS count FROM order_inventory_join
     )
 
     INSERT INTO order_inventory_join (id, order_id, food_id)
@@ -266,6 +266,188 @@ const deleteOrderItems = (request, response, orderID, items) => {
   });
 };
 
+const addInventoryItem = (request, response) => {
+  const query = "INSERT INTO inventory \n" +
+  "OVERRIDING SYSTEM VALUE \n" +
+  "VALUES ($1 , $2 , $3 , $4 , $5)"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const maxFoodId = (request, response) => {
+  const query = "SELECT MAX(food_id) FROM inventory;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows[0].max)
+  })
+}
+
+const setName = (request, response) => {
+  const query = "UPDATE inventory SET food_name = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const setType = (request, response) => {
+  const query = "UPDATE inventory SET food_type = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const setQuantity = (request, response) => {
+  const query = "UPDATE inventory SET quantity = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const setPrice = (request, response) => {
+  const query = "UPDATE inventory SET food_price = $1 WHERE food_id = $2;"
+
+  pool.query(query, request.body, (error, results) => {
+     if (error) {
+       throw error
+     }
+     response.status(200).json(results.rows)
+   })
+}
+
+const deleteItem = (request, response) => {
+  const query = "DELETE FROM inventory WHERE food_id = $1;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const getEmployee = (request, response) => {
+  const query = "SELECT * FROM employee ORDER BY employee_id;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const addEmployee = (request, response) => {
+  const query = "INSERT INTO employee OVERRIDING SYSTEM VALUE VALUES ($1 , $2 , $3 , $4 , $5);"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const editEmployee = (request, response) => {
+  if (request.body[0] === 'name') {
+    const query = "UPDATE employee SET name = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'address') {
+    const query = "UPDATE employee SET address = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'phoneNumber') {
+    const query = "UPDATE employee SET phone_number = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+  else if (request.body[0] === 'position') {
+    const query = "UPDATE employee SET position = $1 WHERE employee_id = $2;"
+  
+    pool.query(query, [request.body[1], request.body[2]], (error, results) => {
+      if (error) {
+        throw error
+      }
+      response.status(200).json(results.rows)
+    })
+  }
+}
+
+const deleteEmployee = (request, response) => {
+  const query = "DELETE FROM employee WHERE employee_id = $1;"
+
+  pool.query(query, request.body, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows)
+  })
+}
+
+const maxEmployee = (request, response) => {
+  const query = "SELECT MAX(employee_id) FROM employee;"
+
+  pool.query(query, (error, results) => {
+    if (error) {
+      throw error
+    }
+    response.status(200).json(results.rows[0].max)
+  })
+}
+
+const getEmployeeManagerStatus = (request, response) => {
+  // from employee table, see if 
+  const query = `SELECT position FROM employee WHERE name = $1;`;
+  // if response is m then return true, else return false
+    pool.query(query, request.body, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        response.status(200).json(results.rows)
+      }
+    });
+}
+
+        
+
 module.exports = {
   getInventory,
   getCategories,
@@ -279,5 +461,18 @@ module.exports = {
   restockReport,
   productUsage,
   orderTrends,
-  excessReport
+  excessReport,
+  addInventoryItem,
+  maxFoodId,
+  setName,
+  setType,
+  setQuantity,
+  setPrice,
+  deleteItem,
+  getEmployee,
+  addEmployee,
+  editEmployee,
+  deleteEmployee,
+  maxEmployee,
+  getEmployeeManagerStatus
 };

@@ -16,9 +16,9 @@ export function toggleStyle() {
     
     const style = document.documentElement.style;
     if (stylename === "default") {
-      style.setProperty("--lick-pink", "#FFC7C8");
-      style.setProperty("--lick-blue", "#7EEAFF");
-      style.setProperty("--cream", "#FFFDD0");
+      style.setProperty("--lick-pink", "#ff657f");
+      style.setProperty("--lick-blue", "#4d969c");
+      style.setProperty("--cream", "#F2F1DF");
       style.setProperty("--white", "#FFFFFF");
       style.setProperty("--black", "#000000");
       style.setProperty("--button-shadow", "#afafaffa");
@@ -28,10 +28,10 @@ export function toggleStyle() {
 
     } else {
       style.setProperty("--lick-pink", "#FF3333");
-      style.setProperty("--lick-blue", "#3333FF");
-      style.setProperty("--cream", "#FFFDE0");
+      style.setProperty("--lick-blue", "#9977FF");
+      style.setProperty("--cream", "#101010");
       style.setProperty("--white", "#FFFFFF");
-      style.setProperty("--black", "#000000");
+      style.setProperty("--black", "#9977FF");
       style.setProperty("--button-shadow", "#000000FF");
       style.setProperty("--font-size", "1.3rem");
       style.setProperty("--inter", "inter");

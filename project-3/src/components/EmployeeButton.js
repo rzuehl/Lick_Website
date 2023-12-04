@@ -2,7 +2,9 @@
  * React component rendering manager button
 */
 
+import { Typography } from '@mui/material';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 /**
  * EmployeeButton is a custom component rendering buttons for the manager and cashier page
@@ -13,13 +15,26 @@ import React from 'react';
  */
 function EmployeeButton(props) {
     const styles = {
+        textDecoration: props.textDecoration
     };
-        let className = "employeeButton " + props.employeeType; 
+
+    let className = "employeeButton " + props.employeeType; 
+
+    if (props.route) {
+        return (
+            <Link to={props.route} className={className} style={{alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
+                {props.content}
+            </Link>
+        );
+    }
+    else {
         return (
             <button onClick={props.onClick} className= {className} style={styles}>
                 {props.content}
             </button>
         );
+    }
+
 }
 
 export default EmployeeButton;

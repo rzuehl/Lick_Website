@@ -7,6 +7,9 @@ import LoginView from './screens/LoginView';
 import CashierView from './screens/CashierView';
 import ManagerView from './screens/ManagerView';
 import TranslateWindow from './components/TranslateWindow';
+import InventoryView from './screens/InventoryView';
+import UserManagement from './screens/UserManagement';
+import ShoppingCart from './screens/ShoppingCart';
 
 var stylename = "default";
 export function toggleStyle() {
@@ -59,6 +62,15 @@ function App() {
           </Route>
           <Route exact path ="/manager">
             <ManagerView />
+          </Route>
+          <Route exact path = "/inventory">
+            <InventoryView />
+          </Route>
+          <Route exact path = "/users">
+            <UserManagement />
+          </Route>
+          <Route exact path="/cart">
+            <ShoppingCart />
           </Route>
         </Switch>
       </div>    

@@ -228,9 +228,16 @@ function CashierView() {
       let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);
       let itemsDeleted = differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray);
       console.log(itemsAdded);
-      await api.post('/addOrderItems', {id: orderID, items: itemsAdded});
+      if(itemsAdded.length !== 0){
+        await api.post('/addOrderItems', {id: orderID, items: itemsAdded});
+      }
+      if(itemsDeleted.length !== 0){
+        await api.post('/deleteOrderItems', {id: orderID, items: itemsDeleted});
+      }
+      /*if(retrievedOrderStatus !== orderStatus){
+        await api.post('/changeOrderStatus', {orderStatus: orderStatus});
+      }*/
 
-      return 0;
     };
 
     const deleteOrder = async() => {

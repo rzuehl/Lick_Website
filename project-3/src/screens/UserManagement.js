@@ -3,6 +3,7 @@ import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
+import WeatherIcon from '../components/WeatherIcon';
 import api from '../api/posts';
 import InventoryTable from '../components/InventoryTable';
 import ManagerDashboard from '../components/ManagerDashboard';

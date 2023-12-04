@@ -12,6 +12,7 @@ import ScreenTitle from '../components/ScreenTitle';
 import { Grid } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
+import WeatherIcon from '../components/WeatherIcon';
 import api from '../api/posts';
 import AddItem from '../components/AddItem';
 import EditItem from '../components/EditItem';

@@ -11,6 +11,8 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import GeneralButton from "../components/GeneralButton";
+import OptionsDropdown from '../components/OptionsDropdown';
+import WeatherIcon from '../components/WeatherIcon';
 import ScreenTitle from "../components/ScreenTitle";
 import CartItem from "../components/CartItem";
 import { BsCartXFill } from "react-icons/bs";

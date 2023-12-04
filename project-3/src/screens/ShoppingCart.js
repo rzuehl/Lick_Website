@@ -12,9 +12,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import GeneralButton from "../components/GeneralButton";
 import ScreenTitle from "../components/ScreenTitle";
-import weatherLogo from "../assets/weather-icon.png";
 import CartItem from "../components/CartItem";
-import lickLogo from "../assets/lick-honest-logo.png";
 import { BsCartXFill } from "react-icons/bs";
 
 
@@ -64,23 +62,11 @@ const ShoppingCart = (props) => {
   return (
     <div>
       <div className="customer-header">
-        <Link to="/">
-          <img
-            className="lick-logo"
-            src={lickLogo}
-            alt="Representing Lick Honest Icecream Customer Logo"
-          />
-        </Link>
-        <GeneralButton content="Translate" sidePadding={35} />
-        <img
-          className="weather-logo"
-          src={weatherLogo}
-          alt="Icon representing weather"
-        />
-        <ScreenTitle />
+        <WeatherIcon />
         <GeneralButton content="Login" sidePadding={20} route="/login" />
-        <GeneralButton content="Menu" sidePadding={20} route="/menu" />
-        <GeneralButton content="Options" sidePadding={20} />
+        <ScreenTitle />
+        <GeneralButton content="Order" sidePadding={20} route="/menu" />
+        <OptionsDropdown sidePadding={20}/>
       </div>
       <div className="cart-info">
         <div>

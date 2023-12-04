@@ -8,12 +8,8 @@
 import React, { Component } from 'react';
 import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
-// import HamburgerButton from '../components/HamburgerButton';
-// import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
-// import weatherLogo from '../assets/weather-icon.png';
 import WeatherIcon from '../components/WeatherIcon.js';
-import TranslateWindow from '../components/TranslateWindow';
 
 // import * as imgs from "../assets/menu-pictures";
 import beverages from '../assets/menu-pictures/beverages.png';

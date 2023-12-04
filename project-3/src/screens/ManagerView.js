@@ -10,7 +10,6 @@ import React from 'react';
 import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton';
-// import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
 import { Grid, TextField } from '@mui/material';

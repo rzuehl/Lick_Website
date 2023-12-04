@@ -14,8 +14,6 @@ import GeneralInput from '../components/GeneralInput';
 import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
-// import lickLogo from '../assets/lick-honest-logo.png';
-// import weatherLogo from '../assets/weather-icon.png';
 
 function LoginView() {
     return (

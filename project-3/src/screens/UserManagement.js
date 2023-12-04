@@ -1,8 +1,6 @@
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
@@ -185,12 +183,10 @@ function UserManagement() {
             <EditUser onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} employees={employees} positions={positions}></EditUser>
             <DeleteUser onClose={closeDialogDelete} open={openDelete} onConfirm={confirmDialogDelete} employees={employees}></DeleteUser>
             <div className="customer-header">
-                <HamburgerButton />
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <ManagerDashboard />

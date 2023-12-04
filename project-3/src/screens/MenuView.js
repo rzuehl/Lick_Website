@@ -15,7 +15,6 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import WeatherIcon from '../components/WeatherIcon';
-import TranslateWindow from '../components/TranslateWindow';
 import regularItemContent from "../assets/regularItemContent";
 
 const MenuView = () => {

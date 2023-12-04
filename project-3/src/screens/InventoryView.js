@@ -8,9 +8,8 @@
 
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
-import HamburgerButton from '../components/HamburgerButton';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
+import { Grid } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import api from '../api/posts';
@@ -190,12 +189,10 @@ function InventoryView() {
             <EditItem onClose={closeDialogEdit} open={openEdit} onConfirm={confirmDialogEdit} foods={items} categories={categories}></EditItem>
             <DeleteItem onClose={closeDialogDelete} open={openDelete} onConfirm={confirmDialogDelete} foods={items}></DeleteItem>
             <div className="customer-header">
-                <HamburgerButton />
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <ManagerDashboard />

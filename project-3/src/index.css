@@ -1,16 +1,17 @@
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:regular,bold,italic&subset=latin,latin-ext');
+/*google font import*/
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');
 
 /*global css properties*/
-/* .default {
-  --lick-pink: #FFC7C8;
-  --lick-blue: #7EEAFF;
-  --cream: #FFFDD0;
+:root {
+  --lick-pink: #ff657f;
+  --lick-blue: #4d969c;
+  --cream: #F2F1DF;
   --white: #FFFFFF;
   --black: #000000;
   --button-shadow: #afafaffa;
   --font-size: 1.3rem;
   --inter: "inter";
-} */
+}
 
 /*setting border box model and other global elements*/
 html{
@@ -35,31 +36,6 @@ h1,h2,h3{
   margin: 0;
 }
 
-/*screen title styling*/
-.screen-title-container {
-  display: inline-block;
-  text-align: center;
-}
-
-.screen-title-container h1 {
-  display: block;
-  color: var(--lick-blue);
-  font-weight: bold;
-  font-family: 'Koulen', sans-serif;
-  font-size: 4.5rem;
-}
-
-/*General button styling*/
-.buttonStyle {
-  color: var(--white);
-  background-color: var(--lick-pink);
-  border: none;
-  padding: 0.65rem;
-  border-radius: 35px;
-  font-weight: bold;
-  font-size: 20px;
-  box-shadow: 5px 5px 5px var(--button-shadow);
-}
 
 a {
   color: var(--white);
@@ -69,34 +45,11 @@ a:hover {
   color: var(--white);
 }
 
-.buttonStyle:hover {
-  cursor: pointer;
-  opacity: 0.8;
+p {
+  padding: 0;
+  margin: 0;
 }
 
-.buttonStyle:active {
-  opacity: 0.6;
-}
-
-.buttonStyle:focus {
-  outline: none;
-}
-
-/*HamburgerButton styling*/
-.hamburger-button {
-  color: black;
-  width: 4rem;
-  height: 4rem;
-}
-
-.hamburger-button:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.hamburger-button:active {
-  opacity: 0.6;
-}
 
 /*customer view screen styling*/
 .lick-logo {
@@ -110,15 +63,6 @@ a:hover {
 
 .lick-logo:active {
   opacity:0.6;
-}
-
-.weather-logo:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.weather-logo:active {
-  opacity: 0.6;
 }
 
 .customer-header {
@@ -209,48 +153,10 @@ a:hover {
   gap: 2rem;
 }
   
-/*google font import*/
-@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Kay+Pho+Du:wght@700&display=swap');
 
-/*global css properties*/
-/* :root {
-  --cream: #FFFDD0;
-} */
 
-:root {
-  --lick-pink: #FFC7C8;
-  --lick-blue: #7EEAFF;
-  --cream: #FFFDD0;
-  --white: #FFFFFF;
-  --black: #000000;
-  --button-shadow: #afafaffa;
-  --font-size: 1.3rem;
-  --inter: "inter";
-  --tile-color: rgb(79, 75, 75);
-}
 
-/*setting border box model and other global elements*/
-/* html{
-  box-sizing: border-box;
-}
-*,
-*::before,
-*::after{
-  box-sizing: inherit;
-}
 
-body{
-  padding: 0;
-  margin: 0;
-  font-family: var(--inter);
-  color: var(--white);
-  background-color: var(--cream);
-  font-size: var(--font-size);
-}
-
-h1,h2,h3{
-  margin: 0;
-}
 
 /*screen title styling*/
 .screen-title-container {
@@ -292,11 +198,13 @@ h1,h2,h3{
   font-weight: bold;
   font-size: 20px;
   box-shadow: 5px 5px 5px var(--button-shadow);
+  text-decoration: none;
 }
 
 .buttonStyle:hover {
   cursor: pointer;
   opacity: 0.8;
+  text-decoration: none;
 }
 
 .buttonStyle:active {
@@ -310,15 +218,97 @@ h1,h2,h3{
 /* General Dropdown Styling */
 .dropdown {
   position: relative;
+  display: inline-block;
 }
 
-.dropdown .menu {
+.dropdown a:hover {
+  /* background-color: var(--lick-blue); */
+  text-decoration: underline;
+  text-size-adjust: 30;
+}
+
+.dropdown-content {
+  color: var(--white);
   background-color: var(--lick-pink);
+  border: none;
   position: absolute;
-  right: 10px;
+  top: 60px;
+  right: 0;
+  min-width: 160px;
   z-index: 1;
   list-style-type: none;
   text-align: center;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px var(--button-shadow);
+}
+
+.dropdown-content p {
+  cursor: pointer;
+  text-wrap: nowrap;
+  padding: 0px;
+  margin: 12px 16px;
+  display: block;
+  text-decoration: none;
+}
+
+.dropdown-content p:hover {
+  text-decoration: underline;
+}
+
+/* weather icon styling */
+.weather-icon {
+  background-color: var(--lick-pink);
+  border-radius: 50%;
+  box-shadow: 5px 5px 5px var(--button-shadow);
+}
+
+.weather-icon:hover {
+  text-decoration: underline;
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.weather-menu {
+  background-color: var(--lick-pink);
+  box-shadow: 5px 5px 5px var(--button-shadow);
+  position: fixed;
+  display: block;
+  list-style-type: none;
+  z-index: 1;
+  border-radius: 15px;
+  padding: 12px 16px;
+}
+
+/*Translate window styling*/
+.translate-window {
+  display: none;
+  background-color: var(--lick-pink);
+  padding: 10px 10px 10px 15px;
+  border-radius:15px 0 0 15px;
+  box-shadow: 5px 5px 5px var(--button-shadow);
+  position: fixed;
+  right: 0px;
+  bottom: 50px;
+  z-index: 2;
+  max-width: 500px;
+}
+
+.translate-window select {
+  padding: 5px;
+}
+
+.translate-window input {
+  padding-left: 10px;
+}
+
+.translate-window p {
+  background-color: var(--white);
+  color: var(--black);
+  border-color: var(--black);
+  border-width: thick;
+  margin-top: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 /*HamburgerButton styling*/
@@ -338,14 +328,6 @@ h1,h2,h3{
 }
 
 /*customer view screen styling*/
-.weather-logo:hover {
-  cursor: pointer;
-  opacity: 0.8;
-}
-
-.weather-logo:active {
-  opacity: 0.6;
-}
 
 .customer-header {
   margin-top: 1rem;

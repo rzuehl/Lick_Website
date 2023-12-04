@@ -10,11 +10,12 @@
 import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import api from "../api/posts";
-import GeneralButton from "../components/GeneralButton";
-import ScreenTitle from "../components/ScreenTitle";
-import MenuTile from "../components/MenuTile";
-import weatherLogo from "../assets/weather-icon.png";
-import lickLogo from "../assets/lick-honest-logo.png";
+import GeneralButton from '../components/GeneralButton';
+import OptionsDropdown from '../components/OptionsDropdown';
+import ScreenTitle from '../components/ScreenTitle';
+import MenuTile from '../components/MenuTile';
+import WeatherIcon from '../components/WeatherIcon';
+import TranslateWindow from '../components/TranslateWindow';
 import regularItemContent from "../assets/regularItemContent";
 
 const MenuView = () => {
@@ -111,36 +112,20 @@ const MenuView = () => {
       );
     }
   };
-
+  
   // upon mounting component, calling fetchInventory data using useEffect
   useEffect(() => {
     fetchInventoryData();
-  }, []);
+  }, [])
 
   return (
     <div>
       <div className="customer-header">
-        <Link to="/">
-          <img
-            className="lick-logo"
-            src={lickLogo}
-            alt="Representing Lick Honest Icecream Customer Logo"
-          />
-        </Link>
-        <GeneralButton content="Translate" sidePadding={35} />
-        <img
-          className="weather-logo"
-          src={weatherLogo}
-          alt="Icon representing weather"
-        />
-        <ScreenTitle />
+        <WeatherIcon />
         <GeneralButton content="Login" sidePadding={20} route="/login" />
-        <GeneralButton
-          content="Cart"
-          sidePadding={20}
-          onClick={onCartClick}
-        />
-        <GeneralButton content="Options" sidePadding={20} />
+        <ScreenTitle />
+        <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+        <OptionsDropdown sidePadding={20}/>
       </div>
       <div className="menu-categories">
         <h2

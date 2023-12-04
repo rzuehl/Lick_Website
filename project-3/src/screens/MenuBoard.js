@@ -8,13 +8,12 @@
 import React, { Component } from 'react';
 import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
-import HamburgerButton from '../components/HamburgerButton';
-import ImageSlider from '../components/ImageSlider';
+// import HamburgerButton from '../components/HamburgerButton';
+// import ImageSlider from '../components/ImageSlider';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
-import pumpkinImage from '../assets/pumpkin-pic.png';
-import cowImage from '../assets/cow-pic.png';
-import storeImage from '../assets/store-pic.png';
+// import weatherLogo from '../assets/weather-icon.png';
+import WeatherIcon from '../components/WeatherIcon.js';
+import TranslateWindow from '../components/TranslateWindow';
 
 // import * as imgs from "../assets/menu-pictures";
 import beverages from '../assets/menu-pictures/beverages.png';
@@ -50,11 +49,10 @@ function MenuBoard() {
     return (
         <div>
             <div className="customer-header">
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather" />
+            <WeatherIcon />
+                <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <ScreenTitle />
-                <GeneralButton content="Login" sidePadding={20} />
-                <GeneralButton content="Order" sidePadding={20} />
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
 

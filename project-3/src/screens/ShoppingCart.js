@@ -24,7 +24,7 @@ const ShoppingCart = (props) => {
   const location = useLocation();
   const data = location.state;
 
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState(data);
   const [cartSubtotal, setCartSubtotal] = useState(0);
 
   // computing subtotal from data
@@ -36,13 +36,30 @@ const ShoppingCart = (props) => {
     setCartSubtotal(subtotalSum);
   };
 
+  // function responsible for updating cartItems array when items are altered in shopping cart screen
+  const alterCartItems = (cartItemName, newCartItemQuantity) => {
+    const newCartItemArray = [...cartItems];
+    const index = newCartItemArray.findIndex((item) => item.name === cartItemName);
+    if (index !== -1) {
+        newCartItemArray[index].quantity = newCartItemQuantity;
+      setCartItems(newCartItemArray);
+    }
+    else {
+      console.log("Error: array element not found when altering cart Items function is executed");
+    }
+  };
+
   // utilizing useEffect to render cartItems upon component mount
   useEffect(() => {
-    // setting items into cartItems state
-    setCartItems(data);
     // computing cart subtotal and setting subtotal state
     computeSubtotal();
   }, []);
+
+  useEffect(() => {
+    computeSubtotal();
+  }, [cartItems])
+
+
 
   return (
     <div>
@@ -78,24 +95,34 @@ const ShoppingCart = (props) => {
                     name={item.name}
                     price={item.price}
                     quantity={item.quantity}
+                    changeParentQuantity={alterCartItems}
                   />
                 );
               })}
             {cartItems.length === 0 && <h1>Cart is empty</h1>}
           </div>
         </div>
-        <div className="checkout-container">
-          <div className="checkout-info">
-            <h2>Subtotal: </h2>
-            <h1>{`$${cartSubtotal.toFixed(2)}`}</h1>
+        <div className="checkout-right-container">
+          <div className="checkout-container">
+            <div className="checkout-info">
+              <h2>Subtotal: </h2>
+              <h1>{`$${cartSubtotal.toFixed(2)}`}</h1>
+            </div>
+            <div className="checkout-info">
+              <h2>Tax: </h2>
+              <h1>{`$${(cartSubtotal * 0.0625).toFixed(2)}`}</h1>
+            </div>
+            <div className="checkout-info">
+              <h2 className="order-total">Total: </h2>
+              <h1 className="order-total">{`$${(cartSubtotal + (cartSubtotal * 0.0625)).toFixed(2)}`}</h1>
+            </div>
           </div>
-          <div className="checkout-info">
-            <h2>Tax: </h2>
-            <h1>{`$${(cartSubtotal * 0.0625).toFixed(2)}`}</h1>
-          </div>
-          <div className="checkout-info">
-            <h2 className="order-total">Total: </h2>
-            <h1 className="order-total">{`$${(cartSubtotal + (cartSubtotal * 0.0625)).toFixed(2)}`}</h1>
+          <div>
+              <GeneralButton 
+                content="Checkout"
+                sidePadding={75}
+                route={'/menu'}
+              />
           </div>
         </div>
       </div>

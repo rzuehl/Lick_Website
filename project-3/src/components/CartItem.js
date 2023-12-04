@@ -17,23 +17,35 @@ import 'primeicons/primeicons.css';
  * @property {string} props.name - string showing name of the cart item
  * @property {number} props.price - string showing price of individual item
  * @property {number} props.quantity - number of items user wants to order
+ * @property {function} props.changeParentQuantity - function that alters parent's array containing cartItem data
  * */
 
-
 const CartItem = (props) => {
-    const total = props.price * props.quantity;
-    const [value, setValue] = useState(props.quantity);
+    const [quantity, setItemQuantity] = useState(props.quantity);
+    const [ total, setTotal ] = useState(props.price * props.quantity);
 
-    return(
+    // function responsible for updating values upon item quantity changing
+    const handleInputChange = (e) => {
+        const newQuantity = e.target.value;
+        if (newQuantity >= 0) {
+            setItemQuantity(newQuantity);
+            setTotal(props.price * newQuantity);
+            props.changeParentQuantity(props.name, newQuantity);
+        }
+    };
+
+    return (
         <div className='cart-item'>
-            <img src={props.src} alt={props.alt} />
-            <h1>{props.name}</h1>
+            <div className='item-information'>
+                <img src={props.src} alt={props.alt} />
+                <h1>{props.name}</h1>
+            </div>
             <div className='item-individual-price'>
                 <h2>Each</h2>
                 <h1>{`$${(props.price).toFixed(2)}`}</h1>
             </div>
             <div className="flex justify-content-center">
-            <InputNumber value={value} onValueChange={(e) => setValue(e.value)} showButtons buttonLayout="horizontal" inputStyle={{width: '3rem', textAlign: 'center'}}
+            <InputNumber min={0} value={quantity} onValueChange={(e) => handleInputChange(e)} showButtons buttonLayout="horizontal" inputStyle={{width: '3rem', textAlign: 'center'}}
                     decrementButtonClassName="p-button-secondary" incrementButtonClassName="p-button-secondary" incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" />
             </div>
             <div className="item-total">
@@ -43,7 +55,6 @@ const CartItem = (props) => {
         </div>
     );
 };
-
 
 export default CartItem;
 

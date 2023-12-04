@@ -604,7 +604,6 @@ h1,h2,h3{
   margin: auto;
   margin-top: 2rem;
   gap: 8rem;
-  align-items: center;
 }
 
 .checkout-container {
@@ -717,6 +716,7 @@ h1,h2,h3{
 .empty-cart-container {
   padding: 2rem;
   text-align: center;
+  margin-top: 6rem;
 }
 
 .empty-cart-message {

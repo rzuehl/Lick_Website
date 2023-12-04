@@ -54,7 +54,6 @@ function MenuBoard() {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
-                <TranslateWindow />
             </div>
 
             

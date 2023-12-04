@@ -6,6 +6,7 @@ import MenuView from './screens/MenuView';
 import LoginView from './screens/LoginView';
 import CashierView from './screens/CashierView';
 import ManagerView from './screens/ManagerView';
+import TranslateWindow from './components/TranslateWindow';
 
 var stylename = "default";
 export function toggleStyle() {
@@ -41,6 +42,7 @@ export function toggleStyle() {
 function App() {
   return (
     <BrowserRouter>
+      <TranslateWindow />
       <div>
         <Switch>
           <Route exact path="/">

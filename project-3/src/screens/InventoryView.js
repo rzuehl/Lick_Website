@@ -9,7 +9,6 @@
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
-import TranslateWindow from '../components/TranslateWindow';
 import { Grid } from '@mui/material';
 import EmployeeButton from '../components/EmployeeButton';
 
@@ -37,7 +36,6 @@ function InventoryView() {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
-                <TranslateWindow />
             </div>
             <div className='Inventory'>
                 <Grid container>

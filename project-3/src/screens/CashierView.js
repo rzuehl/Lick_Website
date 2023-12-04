@@ -4,8 +4,6 @@ import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
-import TranslateWindow from '../components/TranslateWindow';
-// import weatherLogo from '../assets/weather-icon.png';
 import WeatherIcon from '../components/WeatherIcon.js';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
@@ -85,7 +83,6 @@ function CashierView() {
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
-                <TranslateWindow />
             </div>
             <div className='employeeUI'>
                 <Grid container>

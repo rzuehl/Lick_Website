@@ -13,7 +13,6 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ImageSlider from '../components/ImageSlider';
 import WeatherIcon from '../components/WeatherIcon';
 import ScreenTitle from '../components/ScreenTitle';
-import TranslateWindow from '../components/TranslateWindow';
 // import lickLogo from '../assets/lick-honest-logo.png';
 // import weatherLogo from '../assets/weather-icon.png';
 import pumpkinImage from '../assets/pumpkin-pic.png';
@@ -28,14 +27,13 @@ function CustomerView(props) {
     ]
 
     return (
-        <div className={props.className}>
+        <>
             <div className="customer-header">
                 <WeatherIcon />
                 <GeneralButton content="Login" sidePadding={20} route="/login" />
                 <ScreenTitle />
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
-                <TranslateWindow />
             </div>
             <div>
                 <ImageSlider slides={slides} />
@@ -63,7 +61,7 @@ function CustomerView(props) {
                     </p>
                 </div>
             </div>
-        </div>
+        </>
     );
 };
 

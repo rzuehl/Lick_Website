@@ -22,6 +22,9 @@ import Button from '@mui/material/Button';
 
 import { TableVirtuoso } from 'react-virtuoso';
 
+import isEqual from 'lodash/isEqual.js';
+import differenceWith from 'lodash/differenceWith.js';
+
 import api from '../api/posts';
 
 var isCategory = false;
@@ -29,18 +32,21 @@ var category = "";
 var subtotal = 0;
 var tax = 0;
 var total = 0;
+var retrievedOrderItemList = [];
 var orderItemList = [];
 var selectedRows = [];
 var clicked = false;
 var orderID = -1;
+var retrievedOrderStatus = "";
+var orderStatus = "";
 var open = false;
 
 function createOrderItem(index, foodName, cost) {
     return {index, foodName, cost };
 }
 
-function createDropdownOptions(index, optionName, optionFunction) {
-  return {index, optionName, optionFunction};
+function createDropdownOptions(index, optionName, optionFunction, disabled) {
+  return {index, optionName, optionFunction, disabled};
 }
 
 const columns = [
@@ -69,9 +75,13 @@ function CashierView() {
     
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
     const [orderItemListState, setOrderItemListState] = useState(orderItemList);
+    const [orderItemListModified, setOrderItemListModified] = useState("");
     const [selectedRowsState, setSelectedRows] = useState(selectedRows);
     const [openState, setOpenState] = useState(open);
     const [orderIDState, setOrderIDState] = useState(orderID);
+    const [orderStatusState, setOrderStatusState] = useState(orderStatus);
+    const [orderStatusModified, setOrderStatusModified] = useState("");
+    const [disableInputState, setDisableInputState] = useState([-1]);
 
     const handleDialogClose = () => {
         open = false;
@@ -80,7 +90,9 @@ function CashierView() {
 
     const handleConfirm = (values) => {
         orderID = values[0];
+        orderStatus = values[1];
         setOrderIDState(values[0]);
+        setOrderStatusState(values[1]);
         open = false;
         setOpenState(open);
     }
@@ -89,6 +101,23 @@ function CashierView() {
         open = true;
         setOpenState(open);
     }
+
+    const waitForDialogClose = () => {
+      return new Promise(resolve => {
+        const checkCondition = () => {
+              if (!open) {
+                  resolve();
+              }
+              else {
+                setTimeout(checkCondition, 100);
+            }
+        }
+        checkCondition();
+      }
+      )
+    }
+
+    var dropdownOptionsArray = [];
 
     const removeItems = () =>{
       const removedItemCosts = orderItemList.filter((item) => selectedRows.includes(item.index)).map((selectedItem) => selectedItem.cost);
@@ -101,7 +130,12 @@ function CashierView() {
       document.getElementById('tax').innerText = tax.toFixed(2);
       document.getElementById('total').innerText = total.toFixed(2);
       orderItemList = orderItemList.filter((item) => !selectedRows.includes(item.index));
-      
+      if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqual).length === 0)){
+        setOrderItemListModified("(M)");
+      }
+      else{
+        setOrderItemListModified("");
+      }
       setOrderItemListState(orderItemList);
       selectedRows = [];
       setSelectedRows([]);
@@ -114,44 +148,54 @@ function CashierView() {
 
     const getPastOrder = async() =>{
       
+      let prevOrderID = orderID;
+      setDisableInputState([1]);
+
       await openDialog();
 
-      const waitForDialogClose = () => {
-        return new Promise(resolve => {
-          const checkCondition = () => {
-                if (!open) {
-                    resolve();
-                }
-                else {
-                  setTimeout(checkCondition, 100);
-              }
-          }
-          checkCondition();
-        }
-        )
-      }
-
       await waitForDialogClose();
-      const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
-      const responseOrderStatus = await api.get('orderStatus', {params: {id: orderID}});
-      orderItemList = [];
-      subtotal = 0;
-      for(let i = 0; i < responseOrder.data.length; i++){
-        const responseCost = await api.get('/cost', {params: {foodName: responseOrder.data[i].food_name.replace(/'/g, "''"), foodType: responseOrder.data[i].food_type}});
-        orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price));
-        subtotal += responseCost.data[0].food_price;
+      if(!(prevOrderID===orderID)){
+        const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
+        
+        const responseOrderStatus = await api.get('orderStatus', {params: {id: orderID}});
+        orderStatus = responseOrderStatus.data[0].order_status;
+        retrievedOrderStatus = orderStatus;
+        setOrderStatusState(orderStatus);
+        setOrderStatusModified("");
+        if(orderStatus === "Fulfilled"){
+          dropdownOptionsArray[0].disabled = true;
+          dropdownOptionsArray[2].disabled = true;
+          dropdownOptionsArray[3].disabled = true;
+        }
+
+        orderItemList = [];
+        subtotal = 0;
+        for(let i = 0; i < responseOrder.data.length; i++){
+          const responseCost = await api.get('/cost', {params: {foodName: responseOrder.data[i].food_name.replace(/'/g, "''"), foodType: responseOrder.data[i].food_type}});
+          orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price));
+          subtotal += responseCost.data[0].food_price;
+        }
+        retrievedOrderItemList = [...orderItemList];
+        tax = subtotal * .05;
+        total = subtotal + tax;
+        document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+        document.getElementById('tax').innerText = tax.toFixed(2);
+        document.getElementById('total').innerText = total.toFixed(2);
+        setOrderItemListState(orderItemList);
       }
-      tax = subtotal * .05;
-      total = subtotal + tax;
-      document.getElementById('subtotal').innerText = subtotal.toFixed(2);
-      document.getElementById('tax').innerText = tax.toFixed(2);
-      document.getElementById('total').innerText = total.toFixed(2);
-      setOrderItemListState(orderItemList);
     };
 
     const changeOrderStatus = async() => {
       //todo
-      return 0;
+      setDisableInputState([0]);
+      await openDialog();
+      await waitForDialogClose();
+      if(retrievedOrderStatus != orderStatus){
+        setOrderStatusModified("(M)");
+      }
+      else{
+        setOrderStatusModified("");
+      }
     };
 
     const submitCurrentOrder = async() => {
@@ -159,11 +203,10 @@ function CashierView() {
       return 0;
     };
 
-    var dropdownOptionsArray = [];
-    dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems));
-    dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder));
-    dropdownOptionsArray.push(createDropdownOptions(2, "Change Order Status", changeOrderStatus));
-    dropdownOptionsArray.push(createDropdownOptions(3, "Submit Current Order", submitCurrentOrder));
+    dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems, false));
+    dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(2, "Change Order Status", changeOrderStatus, false));
+    dropdownOptionsArray.push(createDropdownOptions(3, "Submit Changes to Current Order", submitCurrentOrder, false));
 
     const handleRowClick = (id) => {
       setSelectedRows((prevSelectedRows) => {
@@ -207,7 +250,7 @@ function CashierView() {
                 backgroundColor: 'background.paper',
               }}
             >
-              {column.label}
+              {column.label == 'Item' ? `${column.label} ${orderItemListModified}` : column.label}
             </TableCell>
           ))}
          </TableRow>
@@ -247,8 +290,8 @@ function CashierView() {
           sx={{
             backgroundColor: 'background.paper',
           }}
-          align="right">
-            Order ID: {orderIDState}
+          align="left">
+            Order ID: {orderIDState} <br/> Order Status: {orderStatusState} {orderStatusModified}
           </TableCell>
           <TableCell
             sx={{
@@ -283,6 +326,12 @@ function CashierView() {
                     //document.getElementById('cashierText').innerText += eventString + " | " + responseCost.data[0].food_price + "\n";
                     orderItemList.push(createOrderItem(orderItemList.length, eventString, responseCost.data[0].food_price));
                     setOrderItemListState(orderItemList);
+                    if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqual).length === 0)){
+                      setOrderItemListModified("(M)");
+                    }
+                    else{
+                      setOrderItemListModified("");
+                    }
                 }
                 const responseCategories = await api.get('/category');
                 categoryItemArray = responseCategories.data.map(item => item.food_type);
@@ -328,7 +377,7 @@ function CashierView() {
 
     return (
         <>
-            <ManageOrderDialog onClose={handleDialogClose} open={open} onConfirm={handleConfirm}></ManageOrderDialog>
+            <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={orderStatusState} orderID={orderIDState}></ManageOrderDialog>
             <div className="customer-header">
                 <GeneralButton content="Translate" sidePadding={35} />
                 <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
@@ -355,7 +404,7 @@ function CashierView() {
                         ))}
                     </Grid> 
                     <Grid item xs={4}>
-                    <Paper style={{ height: 400, width: '100%', marginBottom: '2%'}}>
+                    <Paper style={{ height: 400, width: '110%', marginBottom: '2%'}}>
                         <TableVirtuoso
                         data={orderItemListState}
                         components={VirtuosoTableComponents}
@@ -366,7 +415,7 @@ function CashierView() {
                         alignToBottom
                         /> 
                     </Paper>
-                        <div className='checkout-container'>
+                        <div className='checkout-container' style={{width: '110%'}}>
                           <div className='checkout-info'>
                             <h2>Subtotal: </h2>
                             <h1 id="subtotal"></h1>

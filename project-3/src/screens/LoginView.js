@@ -14,8 +14,89 @@ import GeneralInput from '../components/GeneralInput';
 import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import api from '../api/posts';
+
+const YOUR_CLIENT_ID = "a22df87cef72062af190";
+const YOUR_REDIRECT_URI = "https://project-3-907-03-git-login-backend-render-907-03.vercel.app/login";
 
 function LoginView() {
+    const [username, setUsername] = useState(null);
+    const [name, setName] = useState(null);
+    const [accessToken, setAccessToken] = useState(null);
+    const [userType, setUserType] = useState(null);
+
+    const handleGithubLogin = async () => {
+        // Get the code from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        if (!code) {
+            // Redirect the user to GitHub's OAuth page
+            window.location.href = `https://github.com/login/oauth/authorize?client_id=${YOUR_CLIENT_ID}&redirect_uri=${YOUR_REDIRECT_URI}`;
+        } else {
+            try {
+                // Send the code to your backend
+                const response = await axios.post('https://render-backend-xpg6.onrender.com/api/github/oauth', {
+                    code: code,
+                });
+
+            // Get the access token from the response
+            const accessToken = response.data.accessToken;
+            setAccessToken(accessToken);
+
+            // Use the access token to get the user's data
+            const userResponse = await axios.get('https://api.github.com/user', {
+                headers: {
+                    Authorization: `token ${accessToken}`,
+                },
+            });
+
+            // Set the username and name in the state
+            setUsername(userResponse.data.login);
+            setName(userResponse.data.name);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    };
+
+    // When user lands on the page, check if the URL contains a code
+    useEffect(() => {
+    handleGithubLogin();
+    }, []);
+
+    const handleLogout = () => {
+        // Clear the username, name, and access token from the state
+        setUsername(null);
+        setName(null);
+        setAccessToken(null);
+      
+        // Remove the code from the URL
+        window.history.pushState({}, document.title, "/");
+
+        // Send to home page
+        // window.location.href = '/';
+    };
+
+    const handleRedirect = async (name) => {
+        const response = await api.post('/employeeManagerStatus', [name])
+        console.log(response)
+
+        if (response.data && response.data[0] && response.data[0].position === 'm') {
+            setUserType('manager');
+        } else if (response.data && response.data[0] && response.data[0].position === 'e') {
+            setUserType('employee');
+        } else {
+            setUserType('customer');
+        }
+
+        return response;
+    }
+
+    handleRedirect(name);
+
     return (
         <div>
             <div className="login-header">
@@ -32,24 +113,30 @@ function LoginView() {
                 </div>
                 <div className="log-body">
                     <div className="log-body-content">
-                        <GeneralInput content="Email Address/Username" sidePadding={60} type="text" />
-                        <GeneralInput content="Password" sidePadding={60} type="password" />
-                        <GeneralButton content="Login Cashier" sidePadding={60} route="/cashier"/>
-                        <GeneralButton content="Login Manager" sidePadding={60} route="/manager"/>
+                        {username ? (
+                            <GeneralButton content="Logout" sidePadding={60} onClick={handleLogout}/>
+                            ) : (
+                            <GeneralButton content="Login with GitHub" sidePadding={60} onClick={handleGithubLogin}/>
+                            )}
+                            
+                        {username && <p style={{ color: 'red', textAlign: 'center' }}>Username: {username}</p>}
+                        {name && <p style={{ color: 'red', textAlign: 'center'  }}>Name: {name}</p>}
+
+                        {userType === 'manager' ? (
+                            <GeneralButton content="Manager View" sidePadding={60} route='/manager'/>
+                        ) : userType === 'employee' ? (
+                            <GeneralButton content="Cashier View" sidePadding={60} route='/cashier'/>
+                        ) : (
+                            <GeneralButton content="Start Order" sidePadding={60} route='/menu'/>
+                        )}
+                        {userType === 'manager' ? (
+                            <GeneralButton content="Cashier View" sidePadding={60} route='/cashier'/>
+                        ) : (
+                            <></>
+                        )}
                     </div>
                 </div>
             </div>
-            {/*
-            <div className="login-body">
-                <GeneralInput content="Email Address/Username" sidePadding={20} type="text" />
-                <GeneralInput content="Password" sidePadding={20} type="password" />
-                <GeneralButton content="Login" sidePadding={20} />
-            </div>
-
-            <div className="login-text">
-                Sign In
-            </div>
-            */}
         </div>
     );
 };

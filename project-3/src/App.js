@@ -66,6 +66,7 @@ function App() {
           </Route>
           <Route exact path = "/users">
             <UserManagement />
+          </Route>
           <Route exact path="/cart">
             <ShoppingCart />
           </Route>

@@ -11,6 +11,7 @@
   --button-shadow: #afafaffa;
   --font-size: 1.3rem;
   --inter: "inter";
+  --tile-color: rgb(79, 75, 75);
 }
 
 /*setting border box model and other global elements*/

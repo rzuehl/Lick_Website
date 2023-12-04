@@ -4,10 +4,11 @@ import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
 import ScreenTitle from '../components/ScreenTitle';
-import weatherLogo from '../assets/weather-icon.png';
+import WeatherIcon from '../components/WeatherIcon.js';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
-var category = false;
+var isCategory = false;
+var category = "";
 var subtotal = 0;
 var tax = 0;
 var total = 0;
@@ -26,7 +27,7 @@ function CashierView() {
         const fetchCategories = async () => {
             try{
                 if(event != null){
-                    const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''")}});
+                    const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''"), foodType: category}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
                     total = subtotal + tax;
@@ -44,6 +45,7 @@ function CashierView() {
             }
         }
         const fetchItems = async () => {
+            category = eventString;
             try{
                 const responseItems = await api.get('/foodItems', {params: {category: eventString}});
                 categoryItemArray = responseItems.data.map(item => item.food_name);
@@ -54,19 +56,19 @@ function CashierView() {
                 console.log(err);
             }
         }
-        if(category){
+        if(isCategory){
             fetchItems();
-            category = false;
+            isCategory = false;
         }
         else{
             fetchCategories();
-            category = true;
+            isCategory = true;
         }
     };
 
     useEffect(() => {
-        if(category){
-           category = false; 
+        if(isCategory){
+           isCategory = false; 
         }
         handleCategoryItems(null);
     }, []);
@@ -76,10 +78,10 @@ function CashierView() {
     return (
         <>
             <div className="customer-header">
-                <GeneralButton content="Translate" sidePadding={35} />
-                <img className="weather-logo" src={weatherLogo} alt="Icon representing weather"/>
+                <WeatherIcon />
+                <GeneralButton content="Logout" sidePadding={20} route="/" />
                 <ScreenTitle />
-                <GeneralButton content="Logout" sidePadding={20} route="/"/>
+                <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <div className='employeeUI'>

@@ -51,7 +51,8 @@ app.get('/api/foodItems', async(request, response) => {
 app.get('/api/cost', async(request, response) => {
   try{
     const foodName = request.query.foodName;
-    const results = await sql.getCost(request, response, foodName)
+    const foodType = request.query.foodType;
+    const results = await sql.getCost(request, response, foodName, foodType);
     console.log('Results:', results);
     response.status(200).json(results);
   }
@@ -72,6 +73,19 @@ app.get('/api/restockReport', sql.restockReport)
 app.post('/api/productUsage', sql.productUsage)
 app.post('/api/orderTrends', sql.orderTrends)
 app.post('/api/excessReport', sql.excessReport)
+app.post('/api/addInventoryItem', sql.addInventoryItem)
+app.get('/api/maxFoodId', sql.maxFoodId)
+app.post('/api/setName', sql.setName)
+app.post('/api/setType', sql.setType)
+app.post('/api/setQuantity', sql.setQuantity)
+app.post('/api/setPrice', sql.setPrice)
+app.post('/api/deleteItem', sql.deleteItem)
+app.get('/api/getEmployee', sql.getEmployee)
+app.post('/api/addEmployee', sql.addEmployee)
+app.post('/api/editEmployee', sql.editEmployee)
+app.post('/api/deleteEmployee', sql.deleteEmployee)
+app.get('/api/maxEmployee', sql.maxEmployee)
+app.post('/api/employeeManagerStatus', sql.getEmployeeManagerStatus)
 
 //export API to vercel server
 module.exports = app;

@@ -88,6 +88,19 @@ app.get('/api/orderStatus', async(request, response) => {
   }
 });
 
+app.post('/api/addOrderItems', async(request, response) => {
+  try{
+    const {id, items } = request.body;
+    //console.log(items);
+    await sql.addOrderItems(request, response, id, items);
+    response.status(200).send('Items added successfully');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

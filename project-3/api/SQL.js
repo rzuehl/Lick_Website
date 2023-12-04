@@ -1,3 +1,5 @@
+const { request } = require('.');
+
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
@@ -183,6 +185,51 @@ const getOrderStatus = (request, response, orderID) => {
   });
 }
 
+const addOrderItems = (request, response, orderID, items) => {
+  
+  const inClausePlaceholders = items.map((_, index) => `($${index * 3 + 2}, $${index * 3 + 3})`).join(',');
+
+  const query = `
+
+    WITH row_count AS (
+      SELECT COUNT(*)+1 AS count FROM order_inventory_join
+    )
+
+    INSERT INTO order_inventory_join (id, order_id, food_id)
+    SELECT
+        rc.count AS id,
+        $1 AS order_id,
+        i.food_id
+    FROM
+        row_count rc,
+        inventory AS i
+    WHERE
+        (i.food_name, i.food_type) IN (${inClausePlaceholders})
+  `;
+
+  // Flatten the items array into values
+  const values = items.reduce((acc, item) => {
+    acc.push(orderID, item.foodName.replace(/'/g, "''"), item.foodType);
+    return acc;
+  }, []);
+
+  //console.log('Generated Query:', query);
+  //console.log('Values:', values);
+
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve();
+      }
+      
+    });
+  });
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -191,6 +238,7 @@ module.exports = {
   getCost,
   getPastOrder,
   getOrderStatus,
+  addOrderItems,
   restockReport,
   productUsage,
   orderTrends,

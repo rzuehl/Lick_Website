@@ -318,6 +318,20 @@ const maxEmployee = (request, response) => {
   })
 }
 
+const getEmployeeManagerStatus = (request, response) => {
+  // from employee table, see if 
+  const query = `SELECT position FROM employee WHERE name = $1;`;
+  // if response is m then return true, else return false
+    pool.query(query, request.body, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        response.status(200).json(results.rows)
+      }
+    });
+}
+
 module.exports = {
   getInventory,
   getCategories,
@@ -339,5 +353,6 @@ module.exports = {
   addEmployee,
   editEmployee,
   deleteEmployee,
-  maxEmployee
+  maxEmployee,
+  getEmployeeManagerStatus
 };

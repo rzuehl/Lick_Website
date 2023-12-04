@@ -85,6 +85,7 @@ app.post('/api/addEmployee', sql.addEmployee)
 app.post('/api/editEmployee', sql.editEmployee)
 app.post('/api/deleteEmployee', sql.deleteEmployee)
 app.get('/api/maxEmployee', sql.maxEmployee)
+app.post('/api/employeeManagerStatus', sql.getEmployeeManagerStatus)
 
 //export API to vercel server
 module.exports = app;

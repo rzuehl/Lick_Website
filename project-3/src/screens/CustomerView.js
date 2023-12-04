@@ -13,8 +13,6 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ImageSlider from '../components/ImageSlider';
 import WeatherIcon from '../components/WeatherIcon';
 import ScreenTitle from '../components/ScreenTitle';
-// import lickLogo from '../assets/lick-honest-logo.png';
-// import weatherLogo from '../assets/weather-icon.png';
 import pumpkinImage from '../assets/pumpkin-pic.png';
 import cowImage from '../assets/cow-pic.png';
 import storeImage from '../assets/store-pic.png';

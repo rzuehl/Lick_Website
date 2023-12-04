@@ -6,6 +6,7 @@ import MenuView from './screens/MenuView';
 import LoginView from './screens/LoginView';
 import CashierView from './screens/CashierView';
 import ManagerView from './screens/ManagerView';
+import ShoppingCart from './screens/ShoppingCart';
 
 var stylename = "default";
 export function toggleStyle() {
@@ -57,6 +58,9 @@ function App() {
           </Route>
           <Route exact path ="/manager">
             <ManagerView />
+          </Route>
+          <Route exact path="/cart">
+            <ShoppingCart />
           </Route>
         </Switch>
       </div>    

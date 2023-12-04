@@ -41,8 +41,9 @@ var retrievedOrderStatus = "";
 var orderStatus = "";
 var open = false;
 
-function createOrderItem(index, foodName, cost) {
-    return {index, foodName, cost };
+function createOrderItem(index, foodName, cost, foodType) {
+    const numFoodID = orderItemList.filter(item => item.foodName === foodName).length;
+    return {index, foodName, cost, foodType, numFoodID};
 }
 
 function createDropdownOptions(index, optionName, optionFunction, disabled) {
@@ -67,11 +68,10 @@ const VirtuosoTableComponents = {
   TableFooter,
 };
 
-
 function CashierView() {
 
     var categoryItemArray = [];
-    
+    var dropdownOptionsArray = [];
     
     const [categoryItemArrayState, setCategoryItemArrayState] = useState(categoryItemArray);
     const [orderItemListState, setOrderItemListState] = useState(orderItemList);
@@ -117,7 +117,24 @@ function CashierView() {
       )
     }
 
-    var dropdownOptionsArray = [];
+    
+
+    const isEqualOrderItemArray = (arrItem, valuesItem) => {
+      return arrItem.foodName === valuesItem.foodName && arrItem.cost === valuesItem.cost && arrItem.numFoodID === valuesItem.numFoodID;
+    };
+
+    const updateOrderItems = (removedIndex) => {
+
+      if (removedIndex !== -1) {
+          const removedOrderItem = orderItemList.find(item => item.index === removedIndex);;
+    
+          orderItemList.forEach(item => {
+              if (item.foodName === removedOrderItem.foodName && item.numFoodID > removedOrderItem.numFoodID) {
+                  item.numFoodID -= 1;
+              }
+          });
+      }
+    };
 
     const removeItems = () =>{
       const removedItemCosts = orderItemList.filter((item) => selectedRows.includes(item.index)).map((selectedItem) => selectedItem.cost);
@@ -129,8 +146,12 @@ function CashierView() {
       document.getElementById('subtotal').innerText = subtotal.toFixed(2);
       document.getElementById('tax').innerText = tax.toFixed(2);
       document.getElementById('total').innerText = total.toFixed(2);
+      const removedItemsIndexList = orderItemList.filter((item) => selectedRows.includes(item.index)).map((selectedItem) => selectedItem.index);
+      for(let i = 0; i <removedItemsIndexList.length; i++){
+        updateOrderItems(removedItemsIndexList[i]);
+      }
       orderItemList = orderItemList.filter((item) => !selectedRows.includes(item.index));
-      if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqual).length === 0)){
+      if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray).length === 0) || !(differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray) === 0)){
         setOrderItemListModified("(M)");
       }
       else{
@@ -157,22 +178,24 @@ function CashierView() {
       if(!(prevOrderID===orderID)){
         const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
         
-        const responseOrderStatus = await api.get('orderStatus', {params: {id: orderID}});
-        orderStatus = responseOrderStatus.data[0].order_status;
-        retrievedOrderStatus = orderStatus;
-        setOrderStatusState(orderStatus);
-        setOrderStatusModified("");
-        if(orderStatus === "Fulfilled"){
-          dropdownOptionsArray[0].disabled = true;
-          dropdownOptionsArray[2].disabled = true;
-          dropdownOptionsArray[3].disabled = true;
+        const responseOrderStatus = await api.get('/orderStatus', {params: {id: orderID}});
+        if(responseOrderStatus.data.length !== 0){
+          orderStatus = responseOrderStatus.data[0].order_status;
+          retrievedOrderStatus = orderStatus;
+          setOrderStatusState(orderStatus);
+          setOrderStatusModified("");
+          if(orderStatus === "Fulfilled"){
+            dropdownOptionsArray[0].disabled = true;
+            dropdownOptionsArray[2].disabled = true;
+            dropdownOptionsArray[3].disabled = true;
+          }
         }
 
         orderItemList = [];
         subtotal = 0;
         for(let i = 0; i < responseOrder.data.length; i++){
           const responseCost = await api.get('/cost', {params: {foodName: responseOrder.data[i].food_name.replace(/'/g, "''"), foodType: responseOrder.data[i].food_type}});
-          orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price));
+          orderItemList.push(createOrderItem(orderItemList.length, responseOrder.data[i].food_name, responseCost.data[0].food_price, responseOrder.data[i].food_type));
           subtotal += responseCost.data[0].food_price;
         }
         retrievedOrderItemList = [...orderItemList];
@@ -190,7 +213,7 @@ function CashierView() {
       setDisableInputState([0]);
       await openDialog();
       await waitForDialogClose();
-      if(retrievedOrderStatus != orderStatus){
+      if(retrievedOrderStatus !== orderStatus){
         setOrderStatusModified("(M)");
       }
       else{
@@ -200,8 +223,20 @@ function CashierView() {
 
     const submitCurrentOrder = async() => {
       //todo
+      console.log(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray));
+      console.log(differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray));
+      let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);
+      let itemsDeleted = differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray);
+      console.log(itemsAdded);
+      await api.post('/addOrderItems', {id: orderID, items: itemsAdded});
+
       return 0;
     };
+
+    const deleteOrder = async() => {
+      //todo
+      return 0;
+    }
 
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems, false));
     dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder, false));
@@ -310,12 +345,12 @@ function CashierView() {
     const handleCategoryItems = (event) => {
         
         let eventString = "";
-        if(event != null){
+        if(event !== null){
             eventString = event.target.textContent;
         }
         const fetchCategories = async () => {
             try{
-                if(event != null && !(eventString === "Back")){
+                if(event !== null && !(eventString === "Back") && !(orderStatus === "Fulfilled")){
                     const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''"), foodType: category}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
@@ -324,9 +359,9 @@ function CashierView() {
                     document.getElementById('tax').innerText = tax.toFixed(2);
                     document.getElementById('total').innerText = total.toFixed(2);
                     //document.getElementById('cashierText').innerText += eventString + " | " + responseCost.data[0].food_price + "\n";
-                    orderItemList.push(createOrderItem(orderItemList.length, eventString, responseCost.data[0].food_price));
+                    orderItemList.push(createOrderItem(orderItemList.length, eventString, responseCost.data[0].food_price, category));
                     setOrderItemListState(orderItemList);
-                    if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqual).length === 0)){
+                    if(!(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray).length === 0)){
                       setOrderItemListModified("(M)");
                     }
                     else{

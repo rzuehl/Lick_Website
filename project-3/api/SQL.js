@@ -207,7 +207,6 @@ const addOrderItems = (request, response, orderID, items) => {
         (i.food_name, i.food_type) IN (${inClausePlaceholders})
   `;
 
-  // Flatten the items array into values
   const values = items.reduce((acc, item) => {
     acc.push(orderID, item.foodName.replace(/'/g, "''"), item.foodType);
     return acc;
@@ -230,6 +229,43 @@ const addOrderItems = (request, response, orderID, items) => {
   });
 }
 
+const deleteOrderItems = (request, response, orderID, items) => {
+  // Create placeholders for each item
+  const inClausePlaceholders = items.map((_, index) => `($${index * 2 + 2}, $${index * 2 + 3})`).join(',');
+
+  // Construct the main DELETE query
+  const query = `
+    DELETE FROM order_inventory_join
+    WHERE
+      order_id = $1
+      AND food_id IN (
+        SELECT i.food_id
+        FROM inventory AS i
+        WHERE (i.food_name, i.food_type) IN (${inClausePlaceholders})
+      )
+  `;
+
+  // Flatten the items array into values
+  const values = [orderID, ...items.reduce((acc, item) => {
+    acc.push(item.foodName, item.foodType);
+    return acc;
+  }, [])];
+
+  console.log('Generated Delete Query:', query);
+  console.log('Values:', values);
+
+  // Execute the DELETE query
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
 module.exports = {
   getInventory,
   getCategories,
@@ -239,6 +275,7 @@ module.exports = {
   getPastOrder,
   getOrderStatus,
   addOrderItems,
+  deleteOrderItems,
   restockReport,
   productUsage,
   orderTrends,

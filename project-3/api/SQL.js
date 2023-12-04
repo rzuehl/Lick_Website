@@ -138,8 +138,8 @@ const getFoodItems = (request, response, category) => {
   });
 }
 
-const getCost = (request, response, foodName) => {
-  const query = "SELECT * FROM inventory WHERE food_name = '" + foodName + "'";
+const getCost = (request, response, foodName, foodType) => {
+  const query = "SELECT * FROM inventory WHERE food_name = '" + foodName + "' AND food_type = '" + foodType + "'";
   return new Promise((resolve, reject) => {
     pool.query(query, (error, results) => {
       if(error){
@@ -157,6 +157,7 @@ module.exports = {
   getCategories,
   getFoodItems,
   getSales,
+  getCost,
   restockReport,
   productUsage,
   orderTrends,

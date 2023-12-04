@@ -7,7 +7,8 @@ import ScreenTitle from '../components/ScreenTitle';
 import weatherLogo from '../assets/weather-icon.png';
 import { Grid } from '@mui/material';
 import api from '../api/posts';
-var category = false;
+var isCategory = false;
+var category = "";
 var subtotal = 0;
 var tax = 0;
 var total = 0;
@@ -21,12 +22,12 @@ function CashierView() {
     const handleCategoryItems = (event) => {
         let eventString = "";
         if(event != null){
-            eventString = event.target.textContent.replace(/'/g, "\\'");
+            eventString = event.target.textContent;
         }
         const fetchCategories = async () => {
             try{
                 if(event != null){
-                    const responseCost = await api.get('/cost', {params: {foodName: eventString}});
+                    const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''"), foodType: category}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
                     total = subtotal + tax;
@@ -44,6 +45,7 @@ function CashierView() {
             }
         }
         const fetchItems = async () => {
+            category = eventString;
             try{
                 const responseItems = await api.get('/foodItems', {params: {category: eventString}});
                 categoryItemArray = responseItems.data.map(item => item.food_name);
@@ -54,19 +56,19 @@ function CashierView() {
                 console.log(err);
             }
         }
-        if(category){
+        if(isCategory){
             fetchItems();
-            category = false;
+            isCategory = false;
         }
         else{
             fetchCategories();
-            category = true;
+            isCategory = true;
         }
     };
 
     useEffect(() => {
-        if(category){
-           category = false; 
+        if(isCategory){
+           isCategory = false; 
         }
         handleCategoryItems(null);
     }, []);

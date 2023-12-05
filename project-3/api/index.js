@@ -53,8 +53,60 @@ app.get('/api/cost', async(request, response) => {
     const foodName = request.query.foodName;
     const foodType = request.query.foodType;
     const results = await sql.getCost(request, response, foodName, foodType);
-    console.log('Results:', results);
+    //console.log('Results:', results);
     response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/pastOrder', async(request, response) => {
+  try{
+    const orderID = request.query.id;
+    const results = await sql.getPastOrder(request, response, orderID);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/orderStatus', async(request, response) => {
+  try{
+    const orderID = request.query.id;
+    const results = await sql.getOrderStatus(request, response, orderID);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/addOrderItems', async(request, response) => {
+  try{
+    const {id, items } = request.body;
+    //console.log(items);
+    await sql.addOrderItems(request, response, id, items);
+    response.status(200).send('Items added successfully');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/deleteOrderItems', async(request, response) => {
+  try{
+    const {id, items } = request.body;
+    //console.log(items);
+    await sql.deleteOrderItems(request, response, id, items);
+    response.status(200).send('Items deleted successfully');
   }
   catch (error) {
     console.error('Error:', error);

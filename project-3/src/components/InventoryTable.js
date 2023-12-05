@@ -1,5 +1,5 @@
 import React from "react";
-import { InputAdornment, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
+import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, createTheme } from "@mui/material";
 
 function InventoryTable(props) {
 
@@ -17,14 +17,35 @@ function InventoryTable(props) {
         properties.some((property) => String(row[property]).toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
+    const { palette } = createTheme();
+
+    const theme = createTheme({
+        palette: {
+            lickPink: palette.augmentColor({
+                color: {
+                    main: "#ff657f"
+                }
+            })
+        },
+    });
+
     return (
         <div>
+            <ThemeProvider theme={theme}>
             <TextField
-            style={{margin:10}}
-            label='Search'
+            style={{margin:10, backgroundColor: "white", borderRadius: '5px'}}
+            autoComplete="off"
+            placeholder="Search"
             value={searchTerm}
+            color="lickPink"
+            focused
             onChange={(e) => setSearchTerm(e.target.value)}
+            inputProps={{
+                style: {
+                }
+            }}
             />
+            </ThemeProvider>
             <TableContainer component={Paper} style={{maxHeight: '80vh', overflow: 'auto', margin:10}}>
                 <Table stickyHeader sx={{ minWidth: 650}}>
                     <TableHead>
@@ -40,7 +61,7 @@ function InventoryTable(props) {
                         {filteredData.map((row, index) => (
                             <TableRow key={index}>
                                 {properties.map((property, propIndex) => (
-                            <TableCell key={propIndex} style={{backgroundColor: index % 2 === 0 ? 'white' : 'whitesmoke', fontSize: 15}}>{row[property]}</TableCell>
+                            <TableCell key={propIndex} style={{backgroundColor: index % 2 === 0 ? 'white' : 'whitesmoke', fontSize: 20, borderColor: 'black'}}>{row[property]}</TableCell>
                             ))}
                             </TableRow>
                         ))}

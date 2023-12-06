@@ -21,6 +21,19 @@ import ManagerDashboard from '../components/ManagerDashboard';
 
 function ManagerView() {
     var buttonType = "manager"; 
+    /**
+     * State Variables
+     * open: controls whether the ManagerDialog is open
+     * chartOpen: controls whether the ManagerChart is open
+     * chartCategories: holds the x-axis categories for ManagerChart
+     * chartData: holds the y-axis data for ManagerChart
+     * date: used to control whether the user is requesting a start date or an end date
+     * startDate: holds the value for the user selected start date
+     * endDate: holds the value for the user selected end date
+     * tableData: holds the data used in InventoryTable
+     * tableColumns: holds the column types used in InventoryTable
+     * tableHeader: holds the header values for the columns
+     */
     const [open, setOpen] = React.useState(false);
     const [chartOpen, setChartOpen] = React.useState(false);
     const [chartCategories, setChartCategories] = React.useState([])
@@ -34,6 +47,10 @@ function ManagerView() {
     const [tableColumns, setTableColumns] = React.useState(["key"]);
     const [tableHeader, setTableHeader] = React.useState([]);
 
+    /**
+     * Helper function used to set the table if there is an invalid data range
+     * @returns {Promise}
+     */
     const invalidRange = async () => {
         return new Promise((resolve, reject) => {
             setTableData([
@@ -44,6 +61,11 @@ function ManagerView() {
         });
     }
 
+    /**
+     * Function to handle a Product Usage request by querying the database
+     * Given a time window, displays a chart that depicts the amount of inventory used during that time period
+     * Uses startDate and endDate for the time period
+     */
     const handleProductUsage = async () => {
         if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
             invalidRange();
@@ -82,6 +104,11 @@ function ManagerView() {
         setChartOpen(true);
     }
 
+    /**
+     * Function to handle a Sales Report request by querying the database
+     * Given a time window, display the sales by item from the order history
+     * Uses startDate and endDate for the time period
+     */
     const handleSalesReport = async () => {
         if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
             invalidRange();
@@ -110,6 +137,11 @@ function ManagerView() {
         });
     }
 
+    /**
+     * Function to handle an Excess Report request by querying the database
+     * Given a timestamp, display the list of items that only sold less than 10% of their inventory between the timestamp and the current time, assuming no restocks have happened during the window.
+     * Uses startDate and endDate for the time period
+     */
     const handleExcessReport = async () => {
         if (startDate === "Enter Start Date"|| startDate ===''){
             invalidRange();
@@ -142,6 +174,10 @@ function ManagerView() {
             }
     }
 
+    /**
+     * Function to handle a Restock Report request by querying the database
+     * Displays the list of items whose current inventory is less than the item's minimum amount to have around before needing to restock.
+     */
     const handleRestockReport = async () => {
         await api.get('/restockReport')
         .then((response) => {
@@ -164,6 +200,12 @@ function ManagerView() {
         });
     }
 
+     /**
+     * Function to handle an Excess Report request by querying the database
+     * Given a time window, display a list of pairs of menu items that sell together often, popular or not, sorted by most frequent
+     * Uses startDate and endDate for the time period
+     * Displays the 15 most frequent items
+     */
     const handleOrderTrends = async () => {
         if ((startDate === "Enter Start Date" || endDate === "Enter End Date") || (startDate === '' || endDate === '')){
             invalidRange();
@@ -182,7 +224,7 @@ function ManagerView() {
             setTableHeader(["Item 1", "Item 2", "Times Sold Together"])
             setTableColumns(["item1_name", "item2_name", "times_sold_together"]);
             let tempData = [];
-            for (let index = 0; index < 10; index++) {
+            for (let index = 0; index < 15; index++) {
                 tempData.push(response.data[index]);
             }
             setTableData(tempData);
@@ -192,14 +234,26 @@ function ManagerView() {
         });
     }
 
+    /**
+     * Closes ManagerDialog by setting open to false
+     */
     const handleDialogClose = () => {
         setOpen(false);
     }
 
+    /**
+     * Closes ManagerChart by setting open to false
+     */
     const handleChartClose = () => {
         setChartOpen(false);
     }
 
+    /**
+     * Function to handle the ManagerDialog confirm
+     * Sets either the startDate or endDate selected by the user
+     * If the value is empty, it does not set either date.
+     * @param {Object} value
+     */
     const handleConfirm = (value) => {
         if (value === '') {
             return;
@@ -213,11 +267,19 @@ function ManagerView() {
         setOpen(false);
     }
 
+    /**
+     * Function to open the ManagerDialog in start date mode
+     * Sets date to start and open to true
+     */
     const openDialogStart = () => {
         setDate('Start');
         setOpen(true);
     }
 
+    /**
+     * Function to open the Manager Dialog in end date mode
+     * Sets date to end and open to true
+     */
     const openDialogEnd = () => {
         setDate('End');
         setOpen(true);

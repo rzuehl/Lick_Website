@@ -8,7 +8,6 @@ function ManagerDashboard(props) {
         <div style={{borderColor: 'black', borderTop:'solid', borderBottom:'solid', display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}> 
             <EmployeeButton employeeType= {buttonType}  route="/inventory" content="Inventory Management" />
             <EmployeeButton employeeType= {buttonType}  route="/manager" content="Manager Reports" />
-            <EmployeeButton employeeType= {buttonType}  route="/users" content="User Management" />
         </div>
         </body>
     );

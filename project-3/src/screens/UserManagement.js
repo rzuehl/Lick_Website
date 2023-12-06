@@ -36,16 +36,12 @@ function UserManagement() {
 
             for (let i = 0; i < Object.keys(employeeList.data).length; i++) {
                 employeeMap.push({label: employeeList.data[i].name + " (" + employeeList.data[i].employee_id + ")", id: employeeList.data[i].employee_id});
-                if (!positionMap.some(item => item.id === employeeList.data[i].position)) {
-                    if (employeeList.data[i].position === 'm') {
-                        positionMap.push({ label: 'Manager', id: employeeList.data[i].position });
-                    }
-                    else {
-                        positionMap.push({ label: 'Employee', id: employeeList.data[i].position });
-                    }
-                }
             }
 
+            positionMap.push({ label: 'Admin', id: 'a' });
+            positionMap.push({ label: 'Manager', id: 'm' });
+            positionMap.push({ label: 'Employee', id: 'e' });
+            
             setEmployees(employeeMap);
             setPositions(positionMap);
 

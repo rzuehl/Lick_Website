@@ -1,4 +1,5 @@
-const { request } = require('.');
+const { query } = require('express');
+const { request, response } = require('.');
 
 const Pool = require('pg').Pool;
 
@@ -187,33 +188,27 @@ const getOrderStatus = (request, response, orderID) => {
 
 const addOrderItems = (request, response, orderID, items) => {
   
-  const inClausePlaceholders = items.map((_, index) => `($${index * 3 + 2}, $${index * 3 + 3})`).join(',');
+  const inClausePlaceholders = items.map((_, index) => `($${index * 2 + 2}, $${index * 2 + 3})`).join(',');
 
   const query = `
-
-    WITH row_count AS (
-      SELECT COALESCE(MAX(id), 0) + 1 AS count FROM order_inventory_join
-    )
-
     INSERT INTO order_inventory_join (id, order_id, food_id)
     SELECT
-        rc.count AS id,
-        $1 AS order_id,
-        i.food_id
+      nextval('order_inventory_join_id_seq') AS id,
+      $1 AS order_id,
+      i.food_id
     FROM
-        row_count rc,
-        inventory AS i
+      inventory AS i
     WHERE
-        (i.food_name, i.food_type) IN (${inClausePlaceholders})
+      (i.food_name, i.food_type) IN (${inClausePlaceholders})
   `;
 
-  const values = items.reduce((acc, item) => {
-    acc.push(orderID, item.foodName.replace(/'/g, "''"), item.foodType);
+  const values = [orderID, ...items.reduce((acc, item) => {
+    acc.push(item.foodName.replace(/'/g, "''"), item.foodType);
     return acc;
-  }, []);
+  }, [])];
 
-  //console.log('Generated Query:', query);
-  //console.log('Values:', values);
+  console.log('Generated Query:', query);
+  console.log('Values:', values);
 
 
   return new Promise((resolve, reject) => {
@@ -230,10 +225,8 @@ const addOrderItems = (request, response, orderID, items) => {
 }
 
 const deleteOrderItems = (request, response, orderID, items) => {
-  // Create placeholders for each item
   const inClausePlaceholders = items.map((_, index) => `($${index * 2 + 2}, $${index * 2 + 3})`).join(',');
 
-  // Construct the main DELETE query
   const query = `
     DELETE FROM order_inventory_join
     WHERE
@@ -245,18 +238,71 @@ const deleteOrderItems = (request, response, orderID, items) => {
       )
   `;
 
-  // Flatten the items array into values
   const values = [orderID, ...items.reduce((acc, item) => {
-    acc.push(item.foodName, item.foodType);
+    acc.push(item.foodName.replace(/'/g, "''"), item.foodType);
     return acc;
   }, [])];
 
-  console.log('Generated Delete Query:', query);
-  console.log('Values:', values);
+  //console.log('Generated Delete Query:', query);
+  //console.log('Values:', values);
 
-  // Execute the DELETE query
   return new Promise((resolve, reject) => {
     pool.query(query, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+const changeOrderStatus = (request, response, orderID, orderStatus) => {
+  const query = `
+    UPDATE order_details
+    SET order_status = $1
+    WHERE order_id = $2;
+  `;
+
+  const values = [orderStatus, orderID];
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
+const maxIDOrderDetails = (request, response) =>{
+  
+  const query = "SELECT MAX(order_id) FROM order_details";
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+};
+
+const createNewOrder = (request, response, orderID, orderStatus) => {
+  const query = `
+    SELECT TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS') AS CurrentTimestamp
+    INSERT INTO order_details ($1, $2, $3, CurrentTimestamp, $4)
+  `;
+
+  const values = [orderID, orderStatus];
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error) => {
       if (error) {
         reject(error);
       } else {
@@ -458,6 +504,9 @@ module.exports = {
   getOrderStatus,
   addOrderItems,
   deleteOrderItems,
+  changeOrderStatus,
+  maxIDOrderDetails,
+  createNewOrder,
   restockReport,
   productUsage,
   orderTrends,

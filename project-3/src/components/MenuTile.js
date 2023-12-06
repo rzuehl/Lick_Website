@@ -31,7 +31,6 @@ const MenuTile = (props) => {
         setSelectedToppings((prevSelectedToppings) => prevSelectedToppings.includes(toppingItem) ? prevSelectedToppings.filter((selectedTopping) => selectedTopping !== toppingItem) : [...prevSelectedToppings, toppingItem]);
     };
 
-
     const handleOpen = () => {
       setOpen((prevState) => {
         //props.modelActive(!prevState);
@@ -56,7 +55,6 @@ const MenuTile = (props) => {
             itemToppings: selectedToppings,
         };
         props.buttonFunction(itemObject);
-        setSelectedToppings([]);
     }
 
     const handleAddItemButton = () => {

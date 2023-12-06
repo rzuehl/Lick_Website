@@ -1,5 +1,21 @@
+/* EditItem.js
+ * React component redering Edit Item dialog
+ */
+
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Autocomplete } from "@mui/material";
 import React from "react";
+
+/**
+ * Edit Item is a custom pop-up Dialog using MUI
+ * Renders all current items in the database
+ * Allows users to edit properties on a selected item
+ * @param {object} props - Javascript object containing passed in props into EditItem component
+ * @property {function} props.onClose - function to handle when the dialog is closed
+ * @property {boolean} props.open - boolean designating whether the dialog should be open
+ * @property {function} props.onConfirm - function to handle when the confirm button is pressed
+ * @property {object} props.foods - Javascript object containing all current foods in the inventory
+ * @property {object} props.categories - Javascript object containing all current food categories from the inventory
+ */
 
 function EditItem(props) {
     const { onClose, open, onConfirm, foods, categories } = props;

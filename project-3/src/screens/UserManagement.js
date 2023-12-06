@@ -1,3 +1,7 @@
+/* UserManagement.js
+ * React component to allow user management by admins
+*/
+
 import React from 'react';
 import GeneralButton from '../components/GeneralButton';
 import ScreenTitle from '../components/ScreenTitle';
@@ -13,6 +17,16 @@ import DeleteUser from '../components/DeleteUser';
 
 function UserManagement() {
     var buttonType = "manager";
+    /**
+     * State Variables
+     * firstOpen: used to render the inventory table if it is the users first open of the page
+     * tableData: array of objects used to render the data in the table
+     * openAdd: controls whether the AddUser component is open
+     * openEdit: controls whether the EditUser component is open
+     * openDelete: controls whether the DeleteUser component is open
+     * employees: array of objects to be passed into EditUser and DeleteUser to render current users in the database
+     * positions: array of objects to be passed into EditUser to render current users in the database
+     */
     const [firstOpen, setFirstOpen] = React.useState(true);
     const [tableData, setTableData] = React.useState([]);
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -23,10 +37,17 @@ function UserManagement() {
     const tableColumns = ['employee_id', 'name', 'address', 'phone_number', 'position'];
     const tableHeader = ['Employee Id', 'Name', 'Address', 'Phone Number', 'Position'];
 
+    /**
+     * Function to open the AddUser dialog
+     */
     const openDialogAdd = () => {
         setOpenAdd(true);
     }
 
+    /**
+     * Function to open the EditUser dialog
+     * Queries the database to get an updated list of users to send to the EditUser dialog
+     */
     const openDialogEdit = async () => {
         try {
             const employeeList = await api.get('/getEmployee');
@@ -54,6 +75,10 @@ function UserManagement() {
         setOpenEdit(true);
     }
 
+    /**
+     * Function to open the DeleteUser dialog
+     * Queries the database to get an updated list of users to send to the DeleteUser dialog
+     */
     const openDialogDelete = async () => {
         try {
             const employeeList = await api.get('/getEmployee');
@@ -74,18 +99,33 @@ function UserManagement() {
         
     }
 
+    /**
+     * Closes the AddUser dialog by setting openAdd to false
+     */
     const closeDialogAdd = () => {
         setOpenAdd(false);
     }
 
+    /**
+     * Closes the EditUser Dialog by setting openEdit to false
+     */
     const closeDialogEdit = () => {
         setOpenEdit(false);
     }
 
+    /**
+     * Closes the DeleteUser Dialog by setting openDelete to false
+     */
     const closeDialogDelete = () => {
         setOpenDelete(false);
     }
 
+    /**
+     * Function to handle the AddUser confirm
+     * Queries the database to get the next available userId
+     * Updates the employees table in the databse with the new user
+     * @param {object} values - array of values representing the new user details 
+     */
     const confirmDialogAdd = async (values) => {
         try {
             let employeeName = values[0];
@@ -105,6 +145,11 @@ function UserManagement() {
         setOpenAdd(false);
     }
 
+    /**
+     * Function to handle the EditUser confirm
+     * Updates the selected user with the new values selected from EditUser
+     * @param {object} values - array of values representing the new values for the selected user 
+     */
     const confirmDialogEdit = async (values) => {
         try {
             let employeeId = values[0];
@@ -145,6 +190,11 @@ function UserManagement() {
         setOpenEdit(false);
     }
 
+    /**
+     * Function to handle the DeleteUser confirm
+     * Removes the selected user from the employees table
+     * @param {object} values - holds the user to be deleted 
+     */
     const confirmDialogDelete = async (values) => {
         try {
             await api.post('/deleteEmployee', values);
@@ -156,6 +206,10 @@ function UserManagement() {
         setOpenDelete(false);
     }
 
+    /**
+     * Helper function that renders the InventoryTable with the current users
+     * Queries the database for a current list of users
+     */
     const handleViewEmployees = async () => {
         try {
             const response = await api.get('/getEmployee');

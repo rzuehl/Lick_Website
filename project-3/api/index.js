@@ -150,6 +150,18 @@ app.post('/api/createNewOrder', async(request, response) => {
   }
 });
 
+app.post('/api/deleteOrder', async(request, response) => {
+  try{
+    const {id} = request.body;
+    await sql.deleteOrder(request, response, id);
+    response.status(200).send('Order succesfully deleted');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })

@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import { useContext } from 'react';
+import { NameContext } from '../contexts/NameContext';
 import GeneralButton from '../components/GeneralButton';
 import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton.js';
@@ -40,6 +42,8 @@ var orderID;
 var retrievedOrderStatus = "Pending";
 var orderStatus = "Pending";
 var open = false;
+var isDelete = false;
+var deleteOrderID;
 
 function createOrderItem(index, foodName, cost, foodType) {
     const numFoodID = orderItemList.filter(item => item.foodName === foodName).length;
@@ -84,6 +88,7 @@ function CashierView() {
     const [orderStatusModified, setOrderStatusModified] = useState("");
     const [disableInputState, setDisableInputState] = useState([-1]);
     const [dropdownOptionsArrayState, setDropdownOptionsArrayState] = useState(dropdownOptionsArray);
+    const { name } = useContext(NameContext);
 
     const getMaxOrderID = async() => {
       const maxOrderID = await api.get('/maxIDOrderDetails');
@@ -97,12 +102,18 @@ function CashierView() {
     }
 
     const handleConfirm = async(values) => {
-        await getMaxOrderID();
-        if(values[0] <= orderID){
-          orderID = values[0];
+        if(!isDelete){
+          await getMaxOrderID();
+          if(values[0] <= orderID){
+            orderID = values[0];
+          }
+          setOrderIDState(orderID);
+        }
+        else{
+          deleteOrderID = values[0];
+          isDelete = false;
         }
         orderStatus = values[1];
-        setOrderIDState(orderID);
         setOrderStatusState(values[1]);
         open = false;
         setOpenState(open);
@@ -172,11 +183,6 @@ function CashierView() {
       selectedRows = [];
       setSelectedRows([]);
     };
-
-    const pay = () =>{
-      //todo
-      return 0;
-    }
 
     const getPastOrder = async() =>{
       
@@ -252,10 +258,9 @@ function CashierView() {
       //todo
       /*const maxOrderID = await api.get('/maxIDOrderDetails');
       if(maxOrderID.data[0].max === orderID){
-        await api.post('/createNewOrder', {id: orderID}); // need info on employee id to complete this function
+        await api.post('/createNewOrder', {id: orderID, customerName: customerName, employeeName: name, orderStatus: orderStatus});
       }*/
-      //console.log(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray));
-      //console.log(differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray));
+
       let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);
       let itemsDeleted = differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray);
       //console.log(itemsAdded);
@@ -295,8 +300,15 @@ function CashierView() {
     };
 
     const deleteOrder = async() => {
-      //todo
-      return 0;
+      setDisableInputState([1]);
+      isDelete = true;
+      await openDialog();
+      await waitForDialogClose();
+      console.log(deleteOrderID);
+      await api.post('/deleteOrder', {id: deleteOrderID});
+      if(deleteOrderID === orderID){
+        createNewOrder();
+      }
     }
 
     const createNewOrder = async() => {
@@ -310,6 +322,14 @@ function CashierView() {
       setOrderItemListState(orderItemList);
       setOrderStatusState(orderStatus);
       setRetrievedOrderStatusState(retrievedOrderStatus);
+      document.getElementById('subtotal').innerText = "";
+      document.getElementById('tax').innerText = "";
+      document.getElementById('total').innerText = "";
+    }
+
+    const pay = () =>{
+      createNewOrder(); //flextape solution rn
+      return 0;
     }
 
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems, false));

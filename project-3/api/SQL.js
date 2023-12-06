@@ -293,7 +293,7 @@ const maxIDOrderDetails = (request, response) =>{
   });
 };
 
-const createNewOrder = (request, response, orderID, orderStatus) => {
+const createNewOrder = (request, response, orderID, orderStatus) => { //TODO!
   const query = `
     SELECT TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS') AS CurrentTimestamp
     INSERT INTO order_details ($1, $2, $3, CurrentTimestamp, $4)
@@ -310,6 +310,31 @@ const createNewOrder = (request, response, orderID, orderStatus) => {
       }
     });
   });
+};
+
+const deleteOrder = async(request, response, orderID) => {
+
+  const queries = [
+    'DELETE FROM order_details WHERE order_id = $1',
+    'DELETE FROM order_inventory_join WHERE order_id = $1',
+  ];
+
+  const client = await pool.connect();
+
+  try {
+    await client.query('BEGIN');
+
+    for (const query of queries) {
+      await client.query(query, [orderID]);
+    }
+
+    await client.query('COMMIT');
+  } catch (error) {
+    await client.query('ROLLBACK');
+    throw error;
+  } finally {
+    client.release();
+  }
 };
 
 const addInventoryItem = (request, response) => {
@@ -507,6 +532,7 @@ module.exports = {
   changeOrderStatus,
   maxIDOrderDetails,
   createNewOrder,
+  deleteOrder,
   restockReport,
   productUsage,
   orderTrends,

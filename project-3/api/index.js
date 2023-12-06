@@ -88,6 +88,19 @@ app.get('/api/orderStatus', async(request, response) => {
   }
 });
 
+app.get('/api/orderCustomerName', async(request, response) => {
+  try{
+    const orderID = request.query.id;
+    const results = await sql.getOrderCustomerName(request, response, orderID);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.get('/api/maxIDOrderDetails', async(request, response) => {
   try{
     const results = await sql.maxIDOrderDetails(request, response);
@@ -138,10 +151,22 @@ app.post('/api/changeOrderStatus', async(request, response) => {
   }
 });
 
+app.post('/api/changeOrderCustomerName', async(request, response) => {
+  try{
+    const {id, customerName} = request.body;
+    await sql.changeOrderCustomerName(request, response, id, customerName);
+    response.status(200).send('Order status changed successfully');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/api/createNewOrder', async(request, response) => {
   try{
-    const {id, orderStatus} = request.body;
-    await sql.createNewOrder(request, response, id, orderStatus);
+    const {id, customerName, employeeName, orderStatus} = request.body;
+    await sql.createNewOrder(request, response, id, customerName, employeeName, orderStatus);
     response.status(200).send('New order created successfully');
   }
   catch (error) {
@@ -155,6 +180,18 @@ app.post('/api/deleteOrder', async(request, response) => {
     const {id} = request.body;
     await sql.deleteOrder(request, response, id);
     response.status(200).send('Order succesfully deleted');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.get('/api/allOrders', async(request, response) => {
+  try{
+    const results = await sql.getAllOrders(request, response);
+    //console.log('Results:', results);
+    response.status(200).json(results);
   }
   catch (error) {
     console.error('Error:', error);

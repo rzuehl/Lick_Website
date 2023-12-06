@@ -6,16 +6,18 @@ function ManageOrderDialog(props) {
 
     const orderID = React.useRef('');
     const orderStatus = React.useRef('');
+    const customerName = React.useRef('');
     var disabledInputs = props.disable;
     var currOrderStatus = props.status;
     var currOrderID = props.orderID;
+    var currCustomerName = props.customerName;
 
     const handleClose = () => {
         onClose();
     };
 
-    const handleConfirm = (orderID, orderStatus) => {
-        let values = [orderID, orderStatus]
+    const handleConfirm = (orderID, orderStatus, customerName) => {
+        let values = [orderID, orderStatus, customerName]
         onConfirm(values);
     }
 
@@ -52,10 +54,21 @@ function ManageOrderDialog(props) {
                         <MenuItem value = "Cancelled" disabled = {currOrderStatus === "Fulfilled"}>Cancelled</MenuItem>
                         <MenuItem value = "Fulfilled" disabled = {currOrderStatus === "Cancelled"}>Fulfilled</MenuItem>
                     </TextField>
+                    <p>Change Customer Name:</p>
+                    <TextField 
+                        disabled = {disabledInputs.includes(2)}
+                        id="Customer Name" 
+                        label="Customer Name" 
+                        inputRef={customerName}
+                        defaultValue={currCustomerName} 
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                    />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
-                    <Button onClick={() => handleConfirm(orderID.current.value, orderStatus.current.value)}>Confirm</Button>
+                    <Button onClick={() => handleConfirm(orderID.current.value, orderStatus.current.value, customerName.current.value)}>Confirm</Button>
                 </DialogActions>
             </Dialog>
         );

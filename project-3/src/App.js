@@ -43,6 +43,22 @@ export function toggleStyle() {
     }
 }
 
+var largeText = false;
+export function toggleLargeText() {
+  console.log("toggling large text")
+  if (largeText !== false) largeText = false;
+  else (largeText = true);
+
+  const style = document.documentElement.style;
+  if (largeText === false) {
+    console.log("normal size");
+    style.setProperty("--font-size", "1.3rem");
+  } else {
+    console.log("big size");
+    style.setProperty("--font-size", "1.6rem");
+  }
+}
+
 function App() {
   return (
     <NameProvider>

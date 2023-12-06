@@ -9,6 +9,7 @@ import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon.js';
 import TableDropdown from '../components/TableDropdown.js';
 import ManageOrderDialog from '../components/ManageOrderDialog.js';
+import ViewAllOrdersDialog from '../components/ViewAllOrdersDialog.js';
 import { Grid } from '@mui/material';
 
 import Table from '@mui/material/Table';
@@ -24,7 +25,6 @@ import Button from '@mui/material/Button';
 
 import { TableVirtuoso } from 'react-virtuoso';
 
-import isEqual from 'lodash/isEqual.js';
 import differenceWith from 'lodash/differenceWith.js';
 
 import api from '../api/posts';
@@ -42,13 +42,20 @@ var orderID;
 var retrievedOrderStatus = "Pending";
 var orderStatus = "Pending";
 var open = false;
+var tableOpen = false;
 var isDelete = false;
 var deleteOrderID;
+var customerName = "Guest";
+var retrievedCustomerName = "Guest";
 
 function createOrderItem(index, foodName, cost, foodType) {
     const numFoodID = orderItemList.filter(item => item.foodName === foodName).length;
     return {index, foodName, cost, foodType, numFoodID};
 }
+
+/*function createTableData(order_id, customer_name, employee_id, timestamp, order_status){
+   return {};
+}*/
 
 function createDropdownOptions(index, optionName, optionFunction, disabled) {
   return {index, optionName, optionFunction, disabled};
@@ -82,12 +89,17 @@ function CashierView() {
     const [orderItemListModified, setOrderItemListModified] = useState("");
     const [selectedRowsState, setSelectedRows] = useState(selectedRows);
     const [openState, setOpenState] = useState(open);
+    const [tableOpenState, setTableOpenState] = useState(tableOpen);
     const [orderIDState, setOrderIDState] = useState(orderID);
     const [orderStatusState, setOrderStatusState] = useState(orderStatus);
+    const [customerNameState, setCustomerNameState] = useState(customerName);
     const [retrievedOrderStatusState, setRetrievedOrderStatusState] = useState(retrievedOrderStatus);
+    const [retrievedCustomerNameState, setRetrievedCustomerNameState] = useState(retrievedCustomerName);
     const [orderStatusModified, setOrderStatusModified] = useState("");
+    const [customerNameModified, setCustomerNameModified] = useState("");
     const [disableInputState, setDisableInputState] = useState([-1]);
     const [dropdownOptionsArrayState, setDropdownOptionsArrayState] = useState(dropdownOptionsArray);
+    const [tableData, setTableData] = useState([]);
     const { name } = useContext(NameContext);
 
     const getMaxOrderID = async() => {
@@ -99,6 +111,11 @@ function CashierView() {
     const handleDialogClose = () => {
         open = false;
         setOpenState(open);
+    }
+
+    const handleTableDialogClose = () => {
+      tableOpen = false;
+      setTableOpenState(tableOpen);
     }
 
     const handleConfirm = async(values) => {
@@ -115,6 +132,8 @@ function CashierView() {
         }
         orderStatus = values[1];
         setOrderStatusState(values[1]);
+        customerName = values[2];
+        setCustomerNameState(customerName);
         open = false;
         setOpenState(open);
     }
@@ -123,6 +142,12 @@ function CashierView() {
         open = true;
         setOpenState(open);
     }
+
+    const openTableDialog = () => {
+      tableOpen = true;
+      setTableOpenState(tableOpen);
+    }
+
 
     const waitForDialogClose = () => {
       return new Promise(resolve => {
@@ -187,7 +212,7 @@ function CashierView() {
     const getPastOrder = async() =>{
       
       let prevOrderID = orderID;
-      setDisableInputState([1]);
+      setDisableInputState([1, 2]);
 
       await openDialog();
 
@@ -208,20 +233,33 @@ function CashierView() {
             dropdownOptionsArray[0].disabled = true;
             dropdownOptionsArray[2].disabled = true;
             dropdownOptionsArray[3].disabled = true;
+            dropdownOptionsArray[4].disabled = true;
           }
           else if(orderStatus === "Cancelled"){
             console.log("Cancelled");
             dropdownOptionsArray[0].disabled = true;
             dropdownOptionsArray[2].disabled = false;
             dropdownOptionsArray[3].disabled = false;
+            dropdownOptionsArray[4].disabled = false;
           }
           else if(orderStatus === "Pending"){
             console.log("Pending");
             dropdownOptionsArray[0].disabled = false;
             dropdownOptionsArray[2].disabled = false;
             dropdownOptionsArray[3].disabled = false;
+            dropdownOptionsArray[4].disabled = false;
           }
           setDropdownOptionsArrayState(dropdownOptionsArray);
+        }
+
+        const responseOrderCustomerName = await api.get('/orderCustomerName', {params: {id: orderID}});
+        if(responseOrderCustomerName.data.length !== 0){
+          customerName = responseOrderCustomerName.data[0].customer_name;
+          console.log(customerName);
+          retrievedCustomerName = customerName;
+          setRetrievedCustomerNameState(retrievedCustomerName);
+          setCustomerNameState(customerName);
+          setOrderStatusModified("");
         }
 
         orderItemList = [];
@@ -243,7 +281,7 @@ function CashierView() {
 
     const changeOrderStatus = async() => {
       //todo
-      setDisableInputState([0]);
+      setDisableInputState([0, 2]);
       await openDialog();
       await waitForDialogClose();
       if(retrievedOrderStatus !== orderStatus){
@@ -256,10 +294,14 @@ function CashierView() {
 
     const submitCurrentOrder = async() => {
       //todo
-      /*const maxOrderID = await api.get('/maxIDOrderDetails');
+      const maxOrderID = await api.get('/maxIDOrderDetails');
       if(maxOrderID.data[0].max === orderID){
+        let employeeName = "John";
+        if(name !== null){
+          employeeName = name;
+        }
         await api.post('/createNewOrder', {id: orderID, customerName: customerName, employeeName: name, orderStatus: orderStatus});
-      }*/
+      }
 
       let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);
       let itemsDeleted = differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray);
@@ -278,33 +320,42 @@ function CashierView() {
           dropdownOptionsArray[0].disabled = true;
           dropdownOptionsArray[2].disabled = true;
           dropdownOptionsArray[3].disabled = true;
+          dropdownOptionsArray[4].disabled = true;
         }
         else if(orderStatus === "Cancelled"){
           console.log("Cancelled");
           dropdownOptionsArray[0].disabled = true;
           dropdownOptionsArray[2].disabled = false;
           dropdownOptionsArray[3].disabled = false;
+          dropdownOptionsArray[4].disabled = false;
         }
         else if(orderStatus === "Pending"){
           console.log("Pending");
           dropdownOptionsArray[0].disabled = false;
           dropdownOptionsArray[2].disabled = false;
           dropdownOptionsArray[3].disabled = false;
+          dropdownOptionsArray[4].disabled = false;
         }
         setDropdownOptionsArrayState(dropdownOptionsArray);
       }
+
+      if(retrievedCustomerName !== customerName){
+        await api.post('/changeOrderCustomerName', {id: orderID, customerName: customerName});
+      }
+
+      retrievedCustomerName = customerName;
       retrievedOrderStatus = orderStatus;
       setRetrievedOrderStatusState(retrievedOrderStatus);
       setOrderStatusModified("");
       setOrderItemListModified("");
+      setCustomerNameModified("");
     };
 
     const deleteOrder = async() => {
-      setDisableInputState([1]);
+      setDisableInputState([1, 2]);
       isDelete = true;
       await openDialog();
       await waitForDialogClose();
-      console.log(deleteOrderID);
       await api.post('/deleteOrder', {id: deleteOrderID});
       if(deleteOrderID === orderID){
         createNewOrder();
@@ -332,12 +383,38 @@ function CashierView() {
       return 0;
     }
 
+    const changeCustomerName = async() => {
+      setDisableInputState([0, 1]);
+      await openDialog();
+      await waitForDialogClose();
+      if(retrievedCustomerName !== customerName){
+        setCustomerNameModified("(M)");
+      }
+      else{
+        setCustomerNameModified("");
+      }
+    }
+
+    const viewAllOrders = async() => {
+      const responseOrders = await api.get('/allOrders');
+      let tempData = [];
+      for (let index = 0; index < Object.keys(responseOrders.data).length; index++) {
+          tempData.push(responseOrders.data[index]);
+      }
+      setTableData(tempData);
+      await openTableDialog();
+
+    }
+
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems, false));
     dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder, false));
     dropdownOptionsArray.push(createDropdownOptions(2, "Change Order Status", changeOrderStatus, false));
-    dropdownOptionsArray.push(createDropdownOptions(3, "Submit Changes to Current Order", submitCurrentOrder, false));
-    dropdownOptionsArray.push(createDropdownOptions(4, "Delete Order", deleteOrder, false));
-    dropdownOptionsArray.push(createDropdownOptions(5, "Create New Order", createNewOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(3, "Change Customer Name", changeCustomerName, false));
+    dropdownOptionsArray.push(createDropdownOptions(4, "Submit Changes to Current Order", submitCurrentOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(5, "Delete Order", deleteOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(6, "Create New Order", createNewOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(7, "View All Orders", viewAllOrders, false));
+    
 
     const handleRowClick = (id) => {
       setSelectedRows((prevSelectedRows) => {
@@ -412,29 +489,31 @@ function CashierView() {
 
     const fixedFooterContent = () =>{
       return(
-        <TableRow key={-2}>
-          <TableCell 
-          sx={{
-              backgroundColor: 'background.paper',
-            }}/>
-          <TableCell
-          sx={{
-            backgroundColor: 'background.paper',
-          }}
-          align="left">
-            Order ID: {orderIDState} <br/> Order Status: {orderStatusState} {orderStatusModified}
-          </TableCell>
-          <TableCell
+        <>
+          <TableRow key={-3}>
+            <TableCell 
+            sx={{
+                backgroundColor: 'background.paper',
+              }}/>
+            <TableCell
             sx={{
               backgroundColor: 'background.paper',
-              display: 'flex'
             }}
-            align="right"
-            >
-            <Button id="basic-button" onClick={pay}>Pay</Button>
-            <TableDropdown name="Options" options={dropdownOptionsArrayState}/>
+            align="left">
+              Order ID: {orderIDState} <br/> Order Status: {orderStatusState} {orderStatusModified} <br/> Customer Name: {customerNameState} {customerNameModified} <br/> Employee Name: {name}
             </TableCell>
-        </TableRow>
+            <TableCell
+              sx={{
+                backgroundColor: 'background.paper',
+
+              }}
+              align="right"
+              >
+              <Button id="basic-button" onClick={pay}>Pay</Button>
+              <TableDropdown name="Options" options={dropdownOptionsArrayState}/> 
+              </TableCell>
+          </TableRow>
+        </>
       );
     };
 
@@ -509,7 +588,8 @@ function CashierView() {
 
     return (
         <>
-            <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={retrievedOrderStatusState} orderID={orderIDState}></ManageOrderDialog>
+            <ViewAllOrdersDialog onClose={handleTableDialogClose} open={tableOpenState} tableData = {tableData} columns = {["order_id", "customer_name", "employee_id", "timestamp", "order_status"]} columnHeader = {["Order ID", "Customer Name", "Employee ID", "Timestamp", "Order Status"]}/>
+            <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={retrievedOrderStatusState} orderID={orderIDState} customerName={retrievedCustomerNameState}></ManageOrderDialog>
             <div className="customer-header">
                 <WeatherIcon />
                 <GeneralButton content="Logout" sidePadding={20} route="/" />
@@ -536,7 +616,7 @@ function CashierView() {
                         ))}
                     </Grid> 
                     <Grid item xs={4}>
-                    <Paper style={{ height: 400, width: '110%', marginBottom: '2%'}}>
+                    <Paper style={{ height: 425, width: '110%', marginBottom: '2%'}}>
                         <TableVirtuoso
                         data={orderItemListState}
                         components={VirtuosoTableComponents}

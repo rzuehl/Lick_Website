@@ -186,6 +186,20 @@ const getOrderStatus = (request, response, orderID) => {
   });
 }
 
+const getOrderCustomerName = (request, response, orderID) => {
+  const query = "SELECT customer_name FROM order_details WHERE order_id = " + orderID;
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
 const addOrderItems = (request, response, orderID, items) => {
   
   const inClausePlaceholders = items.map((_, index) => `($${index * 2 + 2}, $${index * 2 + 3})`).join(',');
@@ -277,6 +291,26 @@ const changeOrderStatus = (request, response, orderID, orderStatus) => {
   });
 };
 
+const changeOrderCustomerName = (request, response, orderID, customerName) => {
+  const query = `
+    UPDATE order_details
+    SET customer_name = $1
+    WHERE order_id = $2;
+  `;
+
+  const values = [customerName, orderID];
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
+
 const maxIDOrderDetails = (request, response) =>{
   
   const query = "SELECT MAX(order_id) FROM order_details";
@@ -293,13 +327,22 @@ const maxIDOrderDetails = (request, response) =>{
   });
 };
 
-const createNewOrder = (request, response, orderID, orderStatus) => { //TODO!
+const createNewOrder = (request, response, orderID, customerName, employeeName, orderStatus) => { //TODO!
   const query = `
-    SELECT TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS') AS CurrentTimestamp
-    INSERT INTO order_details ($1, $2, $3, CurrentTimestamp, $4)
+    INSERT INTO order_details (order_id, customer_name, employee_id, timestamp, order_status)
+    SELECT 
+      $1 AS order_id,
+      $2 AS customer_name,
+      e.employee_id AS employee_id,
+      TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS') AS timestamp,
+      $4 AS order_status
+    FROM 
+      employee AS e
+    WHERE 
+      e.name = $3;
   `;
 
-  const values = [orderID, orderStatus];
+  const values = [orderID, customerName, employeeName, orderStatus];
 
   return new Promise((resolve, reject) => {
     pool.query(query, values, (error) => {
@@ -335,6 +378,22 @@ const deleteOrder = async(request, response, orderID) => {
   } finally {
     client.release();
   }
+};
+
+const getAllOrders = (request, response) =>{
+  
+  const query = "SELECT * FROM order_details ORDER BY order_id DESC LIMIT 10000";
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
 };
 
 const addInventoryItem = (request, response) => {
@@ -527,12 +586,15 @@ module.exports = {
   getCost,
   getPastOrder,
   getOrderStatus,
+  getOrderCustomerName,
   addOrderItems,
   deleteOrderItems,
   changeOrderStatus,
+  changeOrderCustomerName,
   maxIDOrderDetails,
   createNewOrder,
   deleteOrder,
+  getAllOrders,
   restockReport,
   productUsage,
   orderTrends,

@@ -56,8 +56,9 @@ function AddUser(props) {
                     defaultValue={'e'}
                     inputRef={userPosition}
                     >
-                        <MenuItem key={'e'} value={'e'}>{'Employee'}</MenuItem>
+                        <MenuItem key={'a'} value={'a'}>{'Admin'}</MenuItem>
                         <MenuItem key={'m'} value={'m'}>{'Manager'}</MenuItem>
+                        <MenuItem key={'e'} value={'e'}>{'Employee'}</MenuItem>
                     </TextField>
                 </DialogContent>
                 <DialogActions>

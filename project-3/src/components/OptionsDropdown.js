@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import GeneralDropdown from '../components/GeneralDropdown';
-import { toggleStyle } from '../App';
+import { toggleStyle, toggleLargeText } from '../App';
 import translateText from '../api/translate';
 
 /**
@@ -40,7 +40,8 @@ function OptionsDropdown(props) {
         <GeneralDropdown content="Options" sidePadding={props.sidePadding} 
             menu={[
                 <OptionButton onclick={toggleStyle} content="High Contrast Mode" />,
-                <OptionButton onclick={toggleTranslateOpen} content="Translator" />
+                <OptionButton onclick={toggleTranslateOpen} content="Translator" />,
+                <OptionButton onclick={toggleLargeText} content="Change Text Size" />
             ]}
         />
     );

@@ -21,9 +21,8 @@ function EmployeeButton(props) {
     }
 
     const styles = {
-        ...tempStyle,
-        textDecoration: props.textDecoration,
-    }; 
+        textDecoration: props.textDecoration
+    };
 
     let className = "employeeButton " + props.employeeType; 
 
@@ -35,8 +34,6 @@ function EmployeeButton(props) {
         );   
     }
     else {
-    
-        let className = "employeeButton " + props.employeeType; 
         return (
             <button onClick={props.onClick} className= {className} style={styles}>
                 {props.content}

@@ -12,7 +12,6 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import EmployeeButton from '../components/EmployeeButton';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
-import { Grid, TextField } from '@mui/material';
 import api from '../api/posts';
 import ManagerDialog from '../components/ManagerDialog';
 import InventoryTable from '../components/InventoryTable';
@@ -35,12 +34,14 @@ function ManagerView() {
     const [tableColumns, setTableColumns] = React.useState(["key"]);
     const [tableHeader, setTableHeader] = React.useState([]);
 
-    const invalidRange = () => {
-        setTableData([
-            {key: "Please Enter a Valid Date Range for Analysis"}
-        ]);
-        setTableColumns(["key"]);
-        setTableHeader([]);
+    const invalidRange = async () => {
+        return new Promise((resolve, reject) => {
+            setTableData([
+                {key: "Please Enter a Valid Date Range for Analysis"}
+            ]);
+            setTableColumns(["key"]);
+            setTableHeader([]);
+        });
     }
 
     const handleProductUsage = async () => {
@@ -51,12 +52,18 @@ function ManagerView() {
 
         const parameters = [startDate, endDate];
         await api.post('/productUsage', parameters)
-        .then((response) => {
+        .then(async (response) => {
             setTableHeader(["Date", "Items Sold"])
             setTableColumns(["date", "products_sold"]);
             let tempChartCategories = [];
             let tempChartData = [];
             let tempData = [];
+
+            if (Object.keys(response.data).length === 0) {
+                await invalidRange();
+                return;
+            }
+
             for (let index = 0; index < Object.keys(response.data).length; index++) {
                 tempChartCategories.push(response.data[index].date.substring(0,10));
                 tempChartData.push(response.data[index].products_sold);
@@ -69,6 +76,9 @@ function ManagerView() {
         .catch((error) => {
             console.log(error);
         });
+        if (tableHeader.length === 0) {
+            return;
+        }
         setChartOpen(true);
     }
 
@@ -81,6 +91,12 @@ function ManagerView() {
         const parameters = [startDate, endDate];
         await api.post('/getSales', parameters)
         .then((response) => {
+
+            if (Object.keys(response.data).length === 0) {
+                invalidRange();
+                return;
+            }
+
             setTableHeader(["Food Name", "Food Type", "Sales"])
             setTableColumns(["food_name", "food_type", "num_sales"]);
             let tempData = [];
@@ -129,6 +145,12 @@ function ManagerView() {
     const handleRestockReport = async () => {
         await api.get('/restockReport')
         .then((response) => {
+
+            if (Object.keys(response.data).length === 0) {
+                invalidRange();
+                return;
+            }
+
             setTableHeader(["Food Type", "Item to be Restocked", "Current Quantity"])
             setTableColumns(["food_type", "food_name", "quantity"]);
             let tempData = [];
@@ -151,6 +173,12 @@ function ManagerView() {
         const parameters = [startDate, endDate];
         await api.post('/orderTrends', parameters)
         .then((response) => {
+
+            if (Object.keys(response.data).length === 0) {
+                invalidRange();
+                return;
+            }
+
             setTableHeader(["Item 1", "Item 2", "Times Sold Together"])
             setTableColumns(["item1_name", "item2_name", "times_sold_together"]);
             let tempData = [];
@@ -207,8 +235,9 @@ function ManagerView() {
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <ManagerDashboard />
-            <body className='customer-header' style={{margin: 0, backgroundColor: '#FFC7C8', color: 'black', fontSize: 30, fontWeight: 'bold', display: 'flex', height:"10vh"}}>
-                <div style={{display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>Date Selected: 
+            <body className='report-Header'>
+                <div style={{display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>
+                    Date Selected: 
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogStart} content={startDate} textDecoration={'underline'}/>
                     To
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEnd} content={endDate} textDecoration={'underline'}/>

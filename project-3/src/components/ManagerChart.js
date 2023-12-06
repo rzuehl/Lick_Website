@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, Button } from "@mui/material";
 import { BarChart } from '@mui/x-charts/BarChart';
 import React from "react";
 
@@ -15,7 +15,7 @@ function ManagerChart(props) {
     };
 
     return (
-        <Dialog onClose={handleClose} open={open} maxWidth sx={{ backgroundColor: "#FFFDD0"}}>
+        <Dialog onClose={handleClose} open={open} maxWidth sx={{ backgroundColor: "#F2F1DF"}}>
             <DialogContent>
                 <BarChart
                     xAxis={[
@@ -28,7 +28,7 @@ function ManagerChart(props) {
                     series={[
                         {
                         data: series,
-                        color: "#7EEAFF"
+                        color: "#4d969c"
                         },
                     ]}
                     width={1500}

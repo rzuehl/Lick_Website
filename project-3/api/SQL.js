@@ -1,3 +1,5 @@
+const { request } = require('.');
+
 const Pool = require('pg').Pool;
 
 const pool = new Pool({
@@ -151,6 +153,118 @@ const getCost = (request, response, foodName, foodType) => {
     });
   });
 }
+
+const getPastOrder = (request, response, orderID) => {
+  const query = "SELECT i.food_name, i.food_type " + 
+  "FROM order_inventory_join oi " + 
+  "JOIN inventory i ON oi.food_id = i.food_id " +
+  "WHERE oi.order_id = " + orderID;
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
+const getOrderStatus = (request, response, orderID) => {
+  const query = "SELECT order_status FROM order_details WHERE order_id = " + orderID;
+  return new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve(results.rows);
+      }
+    });
+  });
+}
+
+const addOrderItems = (request, response, orderID, items) => {
+  
+  const inClausePlaceholders = items.map((_, index) => `($${index * 3 + 2}, $${index * 3 + 3})`).join(',');
+
+  const query = `
+
+    WITH row_count AS (
+      SELECT COALESCE(MAX(id), 0) + 1 AS count FROM order_inventory_join
+    )
+
+    INSERT INTO order_inventory_join (id, order_id, food_id)
+    SELECT
+        rc.count AS id,
+        $1 AS order_id,
+        i.food_id
+    FROM
+        row_count rc,
+        inventory AS i
+    WHERE
+        (i.food_name, i.food_type) IN (${inClausePlaceholders})
+  `;
+
+  const values = items.reduce((acc, item) => {
+    acc.push(orderID, item.foodName.replace(/'/g, "''"), item.foodType);
+    return acc;
+  }, []);
+
+  //console.log('Generated Query:', query);
+  //console.log('Values:', values);
+
+
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error) => {
+      if(error){
+        reject(error);
+      }
+      else{
+        resolve();
+      }
+      
+    });
+  });
+}
+
+const deleteOrderItems = (request, response, orderID, items) => {
+  // Create placeholders for each item
+  const inClausePlaceholders = items.map((_, index) => `($${index * 2 + 2}, $${index * 2 + 3})`).join(',');
+
+  // Construct the main DELETE query
+  const query = `
+    DELETE FROM order_inventory_join
+    WHERE
+      order_id = $1
+      AND food_id IN (
+        SELECT i.food_id
+        FROM inventory AS i
+        WHERE (i.food_name, i.food_type) IN (${inClausePlaceholders})
+      )
+  `;
+
+  // Flatten the items array into values
+  const values = [orderID, ...items.reduce((acc, item) => {
+    acc.push(item.foodName, item.foodType);
+    return acc;
+  }, [])];
+
+  console.log('Generated Delete Query:', query);
+  console.log('Values:', values);
+
+  // Execute the DELETE query
+  return new Promise((resolve, reject) => {
+    pool.query(query, values, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve();
+      }
+    });
+  });
+};
 
 const addInventoryItem = (request, response) => {
   const query = "INSERT INTO inventory \n" +
@@ -332,12 +446,18 @@ const getEmployeeManagerStatus = (request, response) => {
     });
 }
 
+        
+
 module.exports = {
   getInventory,
   getCategories,
   getFoodItems,
   getSales,
   getCost,
+  getPastOrder,
+  getOrderStatus,
+  addOrderItems,
+  deleteOrderItems,
   restockReport,
   productUsage,
   orderTrends,

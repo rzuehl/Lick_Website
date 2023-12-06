@@ -22,7 +22,7 @@ function TableDropdown(props) {
       setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
-      setAnchorEl(null);
+      setAnchorEl(null); 
     };
     const handleFunctionClick = (func) => {
         func();
@@ -52,7 +52,9 @@ function TableDropdown(props) {
                 <MenuItem key={option['index']} onClick={() => {
                     handleClose();
                     handleFunctionClick(option.optionFunction);
-                }}>{option['optionName']}</MenuItem>
+                }}
+                  disabled = {option.disabled}
+                >{option['optionName']}</MenuItem>
             ))}
           
         </Menu>

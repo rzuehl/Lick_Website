@@ -387,10 +387,28 @@ p {
   align-self: center;
 }
 
+/* Manager Styles */
+.report-Header {
+  margin-top: 1rem;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  gap: 3rem;
+  background-color: var(--lick-pink);
+  margin-bottom: 20px;
+  color: var(--white);
+  font-size: 30px;
+  font-weight: bold;
+  display: flex;
+  height: 10vh;
+}
 
 /*Employee Button Styling*/
 .employeeButton {
-  color: var(--black);
+  color: var(--white);
   background-color: var(--lick-pink);
   border: none;
   font-weight: bold;

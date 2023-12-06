@@ -18,15 +18,32 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import api from '../api/posts';
 
+/**
+ * Client ID from GitHub OAuth app
+ * Redirect URI set to /login
+ */
 const YOUR_CLIENT_ID = "a22df87cef72062af190";
-const YOUR_REDIRECT_URI = "https://project-3-907-03-git-development-907-03.vercel.app/login";
+const YOUR_REDIRECT_URI = "https://project-3-907-03.vercel.app/login";
 
 function LoginView() {
+    /**
+     * State variables
+     * username: GitHub username
+     * name: GitHub name
+     * accessToken: GitHub access token
+     * userType: customer, employee, or manager
+     */
     const [username, setUsername] = useState(null);
     const [name, setName] = useState(null);
     const [accessToken, setAccessToken] = useState(null);
     const [userType, setUserType] = useState(null);
 
+    /**
+     * Function to handle GitHub login
+     * If the user is not logged in, redirect them to GitHub's OAuth page
+     * If the user is logged in, get their data from GitHub
+     * If the user is logged in, but the access token is expired, redirect them to GitHub's OAuth page
+     */
     const handleGithubLogin = async () => {
         // Get the code from the URL
         const urlParams = new URLSearchParams(window.location.search);
@@ -67,6 +84,12 @@ function LoginView() {
     handleGithubLogin();
     }, []);
 
+    /**
+     * Function to handle GitHub logout
+     * Clear the username, name, and access token from the state
+     * Remove the code from the URL
+     * Send the user to the home page
+     */
     const handleLogout = () => {
         // Clear the username, name, and access token from the state
         setUsername(null);
@@ -80,6 +103,11 @@ function LoginView() {
         // window.location.href = '/';
     };
 
+    /**
+     * Function to handle redirecting the user to the correct page based on their user type
+     * @param {*} name 
+     * @returns response
+     */
     const handleRedirect = async (name) => {
         const response = await api.post('/employeeManagerStatus', [name])
         console.log(response)

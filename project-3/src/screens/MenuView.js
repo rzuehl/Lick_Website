@@ -11,6 +11,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import api from "../api/posts";
 import GeneralButton from '../components/GeneralButton';
+import Badge from '@mui/material/Badge';
 import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
@@ -111,6 +112,14 @@ const MenuView = () => {
       );
     }
   };
+
+  const q_sum = () => {
+    var total = 0;
+    userSelectedItems.forEach(item => {
+      total += item.quantity;
+    })
+    return total;
+  }
   
   // upon mounting component, calling fetchInventory data using useEffect
   useEffect(() => {
@@ -123,7 +132,9 @@ const MenuView = () => {
         <WeatherIcon />
         <GeneralButton content="Login" sidePadding={20} route="/login" />
         <ScreenTitle />
-        <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+        <Badge badgeContent={q_sum()} color="primary" overlap="circular" showZero>
+          <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+        </Badge>
         <OptionsDropdown sidePadding={20}/>
       </div>
       <div className="menu-categories">

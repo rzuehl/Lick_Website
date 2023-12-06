@@ -7,7 +7,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 /**
- * EmployeeButton is a custom component rendering buttons for the manager and cashier page
+ * ManagerButton is a custom component rendering buttons for the manager page
  * @param {object} props - Javascript object containing passed in props into GeneralButton component
  * @property {string} props.content - string representing text content of button
  * @property {string} props.reference - string representing content that button references to
@@ -21,9 +21,9 @@ function EmployeeButton(props) {
     }
 
     const styles = {
-        ...tempStyle, // Spread the properties of tempStyle
-        textDecoration: props.textDecoration,
+        textDecoration: props.textDecoration
     };
+
     let className = "employeeButton " + props.employeeType; 
 
     if (props.route) {
@@ -31,10 +31,9 @@ function EmployeeButton(props) {
             <Link to={props.route} className={className} style={{alignItems: 'center', display: 'flex', justifyContent: 'center', textAlign: 'center'}}>
                 {props.content}
             </Link>
-        );
+        );   
     }
     else {
-        let className = "employeeButton " + props.employeeType; 
         return (
             <button onClick={props.onClick} className= {className} style={styles}>
                 {props.content}

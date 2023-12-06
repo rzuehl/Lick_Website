@@ -1,4 +1,4 @@
-import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button, InputAdornment } from "@mui/material";
+import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button } from "@mui/material";
 import React from "react";
 
 function AddUser(props) {

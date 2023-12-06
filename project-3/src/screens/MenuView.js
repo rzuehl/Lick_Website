@@ -11,6 +11,9 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import api from "../api/posts";
 import GeneralButton from '../components/GeneralButton';
+import Badge from '@mui/material/Badge';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
@@ -38,6 +41,8 @@ const MenuView = () => {
   // if food item already within userSelectedItems, quantity of item is incremented
   // else, new entry is created all together
   const addSelectedItem = (itemEntry) => {
+    handleSnackbarOpen();
+    setLastAddedItem(itemEntry.name);
     const index = userSelectedItems.findIndex(
       (item) => item.name === itemEntry.name
     );
@@ -111,6 +116,28 @@ const MenuView = () => {
       );
     }
   };
+
+  const q_sum = () => {
+    var total = 0;
+    userSelectedItems.forEach(item => {
+      total += item.quantity;
+    })
+    return total;
+  }
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [lastAddedItem, setLastAddedItem] = useState(null);
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  }
   
   // upon mounting component, calling fetchInventory data using useEffect
   useEffect(() => {
@@ -119,11 +146,18 @@ const MenuView = () => {
 
   return (
     <div>
+      <Snackbar open={snackbarOpen} autoHideDuration={5000} onClose={handleSnackbarClose} anchorOrigin={{ vertical:'bottom', horizontal:'center'}}>
+        <Alert onClose={handleSnackbarClose} severity="success" sx={{ width: '100%' }}>
+          {lastAddedItem === null ? "Item" : lastAddedItem} added to cart!
+        </Alert>
+      </Snackbar>
       <div className="customer-header">
         <WeatherIcon />
         <GeneralButton content="Login" sidePadding={20} route="/login" />
         <ScreenTitle />
-        <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+        <Badge badgeContent={q_sum()} color="primary" overlap="circular" showZero>
+          <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+        </Badge>
         <OptionsDropdown sidePadding={20}/>
       </div>
       <div className="menu-categories">

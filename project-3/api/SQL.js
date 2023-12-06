@@ -382,7 +382,7 @@ const deleteOrder = async(request, response, orderID) => {
 
 const getAllOrders = (request, response) =>{
   
-  const query = "SELECT * FROM order_details ORDER BY order_id LIMIT 10000";
+  const query = "SELECT * FROM order_details ORDER BY order_id DESC LIMIT 10000";
 
   return new Promise((resolve, reject) => {
     pool.query(query, (error, results) => {

@@ -1,11 +1,21 @@
 import React, { useState } from 'react';
 import translateText from '../api/translate';
 
+
+/**
+ * Renders the Translate Window to be used at the top-level and toggled in the options menu.
+ * 
+ * Calling this component at the top level in App.js allows the window to stay static across any page changes except for full reloads.
+ * @returns React Component
+ */
 function TranslateWindow() {
   const [inputText, setInputText] = useState('');
   const [targetLanguage, setTargetLanguage] = useState('es'); // Default: Spanish
   const [translatedText, setTranslatedText] = useState('');
 
+  /**
+   * Asynchronously call the translateText() function from translate.js using state variables as parameters so that the component will update when the request comes back from the Google Translate API.
+   */
   const handleTranslate = async () => {
     if (inputText) {
       setTranslatedText(await translateText(inputText, targetLanguage));

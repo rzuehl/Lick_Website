@@ -6,8 +6,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 
 
+/**
+ * Renders the Weather Icon used in the menu bar on each screen.
+ * @returns React Component
+ */
 function WeatherIcon() {
-
+    /**
+     * Send a query to api.openweathermap.org to get weather data for the location of the store.
+     * 
+     * The location is determined using latitude and longitude and the API key is included as a variable in the function.
+     */
     const getWeatherReport = () => {
         const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
         const API_KEY = '8d306f4359a995eeee32b2583f7ec5d2';
@@ -50,12 +58,14 @@ function WeatherIcon() {
     const [w_wind, set_w_wind] = useState(null);
     getWeatherReport();
 
+    /**
+     * Toggle the weather menu between opened and closed
+     * If the weather menu is open, this function calls getWeatherReport() to update weather data
+     */
     const toggleWeatherOpen = () => {
         setWeatherOpen(!weatherOpen);
     if (weatherOpen) getWeatherReport();
     }
-
-    // var icon_num = '10d';
 
     return (
         <Dropdown 

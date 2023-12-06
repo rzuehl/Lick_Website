@@ -236,7 +236,7 @@ p {
   top: 60px;
   right: 0;
   min-width: 160px;
-  z-index: 1;
+  z-index: 2;
   list-style-type: none;
   text-align: center;
   border-radius: 15px;
@@ -275,7 +275,7 @@ p {
   position: fixed;
   display: block;
   list-style-type: none;
-  z-index: 1;
+  z-index: 2;
   border-radius: 15px;
   padding: 12px 16px;
 }
@@ -290,7 +290,7 @@ p {
   position: fixed;
   right: 0px;
   bottom: 50px;
-  z-index: 2;
+  z-index: 1;
   max-width: 500px;
 }
 
@@ -735,9 +735,9 @@ p {
   background-color: var(--lick-pink);
   box-shadow: 5px 5px 5px var(--button-shadow);
   border-radius: 35px;
-  top:55px;
+  top:50px;
   right:-300px;
-  z-index:1;
+  z-index:5;
 }
 
 .cart-preview .cart-item {
@@ -752,7 +752,7 @@ p {
 .cart-preview .item-information h1 {
   color: var(--white);
   font-family: "inter";
-  font-size:medium;
+  font-size: var(--font-size);
   min-width:120px;
 }
 

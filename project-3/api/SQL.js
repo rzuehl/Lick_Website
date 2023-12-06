@@ -334,7 +334,7 @@ const createNewOrder = (request, response, orderID, customerName, employeeName, 
       $1 AS order_id,
       $2 AS customer_name,
       e.employee_id AS employee_id,
-      TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS') AS timestamp,
+      TO_CHAR(CURRENT_TIMESTAMP AT TIME ZONE 'CST', 'YYYY-MM-DD HH24:MI:SS')::timestamp without time zone AS timestamp,
       $4 AS order_status
     FROM 
       employee AS e

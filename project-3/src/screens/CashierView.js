@@ -295,12 +295,13 @@ function CashierView() {
     const submitCurrentOrder = async() => {
       //todo
       const maxOrderID = await api.get('/maxIDOrderDetails');
-      if(maxOrderID.data[0].max === orderID){
+      console.log(maxOrderID.data[0].max);
+      if(maxOrderID.data[0].max === (orderID - 1)){
         let employeeName = "John";
         if(name !== null){
           employeeName = name;
         }
-        await api.post('/createNewOrder', {id: orderID, customerName: customerName, employeeName: name, orderStatus: orderStatus});
+        await api.post('/createNewOrder', {id: orderID, customerName: customerName, employeeName: employeeName, orderStatus: orderStatus});
       }
 
       let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);

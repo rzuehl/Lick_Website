@@ -19,6 +19,8 @@ import ScreenTitle from '../components/ScreenTitle';
 import MenuTile from '../components/MenuTile';
 import WeatherIcon from '../components/WeatherIcon';
 import regularItemContent from "../assets/regularItemContent";
+import CartItem from '../components/CartItem';
+import { BsCartXFill } from "react-icons/bs";
 
 const MenuView = () => {
   //handling button state
@@ -117,6 +119,18 @@ const MenuView = () => {
     }
   };
 
+  const alterCartItems = (cartItemName, newCartItemQuantity) => {
+    const newCartItemArray = [...userSelectedItems];
+    const index = newCartItemArray.findIndex((item) => item.name === cartItemName);
+    if (index !== -1) {
+        newCartItemArray[index].quantity = newCartItemQuantity;
+      setUserSelectedItems(newCartItemArray);
+    }
+    else {
+      console.log("Error: array element not found when altering cart Items function is executed");
+    }
+  };
+
   const q_sum = () => {
     var total = 0;
     userSelectedItems.forEach(item => {
@@ -156,7 +170,33 @@ const MenuView = () => {
         <GeneralButton content="Login" sidePadding={20} route="/login" />
         <ScreenTitle />
         <Badge badgeContent={q_sum()} color="primary" overlap="circular" showZero>
-          <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+          <div className="cart-button">
+            <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
+            <div className="cart-preview">
+              {userSelectedItems.length > 0 &&
+                userSelectedItems.map((item, index) => {
+                  return (
+                    <CartItem
+                    key={index}
+                    src={item.image}
+                    alt={item.description}
+                    name={item.name}
+                    price={item.price}
+                    quantity={item.quantity}
+                    changeParentQuantity={alterCartItems}
+                    />
+                    );
+                  })}
+              {userSelectedItems.length === 0 && (
+                <div className='cart-item empty-cart-container'>
+                    <div className='empty-cart-message'>
+                      <BsCartXFill style={{color: 'black', fontSize: '3rem'}} />
+                      <h1>Your Cart is Currently Empty!</h1>
+                    </div>
+                </div>
+              )}
+            </div>
+          </div>
         </Badge>
         <OptionsDropdown sidePadding={20}/>
       </div>

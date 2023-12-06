@@ -20,6 +20,23 @@ import MenuTile from '../components/MenuTile';
 import WeatherIcon from '../components/WeatherIcon';
 import regularItemContent from "../assets/regularItemContent";
 
+function arraysAreEqual(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  // Check if each element is equal
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+
+  // If all elements are equal, the arrays are equal
+  return true;
+}
+
 const MenuView = () => {
   //handling button state
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -44,7 +61,7 @@ const MenuView = () => {
     handleSnackbarOpen();
     setLastAddedItem(itemEntry.name);
     const index = userSelectedItems.findIndex(
-      (item) => item.name === itemEntry.name
+      (item) => item.name === itemEntry.name && arraysAreEqual(item.itemToppings, itemEntry.itemToppings)
     );
     // action if item already within list of selected items
     if (index !== -1) {
@@ -232,6 +249,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -246,6 +264,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -280,6 +299,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -294,6 +314,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -328,6 +349,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -342,6 +364,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -376,6 +399,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -390,6 +414,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }

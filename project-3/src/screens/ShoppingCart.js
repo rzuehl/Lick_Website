@@ -84,6 +84,7 @@ const ShoppingCart = (props) => {
                     price={item.price}
                     quantity={item.quantity}
                     changeParentQuantity={alterCartItems}
+                    toppings={item.itemToppings}
                   />
                 );
               })}

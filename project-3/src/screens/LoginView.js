@@ -23,7 +23,7 @@ import api from '../api/posts';
  * Redirect URI set to /login
  */
 const YOUR_CLIENT_ID = "a22df87cef72062af190";
-const YOUR_REDIRECT_URI = "https://project-3-907-03-git-development-907-03.vercel.app/login";
+const YOUR_REDIRECT_URI = "https://project-3-907-03.vercel.app/login";
 
 function LoginView() {
     /**

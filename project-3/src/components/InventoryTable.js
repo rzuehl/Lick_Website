@@ -1,5 +1,18 @@
+/* InventoryTable.js
+ * React component redering general purpose table
+ */
+
 import React from "react";
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider, createTheme } from "@mui/material";
+
+/**
+ * Inventory Table is a custom Table component using MUI
+ * Requires table data, column names and column headers to dynamically render data
+ * @param {object} props - Javascript object containing passed in props into InventoryTable component
+ * @property {object} props.tableData - Javascript object containing row data entries
+ * @property {object} props.columns - Javascript object containing column data properties
+ * @property {object} props.columnHeader - Javascript object containing column headers
+ */
 
 function InventoryTable(props) {
 

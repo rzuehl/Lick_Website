@@ -1,5 +1,20 @@
+/* DeleteItem.js
+ * React component redering Delete Item dialog
+ */
+
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Autocomplete } from "@mui/material";
 import React from "react";
+
+/**
+ * Delete Item is a custom pop-up Dialog using MUI
+ * Renders all current items in the inventory
+ * Requires user to select an item before confirming
+ * @param {object} props - Javascript object containing passed in props into DeleteItem component
+ * @property {function} props.onClose - function to handle when the dialog is closed
+ * @property {boolean} props.open - boolean designating whether the dialog should be open
+ * @property {function} props.onConfirm - function to handle when the confirm button is pressed
+ * @property {object} props.foods - Javascript object containing all current foods in the inventory
+ */
 
 function DeleteItem(props) {
     const { onClose, open, onConfirm, foods } = props;

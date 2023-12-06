@@ -1,5 +1,21 @@
+/* EditUser.js
+ * React component redering Edit User dialog
+ */
+
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button, Autocomplete } from "@mui/material";
 import React from "react";
+
+/**
+ * Edit User is a custom pop-up Dialog using MUI
+ * Renders all current users in the database
+ * Allows users to edit properties on a selected user
+ * @param {object} props - Javascript object containing passed in props into EditUser component
+ * @property {function} props.onClose - function to handle when the dialog is closed
+ * @property {boolean} props.open - boolean designating whether the dialog should be open
+ * @property {function} props.onConfirm - function to handle when the confirm button is pressed
+ * @property {object} props.employees - Javascript object containing all current employees in the database
+ * @property {object} props.positions - Javascript object containing all current positions from the database
+ */
 
 function EditUser(props) {
     const { onClose, open, onConfirm, employees, positions } = props;

@@ -88,6 +88,18 @@ app.get('/api/orderStatus', async(request, response) => {
   }
 });
 
+app.get('/api/maxIDOrderDetails', async(request, response) => {
+  try{
+    const results = await sql.maxIDOrderDetails(request, response);
+    //console.log('Results:', results);
+    response.status(200).json(results);
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.post('/api/addOrderItems', async(request, response) => {
   try{
     const {id, items } = request.body;
@@ -114,10 +126,45 @@ app.post('/api/deleteOrderItems', async(request, response) => {
   }
 });
 
+app.post('/api/changeOrderStatus', async(request, response) => {
+  try{
+    const {id, orderStatus} = request.body;
+    await sql.changeOrderStatus(request, response, id, orderStatus);
+    response.status(200).send('Order status changed successfully');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/createNewOrder', async(request, response) => {
+  try{
+    const {id, orderStatus} = request.body;
+    await sql.createNewOrder(request, response, id, orderStatus);
+    response.status(200).send('New order created successfully');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/deleteOrder', async(request, response) => {
+  try{
+    const {id} = request.body;
+    await sql.deleteOrder(request, response, id);
+    response.status(200).send('Order succesfully deleted');
+  }
+  catch (error) {
+    console.error('Error:', error);
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 app.listen(port, () => {
     console.log(`App running on port ${port}.`)
 })
-
 
 app.get('/api/inventory', sql.getInventory)
 app.post('/api/getSales', sql.getSales)

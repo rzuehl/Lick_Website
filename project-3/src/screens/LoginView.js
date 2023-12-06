@@ -119,9 +119,12 @@ function LoginView() {
             setUserType('manager');
         } else if (response.data && response.data[0] && response.data[0].position === 'e') {
             setUserType('employee');
+        } else if (response.data && response.data[0] && response.data[0].position === 'a') {
+            setUserType('admin');
         } else {
             setUserType('customer');
         }
+
 
         return response;
     }
@@ -157,6 +160,8 @@ function LoginView() {
                             <GeneralButton content="Manager View" sidePadding={60} route='/manager'/>
                         ) : userType === 'employee' ? (
                             <GeneralButton content="Cashier View" sidePadding={60} route='/cashier'/>
+                        ) : userType === 'admin' ? (
+                            <GeneralButton content="Admin View" sidePadding={60} route='/users'/>
                         ) : (
                             <GeneralButton content="Start Order" sidePadding={60} route='/menu'/>
                         )}

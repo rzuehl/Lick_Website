@@ -240,7 +240,6 @@ function UserManagement() {
                 <GeneralButton content="Order" sidePadding={20} route="/menu" />
                 <OptionsDropdown sidePadding={20}/>
             </div>
-            <ManagerDashboard />
             <body style={{margin: 0, display: 'flex', height: "80vh"}}>
                 <div style={{display: 'flex', flexDirection: 'column', margin:10, marginTop:87}}>
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogAdd} content="Add User" />

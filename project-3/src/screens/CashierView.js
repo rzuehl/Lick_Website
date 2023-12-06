@@ -36,9 +36,9 @@ var retrievedOrderItemList = [];
 var orderItemList = [];
 var selectedRows = [];
 var clicked = false;
-var orderID = -1;
-var retrievedOrderStatus = "";
-var orderStatus = "";
+var orderID;
+var retrievedOrderStatus = "Pending";
+var orderStatus = "Pending";
 var open = false;
 
 function createOrderItem(index, foodName, cost, foodType) {
@@ -80,18 +80,29 @@ function CashierView() {
     const [openState, setOpenState] = useState(open);
     const [orderIDState, setOrderIDState] = useState(orderID);
     const [orderStatusState, setOrderStatusState] = useState(orderStatus);
+    const [retrievedOrderStatusState, setRetrievedOrderStatusState] = useState(retrievedOrderStatus);
     const [orderStatusModified, setOrderStatusModified] = useState("");
     const [disableInputState, setDisableInputState] = useState([-1]);
+    const [dropdownOptionsArrayState, setDropdownOptionsArrayState] = useState(dropdownOptionsArray);
+
+    const getMaxOrderID = async() => {
+      const maxOrderID = await api.get('/maxIDOrderDetails');
+      orderID = maxOrderID.data[0].max + 1;
+      setOrderIDState(orderID);
+    };
 
     const handleDialogClose = () => {
         open = false;
         setOpenState(open);
     }
 
-    const handleConfirm = (values) => {
-        orderID = values[0];
+    const handleConfirm = async(values) => {
+        await getMaxOrderID();
+        if(values[0] <= orderID){
+          orderID = values[0];
+        }
         orderStatus = values[1];
-        setOrderIDState(values[0]);
+        setOrderIDState(orderID);
         setOrderStatusState(values[1]);
         open = false;
         setOpenState(open);
@@ -177,18 +188,34 @@ function CashierView() {
       await waitForDialogClose();
       if(!(prevOrderID===orderID)){
         const responseOrder = await api.get('/pastOrder', {params: {id: orderID}});
+        setOrderItemListModified("");
         
         const responseOrderStatus = await api.get('/orderStatus', {params: {id: orderID}});
         if(responseOrderStatus.data.length !== 0){
           orderStatus = responseOrderStatus.data[0].order_status;
           retrievedOrderStatus = orderStatus;
+          setRetrievedOrderStatusState(retrievedOrderStatus);
           setOrderStatusState(orderStatus);
           setOrderStatusModified("");
           if(orderStatus === "Fulfilled"){
+            console.log("Fulfilled");
             dropdownOptionsArray[0].disabled = true;
             dropdownOptionsArray[2].disabled = true;
             dropdownOptionsArray[3].disabled = true;
           }
+          else if(orderStatus === "Cancelled"){
+            console.log("Cancelled");
+            dropdownOptionsArray[0].disabled = true;
+            dropdownOptionsArray[2].disabled = false;
+            dropdownOptionsArray[3].disabled = false;
+          }
+          else if(orderStatus === "Pending"){
+            console.log("Pending");
+            dropdownOptionsArray[0].disabled = false;
+            dropdownOptionsArray[2].disabled = false;
+            dropdownOptionsArray[3].disabled = false;
+          }
+          setDropdownOptionsArrayState(dropdownOptionsArray);
         }
 
         orderItemList = [];
@@ -223,21 +250,48 @@ function CashierView() {
 
     const submitCurrentOrder = async() => {
       //todo
-      console.log(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray));
-      console.log(differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray));
+      /*const maxOrderID = await api.get('/maxIDOrderDetails');
+      if(maxOrderID.data[0].max === orderID){
+        await api.post('/createNewOrder', {id: orderID}); // need info on employee id to complete this function
+      }*/
+      //console.log(differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray));
+      //console.log(differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray));
       let itemsAdded = differenceWith(orderItemList, retrievedOrderItemList, isEqualOrderItemArray);
       let itemsDeleted = differenceWith(retrievedOrderItemList, orderItemList, isEqualOrderItemArray);
-      console.log(itemsAdded);
+      //console.log(itemsAdded);
       if(itemsAdded.length !== 0){
         await api.post('/addOrderItems', {id: orderID, items: itemsAdded});
       }
       if(itemsDeleted.length !== 0){
         await api.post('/deleteOrderItems', {id: orderID, items: itemsDeleted});
       }
-      /*if(retrievedOrderStatus !== orderStatus){
-        await api.post('/changeOrderStatus', {orderStatus: orderStatus});
-      }*/
 
+      if(retrievedOrderStatus !== orderStatus){
+        await api.post('/changeOrderStatus', {id: orderID, orderStatus: orderStatus});
+        if(orderStatus === "Fulfilled"){
+          console.log("Fulfilled");
+          dropdownOptionsArray[0].disabled = true;
+          dropdownOptionsArray[2].disabled = true;
+          dropdownOptionsArray[3].disabled = true;
+        }
+        else if(orderStatus === "Cancelled"){
+          console.log("Cancelled");
+          dropdownOptionsArray[0].disabled = true;
+          dropdownOptionsArray[2].disabled = false;
+          dropdownOptionsArray[3].disabled = false;
+        }
+        else if(orderStatus === "Pending"){
+          console.log("Pending");
+          dropdownOptionsArray[0].disabled = false;
+          dropdownOptionsArray[2].disabled = false;
+          dropdownOptionsArray[3].disabled = false;
+        }
+        setDropdownOptionsArrayState(dropdownOptionsArray);
+      }
+      retrievedOrderStatus = orderStatus;
+      setRetrievedOrderStatusState(retrievedOrderStatus);
+      setOrderStatusModified("");
+      setOrderItemListModified("");
     };
 
     const deleteOrder = async() => {
@@ -245,10 +299,25 @@ function CashierView() {
       return 0;
     }
 
+    const createNewOrder = async() => {
+      await getMaxOrderID();
+      orderItemList = [];
+      retrievedOrderItemList = [];
+      orderStatus = "Pending";
+      retrievedOrderStatus = "Pending";
+      setOrderStatusModified("");
+      setOrderItemListModified("");
+      setOrderItemListState(orderItemList);
+      setOrderStatusState(orderStatus);
+      setRetrievedOrderStatusState(retrievedOrderStatus);
+    }
+
     dropdownOptionsArray.push(createDropdownOptions(0, "Remove Selected Items", removeItems, false));
     dropdownOptionsArray.push(createDropdownOptions(1, "Import Past Order", getPastOrder, false));
     dropdownOptionsArray.push(createDropdownOptions(2, "Change Order Status", changeOrderStatus, false));
     dropdownOptionsArray.push(createDropdownOptions(3, "Submit Changes to Current Order", submitCurrentOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(4, "Delete Order", deleteOrder, false));
+    dropdownOptionsArray.push(createDropdownOptions(5, "Create New Order", createNewOrder, false));
 
     const handleRowClick = (id) => {
       setSelectedRows((prevSelectedRows) => {
@@ -343,7 +412,7 @@ function CashierView() {
             align="right"
             >
             <Button id="basic-button" onClick={pay}>Pay</Button>
-            <TableDropdown name="Options" options={dropdownOptionsArray}/>
+            <TableDropdown name="Options" options={dropdownOptionsArrayState}/>
             </TableCell>
         </TableRow>
       );
@@ -357,7 +426,7 @@ function CashierView() {
         }
         const fetchCategories = async () => {
             try{
-                if(event !== null && !(eventString === "Back") && !(orderStatus === "Fulfilled")){
+                if(event !== null && !(eventString === "Back") && !(orderStatus === "Fulfilled" || orderStatus === "Cancelled")){
                     const responseCost = await api.get('/cost', {params: {foodName: eventString.replace(/'/g, "''"), foodType: category}});
                     subtotal += responseCost.data[0].food_price;
                     tax = subtotal * .05;
@@ -413,13 +482,14 @@ function CashierView() {
            isCategory = false; 
         }
         handleCategoryItems(null);
+        getMaxOrderID();
     }, []);
 
     var buttonType = "cashier";
 
     return (
         <>
-            <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={orderStatusState} orderID={orderIDState}></ManageOrderDialog>
+            <ManageOrderDialog onClose={handleDialogClose} open={openState} disable={disableInputState} onConfirm={handleConfirm} status={retrievedOrderStatusState} orderID={orderIDState}></ManageOrderDialog>
             <div className="customer-header">
                 <WeatherIcon />
                 <GeneralButton content="Logout" sidePadding={20} route="/" />
@@ -441,7 +511,7 @@ function CashierView() {
                                     }
                                   }} 
                                 content={categoryItem}
-                                style={{ backgroundColor: categoryItem === "Back" ? "white" : "#FFC7C8" }}/>
+                                style={{ backgroundColor: categoryItem === "Back" ? "black" : "#ff657f" }}/>
                             </Grid>
                         ))}
                     </Grid> 

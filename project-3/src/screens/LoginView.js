@@ -63,7 +63,7 @@ function LoginView() {
                 });
 
             // Get the access token from the response
-            accessToken = response.data.accessToken;
+            const accessToken = response.data.accessToken;
             setAccessToken(accessToken);
 
             // Use the access token to get the user's data

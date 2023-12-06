@@ -56,6 +56,7 @@ const MenuTile = (props) => {
             itemToppings: selectedToppings,
         };
         props.buttonFunction(itemObject);
+        setSelectedToppings([]);
     }
 
     const handleAddItemButton = () => {

@@ -72,7 +72,7 @@ const CartItem = (props) => {
                 </div>
             </div>
 
-            {props.toppings.length && (<div className="cart-item-toppings">
+            {props.toppings.length > 0 && (<div className="cart-item-toppings">
                 <h2>{`Toppings: ${props.toppings.length ? toppingString : "N/A"}`}</h2>
             </div>)}
         </div>

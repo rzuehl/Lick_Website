@@ -15,6 +15,8 @@ import OptionsDropdown from '../components/OptionsDropdown';
 import ScreenTitle from '../components/ScreenTitle';
 import WeatherIcon from '../components/WeatherIcon';
 import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { NameContext } from '../contexts/NameContext';
 import axios from 'axios';
 import api from '../api/posts';
 
@@ -34,7 +36,8 @@ function LoginView() {
      * userType: customer, employee, or manager
      */
     const [username, setUsername] = useState(null);
-    const [name, setName] = useState(null);
+    const { updateName } = useContext(NameContext);
+    const { name } = useContext(NameContext);
     const [accessToken, setAccessToken] = useState(null);
     const [userType, setUserType] = useState(null);
 
@@ -60,7 +63,7 @@ function LoginView() {
                 });
 
             // Get the access token from the response
-            const accessToken = response.data.accessToken;
+            accessToken = response.data.accessToken;
             setAccessToken(accessToken);
 
             // Use the access token to get the user's data
@@ -72,7 +75,7 @@ function LoginView() {
 
             // Set the username and name in the state
             setUsername(userResponse.data.login);
-            setName(userResponse.data.name);
+            updateName(userResponse.data.name);
             } catch (error) {
                 console.error(error);
             }
@@ -93,7 +96,7 @@ function LoginView() {
     const handleLogout = () => {
         // Clear the username, name, and access token from the state
         setUsername(null);
-        setName(null);
+        updateName(null);
         setAccessToken(null);
       
         // Remove the code from the URL

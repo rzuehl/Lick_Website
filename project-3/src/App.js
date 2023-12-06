@@ -10,6 +10,7 @@ import TranslateWindow from './components/TranslateWindow';
 import InventoryView from './screens/InventoryView';
 import UserManagement from './screens/UserManagement';
 import ShoppingCart from './screens/ShoppingCart';
+import { NameProvider } from './contexts/NameContext';
 
 var stylename = "default";
 export function toggleStyle() {
@@ -44,37 +45,39 @@ export function toggleStyle() {
 
 function App() {
   return (
-    <BrowserRouter>
-      <TranslateWindow />
-      <div>
-        <Switch>
-          <Route exact path="/">
-            <CustomerView />
-          </Route>
-          <Route exact path="/menu">
-            <MenuView />
-          </Route>
-          <Route exact path="/login">
-            <LoginView />
-          </Route>
-          <Route exact path ="/cashier">
-            <CashierView />
-          </Route>
-          <Route exact path ="/manager">
-            <ManagerView />
-          </Route>
-          <Route exact path = "/inventory">
-            <InventoryView />
-          </Route>
-          <Route exact path = "/users">
-            <UserManagement />
-          </Route>
-          <Route exact path="/cart">
-            <ShoppingCart />
-          </Route>
-        </Switch>
-      </div>    
-    </BrowserRouter>
+    <NameProvider>
+      <BrowserRouter>
+        <TranslateWindow />
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <CustomerView />
+            </Route>
+            <Route exact path="/menu">
+              <MenuView />
+            </Route>
+            <Route exact path="/login">
+              <LoginView />
+            </Route>
+            <Route exact path ="/cashier">
+              <CashierView />
+            </Route>
+            <Route exact path ="/manager">
+              <ManagerView />
+            </Route>
+            <Route exact path = "/inventory">
+              <InventoryView />
+            </Route>
+            <Route exact path = "/users">
+              <UserManagement />
+            </Route>
+            <Route exact path="/cart">
+              <ShoppingCart />
+            </Route>
+          </Switch>
+        </div>    
+      </BrowserRouter>
+    </NameProvider>
   );
 }
 

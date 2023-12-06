@@ -48,9 +48,9 @@ function ManageOrderDialog(props) {
                         }}
                         fullWidth
                     >
-                        <MenuItem value = "Pending">Pending</MenuItem>
-                        <MenuItem value = "Cancelled">Cancelled</MenuItem>
-                        <MenuItem value = "Fulfilled">Fulfilled</MenuItem>
+                        <MenuItem value = "Pending" disabled = {currOrderStatus === "Fulfilled"}>Pending</MenuItem>
+                        <MenuItem value = "Cancelled" disabled = {currOrderStatus === "Fulfilled"}>Cancelled</MenuItem>
+                        <MenuItem value = "Fulfilled" disabled = {currOrderStatus === "Cancelled"}>Fulfilled</MenuItem>
                     </TextField>
                 </DialogContent>
                 <DialogActions>

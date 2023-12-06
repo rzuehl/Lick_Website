@@ -207,8 +207,9 @@ function ManagerView() {
                 <OptionsDropdown sidePadding={20}/>
             </div>
             <ManagerDashboard />
-            <body className='customer-header' style={{margin: 0, backgroundColor: '#FFC7C8', color: 'black', fontSize: 30, fontWeight: 'bold', display: 'flex', height:"10vh"}}>
-                <div style={{display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>Date Selected: 
+            <body className='report-Header'>
+                <div style={{display: 'flex', alignItems:'center', height: "10vh", overflow: 'hidden', marginLeft:100, marginRight: 100, marginTop: 50, marginBottom: 50}}>
+                    Date Selected: 
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogStart} content={startDate} textDecoration={'underline'}/>
                     To
                     <EmployeeButton employeeType= {buttonType} onClick={openDialogEnd} content={endDate} textDecoration={'underline'}/>

@@ -12,14 +12,17 @@ import MenuItem from '@mui/material/MenuItem';
 
 function TableDropdown(props) {
 
-    let options = props.options;
+    let options = [];
+    if(!(props.options === undefined)){
+      options = props.options;
+    }
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
     const handleClose = () => {
-      setAnchorEl(null);
+      setAnchorEl(null); 
     };
     const handleFunctionClick = (func) => {
         func();
@@ -49,7 +52,9 @@ function TableDropdown(props) {
                 <MenuItem key={option['index']} onClick={() => {
                     handleClose();
                     handleFunctionClick(option.optionFunction);
-                }}>{option['optionName']}</MenuItem>
+                }}
+                  disabled = {option.disabled}
+                >{option['optionName']}</MenuItem>
             ))}
           
         </Menu>

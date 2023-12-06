@@ -14,10 +14,16 @@ import { Link } from 'react-router-dom';
  * @property {number} props.sidePadding - number setting side padding of button
  */
 function EmployeeButton(props) {
-    const styles = {
-        textDecoration: props.textDecoration
-    };
+    var tempStyle = {};
 
+    if (!(props.style === undefined)) {
+        tempStyle = props.style;
+    }
+
+    const styles = {
+        ...tempStyle, // Spread the properties of tempStyle
+        textDecoration: props.textDecoration,
+    };
     let className = "employeeButton " + props.employeeType; 
 
     if (props.route) {
@@ -28,6 +34,7 @@ function EmployeeButton(props) {
         );
     }
     else {
+        let className = "employeeButton " + props.employeeType; 
         return (
             <button onClick={props.onClick} className= {className} style={styles}>
                 {props.content}

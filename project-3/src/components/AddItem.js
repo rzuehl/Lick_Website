@@ -1,5 +1,18 @@
+/* AddItem.js
+ * React component redering Add Item dialog
+ */
+
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, MenuItem, Button } from "@mui/material";
 import React from "react";
+
+/**
+ * Add Item is a custom pop-up Dialog using MUI
+ * Requires user to input all values before confirming
+ * @param {object} props - Javascript object containing passed in props into AddItem component
+ * @property {function} props.onClose - function to handle when the dialog is closed
+ * @property {boolean} props.open - boolean designating whether the dialog should be open
+ * @property {function} props.onConfirm - function to handle when the confirm button is pressed
+ */
 
 function AddItem(props) {
     const { onClose, open, onConfirm } = props;

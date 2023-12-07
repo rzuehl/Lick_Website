@@ -22,6 +22,23 @@ import regularItemContent from "../assets/regularItemContent";
 import CartItem from '../components/CartItem';
 import { BsCartXFill } from "react-icons/bs";
 
+function arraysAreEqual(arr1, arr2) {
+  // Check if the arrays have the same length
+  if (arr1.length !== arr2.length) {
+    return false;
+  }
+
+  // Check if each element is equal
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] !== arr2[i]) {
+      return false;
+    }
+  }
+
+  // If all elements are equal, the arrays are equal
+  return true;
+}
+
 const MenuView = () => {
   //handling button state
   const [categoryIndex, setCategoryIndex] = useState(0);
@@ -46,7 +63,7 @@ const MenuView = () => {
     handleSnackbarOpen();
     setLastAddedItem(itemEntry.name);
     const index = userSelectedItems.findIndex(
-      (item) => item.name === itemEntry.name
+      (item) => item.name === itemEntry.name && arraysAreEqual(item.itemToppings, itemEntry.itemToppings)
     );
     // action if item already within list of selected items
     if (index !== -1) {
@@ -119,17 +136,17 @@ const MenuView = () => {
     }
   };
 
-  const alterCartItems = (cartItemName, newCartItemQuantity) => {
-    const newCartItemArray = [...userSelectedItems];
-    const index = newCartItemArray.findIndex((item) => item.name === cartItemName);
-    if (index !== -1) {
-        newCartItemArray[index].quantity = newCartItemQuantity;
-      setUserSelectedItems(newCartItemArray);
-    }
-    else {
-      console.log("Error: array element not found when altering cart Items function is executed");
-    }
-  };
+  // const alterCartItems = (cartItemName, newCartItemQuantity) => {
+  //   const newCartItemArray = [...userSelectedItems];
+  //   const index = newCartItemArray.findIndex((item) => item.name === cartItemName);
+  //   if (index !== -1) {
+  //       newCartItemArray[index].quantity = newCartItemQuantity;
+  //     setUserSelectedItems(newCartItemArray);
+  //   }
+  //   else {
+  //     console.log("Error: array element not found when altering cart Items function is executed");
+  //   }
+  // };
 
   const q_sum = () => {
     var total = 0;
@@ -173,7 +190,7 @@ const MenuView = () => {
           <div className="cart-button">
             <GeneralButton content="Cart" sidePadding={20} onClick={onCartClick} />
             <div className="cart-preview">
-              {userSelectedItems.length > 0 &&
+              {/* {userSelectedItems.length > 0 &&
                 userSelectedItems.map((item, index) => {
                   return (
                     <CartItem
@@ -183,7 +200,6 @@ const MenuView = () => {
                     name={item.name}
                     price={item.price}
                     quantity={item.quantity}
-                    changeParentQuantity={alterCartItems}
                     />
                     );
                   })}
@@ -194,7 +210,7 @@ const MenuView = () => {
                       <h1>Your Cart is Currently Empty!</h1>
                     </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </Badge>
@@ -272,6 +288,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -286,6 +303,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -320,6 +338,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -334,6 +353,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -368,6 +388,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -382,6 +403,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }
@@ -416,6 +438,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 } else {
@@ -430,6 +453,7 @@ const MenuView = () => {
                       }
                       itemPrice={item.food_price}
                       buttonFunction={addSelectedItem}
+                      toppingsArray={toppingItems}
                     />
                   );
                 }

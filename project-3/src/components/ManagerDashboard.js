@@ -1,5 +1,15 @@
+/* ManagerChart.js
+ * React component redering a custom dashboard for the manager / inventory view
+ */
+
 import React from 'react';
 import EmployeeButton from './EmployeeButton';
+
+/**
+ * Renders a custom dashboard for the manager / inventory view
+ * Routes to the corresponding page
+ * @param {object} props - Javascript object containing passed in props into ManagerDashboard component
+ */
 
 function ManagerDashboard(props) {
     var buttonType = "manager"; 
